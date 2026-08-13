@@ -6,40 +6,43 @@
 
     Frontend | Backend
     -|-
-    Create a dictionary request ||
+    Create a dictionary request |
     ||Create SQLite database
     ||Generate `DbId` 
     ||Send `DbId` and db to Frontend
-    |Save `DbId` in browser local storage|
+    Save `DbId` in browser local storage|
 
 ### Open a dictionary 
 - Open a dictionary
 
     Frontend | Backend
     -|-
-    Open a SQLite database ||
-    Send it to Backend
+    Open a SQLite database |
+    Send it to Backend|
     ||Generate `DbId` 
     ||Send `DbId` to Frontend
-    |Save `DbId` in browser local storage
+    Save `DbId` in browser local storage|
 
-### Save a dictionary
-- Save a dictionary to local
+### Download a dictionary
+- Download a dictionary to local
 
     Frontend | Backend
     -|-
-    Save a dictionary request ||
+    Download a dictionary request |
     ||Send db with `DbId` to Frontend
-    |Allow user to save the database||
+    Allow user to save the database|
 
 ## TTL (time to live) cleanup
+### TTL
+- Get the database last accessed time, cleanup the database that is idle for 24 hours
+
 ### Cold start
 - App cold start -> CleanupExpiredDatabases() -> start API -> BackgroundService cleans up temporary dictionary periodically
 
 ## UI
 ### Landing page
 - If there is a connected dictionary:
-    - SessionId in Frontend
+    - `DbId` in Frontend
     - Temporary db in Backend
 
     ```
@@ -47,7 +50,7 @@
     Download
     ```
 
-- If there isnot a connected dictionary:
+- If there isn't a connected dictionary:
     - Only show "Connection"
 
 - Browse all the entries with pagination
@@ -60,8 +63,6 @@
     Create a new dictionary
     Open an existing dictionary
     ```
-
-- How do I save dictionary name with the SessionId?
 
 ### Search
 - Based on word, like, category
@@ -78,6 +79,10 @@
 
 ## SQLite
 ### Category schema
+- Name
+
+- Insert "Word", "Phrase" directly
+
 ### Word schema
 - Word
 - Pronounciation
