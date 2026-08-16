@@ -9,7 +9,7 @@
     Create a dictionary request |
     ||Create SQLite database
     ||Generate `DbId` 
-    ||Send `DbId` and db to Frontend
+    ||Send `DbId` to Frontend
     Save `DbId` in browser local storage|
 
 ### Open a dictionary 
@@ -22,6 +22,11 @@
     ||Generate `DbId` 
     ||Send `DbId` to Frontend
     Save `DbId` in browser local storage|
+
+### Database workflow
+- Users upload a SQLite database to backend
+- Copy it as a working copy
+- Apply migration at runtime to working copy
 
 ### Download a dictionary
 - Download a dictionary to local
@@ -79,15 +84,19 @@
 
 ## SQLite
 ### Category schema
+- Id
 - Name
 
 - Insert "Word", "Phrase" directly
 
-### Word schema
-- Word
-- Pronounciation
+### Entry schema
+- Id
+- Term
+- Pronunciation
 - Meaning
 - Notes
-- Like
-- Category
-- LastAccessedAt
+- IsFavorite
+- CategoryId
+- CreatedAt
+
+- The relationship between `Category` and `Entry` is one-to-many, therefore `Category` is the principal entity, `Entry` is the dependent entity
