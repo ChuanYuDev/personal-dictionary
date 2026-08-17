@@ -100,3 +100,31 @@
 - CreatedAt
 
 - The relationship between `Category` and `Entry` is one-to-many, therefore `Category` is the principal entity, `Entry` is the dependent entity
+
+# To do
+## Version 1
+### Miscellaneous
+- The connection string depends on `DbId`
+- TTL cleanup
+
+### `DictionaryDbManager`
+- Create SQLite database (Done)
+- Open SQLite database
+- Download SQLite database
+
+### `EntryRepository`
+- Read entries based on `DbId`
+- Insert entries based on `DbId`
+- Edit entries based on `DbId`
+- Delete entries based on `DbId`
+
+### Dictionary name
+- How do I save dictionary name with the `DbId`?
+
+    ```
+    The connected dictionary: dictionary name
+    ```
+
+## Verson 2
+### Add category
+- Add CRUD category operations
