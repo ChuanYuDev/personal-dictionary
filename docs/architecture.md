@@ -70,7 +70,7 @@
     ```
 
 ### Search
-- Based on word, like, category
+- Based on word, phrase, and favorite
 
 ### Edit page
 - Edit
@@ -79,8 +79,10 @@
 ### Create
 - Create an entry
 
-### Category
-- Create 
+### Design
+- Design
+
+    ![](../images/ui_design.png)
 
 ## SQLite
 ### Category schema
@@ -108,9 +110,18 @@
 - TTL cleanup
 
 ### `DictionaryDbManager`
-- Create SQLite database (Done)
+- Create SQLite database
+    - Backend (Done)
+    - Frontend
+    - Logging
+
 - Open SQLite database
+    - Backend
+    - Frontend
+
 - Download SQLite database
+    - Backend
+    - Frontend
 
 ### `EntryRepository`
 - Read entries based on `DbId`
@@ -119,10 +130,25 @@
 - Delete entries based on `DbId`
 
 ### Dictionary name
-- How do I save dictionary name with the `DbId`?
+- Directly save dictionary name in SQLite database (Done)
 
     ```
     The connected dictionary: dictionary name
+    ```
+
+### Pop up
+- Manage Dictionary
+
+    ```
+    Your changes haven't been downloaded.
+    Continue anyway?
+    ```
+
+- Edit Entry
+
+    ```
+    Delete “Apple”?
+    This action cannot be undone.
     ```
 
 ## Verson 2

@@ -13,6 +13,9 @@ public class Entry
     [StringLength(maximumLength: 500)]
     public string? Pronunciation { get; set; }
     
+    [StringLength(maximumLength: 50)]
+    public string? PartOfSpeech { get; set; }
+    
     public string? Meaning { get; set; }
     
     public string? Notes { get; set; }

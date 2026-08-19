@@ -7,6 +7,7 @@ public class DictionaryDbContext: DbContext
 {
     public DictionaryDbContext(DbContextOptions options) : base(options) { }
     
+    public DbSet<Metadata> Metadata { get; set; }
     public DbSet<Category> Categories { get; set; }
     public DbSet<Entry> Entries { get; set; }
 
