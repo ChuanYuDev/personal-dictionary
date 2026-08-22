@@ -14,13 +14,16 @@
 - Leave some extra space at the bottom of the list, even when the user scrolls all the way to the bottom, the last entry can still scroll above the button
 - Use middle dot `&middot`
 
+- Search is case-insensitive
+
 ### Manage dictionary
 - The modal dialog should have a backdrop
 
-- Open or create modal dialog
+- Disconnect/ open/ create modal dialog
 
 ### Create Entry
 - Add existing entries
+    - Case-insensitive
 
 ### Entry details
 - Use middle dot `&middot`
@@ -111,7 +114,6 @@
 
 ### Cold start
 - App cold start -> CleanupExpiredDatabases() -> start API -> BackgroundService cleans up temporary dictionary periodically
-
 
 # To do
 ## Version 1
