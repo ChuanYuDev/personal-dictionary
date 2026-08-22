@@ -9,7 +9,7 @@ public static class DictionaryDbPathProvider
         var tempPath = Path.GetTempPath();
         var directoryPath = Path.Combine(tempPath, DirectoryName);
         
-        Console.WriteLine(directoryPath);
+        // Console.WriteLine(directoryPath);
 
         if (!Directory.Exists(directoryPath)) Directory.CreateDirectory(directoryPath);
 
