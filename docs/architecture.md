@@ -162,6 +162,48 @@
 - Edit entries based on `DbId`
 - Delete entries based on `DbId`
 
+### Sort Entry Card??
+
+### Backend error handling
+- Create dictionary
+    - Unexpected exception: `PersonalDictionary` folder doesn't exist
+
+- Open dictionary
+    - Expected failure: Dictionary doesn't exist
+    - Unexpected exception: the file is not a valid SQLite database
+    - Unexpected exception: Metadata is missing 
+
+- Exception exception: use `Result` pattern
+- Unexpected exception: Use a global exception handler
+
+### Frontend Error handling
+- When the backend is creating dictionary, disable "create dictionary" button
+
+- Handle expected server errors
+- Handle unexpected server errors
+- Handle cases where the backend server is unavailable
+
+- Open Dictionary：
+    - 404 → Dictionary no longer exists → remove stale dbId → return to Page 1 → optionally show a message
+
+    - 500 → Something went wrong while opening the dictionary → DON'T remove dbId
+
+    - Server unavailable → Unable to connect to the server → DON'T remove dbId
+
+- Create dictionary
+
+    - request starts → disable Create button
+
+    - 200 → save returned dbId → go to connected state
+
+    - 500 → show create failed message → enable Create button again
+
+    - server unavailable → show connection error → enable Create button again
+
+### Log
+- Production log level
+- Log event id?
+
 ## Verson 2
 ### Add category
 - Add CRUD category operations

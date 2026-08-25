@@ -1,5 +1,6 @@
 using Application.Abstractions;
 using Application.Services;
+using DictionaryAPI.ExceptionHandling;
 using Infrastructure.Persistence;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -11,6 +12,8 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
+
 builder.Services.AddTransient<IDictionaryDbManager, DictionaryDbManager>();
 builder.Services.AddTransient<DictionaryService>();
 
@@ -20,6 +23,8 @@ var app = builder.Build();
 if (app.Environment.IsDevelopment())
 {
 }
+
+app.UseExceptionHandler("/error");
 
 app.UseSwagger();
 app.UseSwaggerUI();
