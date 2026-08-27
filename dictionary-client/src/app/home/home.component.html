@@ -1,18 +1,24 @@
 <h1>My Dictionary</h1>
 
-<a routerLink="dictionaries/manage">DictionaryName &rsaquo;</a>
-<p>No dictionary connected</p>
+@if (dictionaryState()) {
+    <a routerLink="dictionaries/manage">{{dictionaryState()?.dbName}} &rsaquo;</a>
+} @else {
+    <p>No dictionary connected</p>
+    
+    <div class="container">
+        <div class="row">
+            <button type="button" class="col-12">
+                Open Existing Dictionary
+            </button>
 
-<div class="container">
-    <div class="row">
-        <button type="button" class="col-12">
-            Open Existing Dictionary
-        </button>
-
-        <button type="button" class="col-12" disabled>
-            Create New Dictionary
-        </button>
-        
+            <button
+                    type="button"
+                    class="col-12"
+                    [disabled]="isCreating()"
+                    (click)="CreateDictionary()"
+            >
+                {{isCreating()? "Creating...": "Create New Dictionary"}}
+            </button>
+        </div>
     </div>
-</div>
-
+}

@@ -12,7 +12,7 @@ public class DictionaryDbManager: IDictionaryDbManager
         await using var dictionaryDbContext = CreateDbContext(dictionaryPath);
         
         // Simulate a delay in database creation.
-        await Task.Delay(TimeSpan.FromSeconds(3));
+        await Task.Delay(TimeSpan.FromSeconds(2));
 
         await dictionaryDbContext.Database.MigrateAsync();
 
