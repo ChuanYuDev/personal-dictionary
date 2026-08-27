@@ -6,16 +6,24 @@ namespace Infrastructure.Persistence;
 
 public class DictionaryDbManager: IDictionaryDbManager
 {
-    public async Task CreateAsync(Guid dbId)
+    public async Task CreateAsync(Guid dbId, string defaultName)
     {
         var dictionaryPath = DictionaryDbPathProvider.GetPath(dbId);
-        var options = new DbContextOptionsBuilder<DictionaryDbContext>().UseSqlite($"Data Source={dictionaryPath}").Options;
-
-        await using var dictionaryDbContext = new DictionaryDbContext(options);
+        await using var dictionaryDbContext = CreateDbContext(dictionaryPath);
+        
+        // Simulate a delay in database creation.
+        await Task.Delay(TimeSpan.FromSeconds(3));
 
         await dictionaryDbContext.Database.MigrateAsync();
 
-        dictionaryDbContext.Metadata.Add(new Metadata());
+        dictionaryDbContext.Metadata.Add(new Metadata {Name = defaultName});
         await dictionaryDbContext.SaveChangesAsync();
+    }
+
+    private DictionaryDbContext CreateDbContext(string dictionaryPath)
+    {
+        var options = new DbContextOptionsBuilder<DictionaryDbContext>().UseSqlite($"Data Source={dictionaryPath}").Options;
+
+        return new DictionaryDbContext(options);
     }
 }

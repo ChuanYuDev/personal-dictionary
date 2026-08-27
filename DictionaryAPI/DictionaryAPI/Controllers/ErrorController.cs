@@ -4,7 +4,8 @@ namespace DictionaryAPI.Controllers;
 
 public class ErrorController: ControllerBase
 {
-    [Route("/error")]
+    [Route("/api/error")]
+    [ApiExplorerSettings(IgnoreApi = true)]
     public IActionResult HandlerError()
     {
         return Problem(

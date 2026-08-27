@@ -1,5 +1,5 @@
+using Application.Dtos;
 using Application.Services;
-using DictionaryAPI.Contracts;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DictionaryAPI.Controllers;
@@ -16,10 +16,8 @@ public class DictionariesController: ControllerBase
     }
     
     [HttpPost("create")]
-    public async Task<CreateDictionaryResponse> Create()
+    public async Task<DictionaryDto> Create()
     {
-        var dbId = await _dictionaryService.CreateAsync();
-
-        return new CreateDictionaryResponse { DbId = dbId };
+        return await _dictionaryService.CreateAsync();
     }
 }

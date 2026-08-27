@@ -15,6 +15,7 @@
 - Use middle dot `&middot`
 
 - Search is case-insensitive
+- Entry card list uses alphebet order for version 1
 
 ### Manage dictionary
 - The modal dialog should have a backdrop
@@ -23,10 +24,14 @@
 
 ### Create Entry
 - Add existing entries
-    - Case-insensitive
+    - Search is case-insensitive and only search for exactly same entry
+
+- The error is shown under each input
 
 ### Entry details
 - Use middle dot `&middot`
+
+- The error is shown under each input
 
 ### Edit Entry
 - Add a light top border to the delete section (`border-top`)
@@ -126,6 +131,41 @@
 
 - Phase 4: Replace the dummy `EntryService` with HTTP calls
 
+### Backend error handling
+- Create dictionary
+    - Unexpected exception: `PersonalDictionary` folder doesn't exist
+
+- Open dictionary
+    - Expected failure: Dictionary doesn't exist
+    - Unexpected exception: the file is not a valid SQLite database
+    - Unexpected exception: Metadata is missing 
+
+- Exception exception: use `Result` pattern
+- Unexpected exception: Use a global exception handler (Done)
+
+### Frontend Error handling
+- Handle errors
+    - Handle expected failures
+    - Handle unexpected server errors
+    - Handle cases where the backend server is unavailable
+
+- Create dictionary
+
+    - request starts → disable Create button
+
+    - 200 → save returned `dbId` → go to connected state
+
+    - 500 → show create failed message → enable Create button again
+
+    - server unavailable → show connection error → enable Create button again
+
+- Open Dictionary：
+    - 404 → Dictionary no longer exists → remove stale `dbId` → return to Page 1 → optionally show a message
+
+    - 500 → Something went wrong while opening the dictionary → DON'T remove dbId
+
+    - Server unavailable → Unable to connect to the server → DON'T remove dbId
+
 ### Miscellaneous
 - The connection string depends on `DbId`
 - TTL cleanup
@@ -142,11 +182,18 @@
     localStorage.setItem('hasUndownloadedChanges', 'true');
     ```
 
+- Use signals for the variable which is related to UI change
+
+    ```ts
+    dictionaryState = signal<DictionaryState | null>(null);
+    isCreating = signal(false);
+    ```
+
 ### `DictionaryDbManager`
 - Create SQLite database
     - Backend (Done)
     - Frontend
-    - Logging
+    - Logging (Done)
 
 - Open SQLite database
     - Backend
@@ -156,54 +203,21 @@
     - Backend
     - Frontend
 
+- Disconnect SQLite database
+    - Frontend
+
 ### `EntryRepository`
 - Read entries based on `DbId`
 - Insert entries based on `DbId`
 - Edit entries based on `DbId`
 - Delete entries based on `DbId`
 
-### Sort Entry Card??
+## Verson 2
+### Add category
+- Add CRUD category operations
 
-### Backend error handling
-- Create dictionary
-    - Unexpected exception: `PersonalDictionary` folder doesn't exist
-
-- Open dictionary
-    - Expected failure: Dictionary doesn't exist
-    - Unexpected exception: the file is not a valid SQLite database
-    - Unexpected exception: Metadata is missing 
-
-- Exception exception: use `Result` pattern
-- Unexpected exception: Use a global exception handler
-
-### Frontend Error handling
-- When the backend is creating dictionary, disable "create dictionary" button
-
-- Handle expected server errors
-- Handle unexpected server errors
-- Handle cases where the backend server is unavailable
-
-- Open Dictionary：
-    - 404 → Dictionary no longer exists → remove stale dbId → return to Page 1 → optionally show a message
-
-    - 500 → Something went wrong while opening the dictionary → DON'T remove dbId
-
-    - Server unavailable → Unable to connect to the server → DON'T remove dbId
-
-- Create dictionary
-
-    - request starts → disable Create button
-
-    - 200 → save returned dbId → go to connected state
-
-    - 500 → show create failed message → enable Create button again
-
-    - server unavailable → show connection error → enable Create button again
+### Sort Entry Card
 
 ### Log
 - Production log level
 - Log event id?
-
-## Verson 2
-### Add category
-- Add CRUD category operations
