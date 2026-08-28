@@ -11,6 +11,6 @@ import {DictionariesService} from "./dictionaries/dictionaries.service";
 export class AppComponent {
     private readonly dictionariesService = inject(DictionariesService);
     constructor() {
-        this.dictionariesService.restoreDictionary();
+        this.dictionariesService.restoreDictionaryState();
     }
 }

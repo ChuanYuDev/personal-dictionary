@@ -32,7 +32,14 @@ export class DictionariesService {
         ));
     }
     
-    restoreDictionary(): void {
+    disconnect(): void {
+        window.localStorage.removeItem(this.keyDbId);
+        window.localStorage.removeItem(this.keyDbName);
+        
+        this._dictionaryState.set(null);
+    }
+    
+    restoreDictionaryState(): void {
         const dbId = window.localStorage.getItem(this.keyDbId);
         const dbName = window.localStorage.getItem(this.keyDbName);
         

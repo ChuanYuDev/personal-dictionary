@@ -7,6 +7,7 @@
 
 ### Home page
 - `>` -> Chevron_right
+- Disable Create button when the dictionary is creating, and enable it after creating or encountering errors
 
 - Browse all the entries with pagination
 - Making the entire card clickable so that clicking anywhere on the card opens Entry Details, rather than making only the term clickable
@@ -47,6 +48,7 @@
 - If there is a `dbId`, ask the backend whether the corresponding working database still exists
 
 - If the database doesn't exist, clear the stale `dbId` from `localStorage` and load Page 1
+    - Status = 404, dictionary no longer exists > remove localStorage > return to Page 1
 
 - If the database exists, restore current dictionary state and load Page 2
 
@@ -88,43 +90,6 @@
     ||Send db with `DbId` to Frontend
     Allow user to save the database|
 
-## SQLite
-### Category
-- Schema
-    - Id
-    - Name
-
-- Insert "Word", "Phrase" directly
-
-### Entry
-- Schema
-    - Id
-    - Term
-    - Pronunciation
-    - PartOfSpeech
-    - Meaning
-    - Notes
-    - IsFavorite
-    - CategoryId
-    - CreatedAt
-
-- The relationship between `Category` and `Entry` is one-to-many, therefore `Category` is the principal entity, `Entry` is the dependent entity
-
-### Metadata
-- Schema
-    - Id
-    - Name
-    - CreatedAt
-
-## TTL (time to live) cleanup
-### TTL
-- Get the database last accessed time, cleanup the database that is idle for 24 hours
-
-### Cold start
-- App cold start -> CleanupExpiredDatabases() -> start API -> BackgroundService cleans up temporary dictionary periodically
-
-# To do
-## Version 1
 ### Phase
 - Phase 1: Implement the dictionary lifecycle with the real frontend and backend
 
@@ -152,22 +117,26 @@
     - Handle unexpected server errors
     - Handle cases where the backend server is unavailable
 
+- `extractErrors(err: HttpErrorResponse): string[] | null`
+    - If `status` is 0, connection error, return `["Unable to connect to the server, please try again later"]`
+
+    - Validation error
+
+    - Return `null`
+
 - Create dictionary
-
-    - request starts → disable Create button
-
-    - 200 → save returned `dbId` → go to connected state
-
-    - 500 → show create failed message → enable Create button again
-
-    - server unavailable → show connection error → enable Create button again
+    - Status = 0, server unavailable > "Unable to connect to the server. Please try again."
+    - Status = 500, server error > "Unable to create the dictionary. Please try again."
+    - Other statuses > "An unexpected error occurred. Please connect the administer."
 
 - Open Dictionary：
-    - 404 → Dictionary no longer exists → remove stale `dbId` → return to Page 1 → optionally show a message
+    - Status = 0, server unavailable > "Unable to connect to the server, please try again."
+    - Status = 500, server error > "Unable to open the dictionary. Please try again."
+    - Other statuses > "An unexpected error occurred. Please connect the administer."
 
-    - 500 → Something went wrong while opening the dictionary → DON'T remove dbId
-
-    - Server unavailable → Unable to connect to the server → DON'T remove dbId
+- Disconnect Dictionary:
+    - Remove localStorage
+    - Set `dictionaryState` as `null`
 
 ### Miscellaneous
 - The connection string depends on `DbId`
@@ -214,6 +183,41 @@
 - Insert entries based on `DbId`
 - Edit entries based on `DbId`
 - Delete entries based on `DbId`
+
+## SQLite
+### Category
+- Schema
+    - Id
+    - Name
+
+- Insert "Word", "Phrase" directly
+
+### Entry
+- Schema
+    - Id
+    - Term
+    - Pronunciation
+    - PartOfSpeech
+    - Meaning
+    - Notes
+    - IsFavorite
+    - CategoryId
+    - CreatedAt
+
+- The relationship between `Category` and `Entry` is one-to-many, therefore `Category` is the principal entity, `Entry` is the dependent entity
+
+### Metadata
+- Schema
+    - Id
+    - Name
+    - CreatedAt
+
+## TTL (time to live) cleanup
+### TTL
+- Get the database last accessed time, cleanup the database that is idle for 24 hours
+
+### Cold start
+- App cold start -> CleanupExpiredDatabases() -> start API -> BackgroundService cleans up temporary dictionary periodically
 
 ## Verson 2
 ### Add category

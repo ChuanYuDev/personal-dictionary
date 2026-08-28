@@ -1,0 +1,20 @@
+button {
+    width: 100%;
+}
+
+app-display-errors {
+    display: block;
+    margin-top: 1rem;
+}
+
+.dictionary-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: end;
+}
+
+.page-title {
+    margin: 0;
+    font-size: 1.5rem;
+    font-weight: 600;
+}
