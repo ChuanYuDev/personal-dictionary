@@ -50,6 +50,9 @@
 
 - If the database exists, restore current dictionary state and load Page 2
 
+### Dictionary state
+- We use the singleton `DictionaryService` to store `dictionaryState` signal, therefore we only retore `dictionaryState` when we reload the application
+
 ### Create a new dictionary
 - Create a dictionary and download it to local
 

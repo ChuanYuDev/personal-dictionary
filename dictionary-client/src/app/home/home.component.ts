@@ -12,23 +12,24 @@ import {DictionaryDto, DictionaryState} from "../dictionaries/dictionaries.model
 export class HomeComponent {
     
     readonly isCreating = signal(false);
-    readonly dictionaryState = signal<DictionaryState | null>(null);
     private dictionariesService = inject(DictionariesService);
+    readonly dictionaryState = this.dictionariesService.dictionaryState;
     
     CreateDictionary(): void {
         this.isCreating.set(true);
-        
+
+        // this.dictionariesService.create().subscribe((dictionaryDto) => {
+        //     console.log(dictionaryDto);
+        //     this.isCreating.set(false);
+        // });
         this.dictionariesService.create().subscribe({
             next: (dictionaryDto) => {
-                this.dictionaryState.set({
-                    dbId: dictionaryDto.dbId,
-                    dbName: dictionaryDto.dbName
-                });
-                
+
                 this.isCreating.set(false);
             },
-            
+
             error: (err) => {
+                console.log(err);
                 this.isCreating.set(false);
             }
         });

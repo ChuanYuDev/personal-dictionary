@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
+import {Component, inject} from '@angular/core';
 import {RouterLink} from "@angular/router";
+import {DictionariesService} from "../dictionaries.service";
 
 @Component({
     selector: 'app-manage-dictionary',
@@ -8,5 +9,6 @@ import {RouterLink} from "@angular/router";
     styleUrl: './manage-dictionary.component.css'
 })
 export class ManageDictionaryComponent {
-    name:string = "Dictionary name";
+    private readonly dictionariesService = inject(DictionariesService);
+    readonly dictionaryState = this.dictionariesService.dictionaryState;
 }
