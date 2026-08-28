@@ -1,28 +1,38 @@
-<a routerLink="/">&larr;</a>
-<h1>Manage Dictionary</h1>
-
-<p>Connected dictionary:</p>
-
-<p>{{ dictionaryState()?.dbName }} </p>
-<button type="button"> &#9998; </button>
-
 <div class="container">
+    
+    <div class="page-header">
+        <a routerLink="/" class="navigation-link back-link">&larr;</a>
+        <h1 class="page-title">Manage Dictionary</h1>
+    </div>
+
+    <p>Connected dictionary:</p>
+
+    <p>{{ dictionaryState()?.dbName }} </p>
+    <button type="button"> &#9998; </button>
+
     <div class="row">
-        <button type="button" class="col-12">
-            Download Dictionary
-        </button>
+        <div class="col-12">
+            <button type="button">
+                Download Dictionary
+            </button>
+        </div>
 
-        <button type="button" class="col-12" (click)="disconnectDictionary()">
-            Disconnect Dictionary
-        </button>
+        <div class="col-12">
+            <button type="button">
+                Open Another Dictionary
+            </button>
+        </div>
+
+        <div class="col-12">
+            <button type="button">
+                Create New Dictionary
+            </button>
+        </div>
         
-        <button type="button" class="col-12">
-            Open Another Dictionary
-        </button>
-
-        <button type="button" class="col-12">
-            Create New Dictionary
-        </button>
-
+        <div class="col-12">
+            <button type="button" (click)="disconnectDictionary()">
+                Disconnect Dictionary
+            </button>
+        </div>
     </div>
 </div>

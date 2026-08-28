@@ -1,9 +1,9 @@
 <div class="container">
-    <div class="dictionary-header">
+    <div class="home-header">
         <h1 class="page-title">My Dictionary</h1>
         
         @if (dictionaryState()) {
-            <a routerLink="dictionaries/manage">{{dictionaryState()?.dbName}} &rsaquo;</a>
+            <a routerLink="dictionaries/manage" class="navigation-link">{{dictionaryState()?.dbName}} &rsaquo;</a>
         }
     </div>
 
