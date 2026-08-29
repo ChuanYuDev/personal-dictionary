@@ -1,0 +1,9 @@
+<app-display-errors [errors]="errors()"></app-display-errors>
+
+<button
+        type="button"
+        [disabled]="isCreating()"
+        (click)="CreateDictionary()"
+>
+    {{isCreating()? "Creating...": "Create New Dictionary"}}
+</button>

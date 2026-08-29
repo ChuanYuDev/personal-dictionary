@@ -236,6 +236,4 @@
 - Home page dictionary name显示有长度限制
     - Manage dictionary中没有, 并且pencil在最后一行的最右边
 
-- CreateDictionary在home和manage dictionary中都有，需要提取吗？
-
 - 加测试

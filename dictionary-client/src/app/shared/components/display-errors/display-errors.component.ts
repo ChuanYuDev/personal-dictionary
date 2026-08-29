@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, input, Input } from '@angular/core';
 
 @Component({
     selector: 'app-display-errors',
@@ -7,6 +7,5 @@ import { Component, Input } from '@angular/core';
     styleUrl: './display-errors.component.css'
 })
 export class DisplayErrorsComponent {
-    @Input({required: true})
-    errors: string[] = [];
+    errors = input.required<string[]>();
 }
