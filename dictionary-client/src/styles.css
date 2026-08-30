@@ -6,6 +6,11 @@
     align-items: center;
 }
 
+.back-link {
+    position: absolute;
+    left: 0;
+}
+
 .page-title {
     margin: 0;
     font-size: 1.5rem;
