@@ -19,11 +19,11 @@
 
     <ItemGroup>
       <Folder Include="Integration\Api\" />
-      <Folder Include="Integration\Infrastructure\" />
     </ItemGroup>
 
     <ItemGroup>
       <ProjectReference Include="..\Application\Application.csproj" />
+      <ProjectReference Include="..\Infrastructure\Infrastructure.csproj" />
     </ItemGroup>
 
 </Project>

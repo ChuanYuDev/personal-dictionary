@@ -142,7 +142,7 @@
     - `DictionaryDbManager` class
     - Integration test
     - SQLite database is created
-    - Metadata and category table are created and their data are correct
+    - Category and Metadata table are created and their data are correct
 
 - `Create_ShouldReturnCreatedDictionary`
     - API integration
