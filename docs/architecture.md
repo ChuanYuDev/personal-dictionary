@@ -141,6 +141,8 @@
 - `CreateAsync_ShouldCreateValidDictionaryDatabase`
     - `DictionaryDbManager` class
     - Integration test
+    - SQLite database is created
+    - Metadata and category table are created and their data are correct
 
 - `Create_ShouldReturnCreatedDictionary`
     - API integration
@@ -149,7 +151,7 @@
     - The response body can be deserialized into DictionaryDto
     - `dbId` is a valid non-empty Guid
     - `dbName` is "Untitled Dictionary"
-    - The database file corresponding to the returned DbId exists
+    - The database file corresponding to the returned `dbId` exists
 
 - `Create_WhenUnexpectedExceptionOccurs_Returns500ProblemDetails`
     - API integration
