@@ -153,7 +153,7 @@
     - `dbName` is "Untitled Dictionary"
     - The database file corresponding to the returned `dbId` exists
 
-- `Create_WhenUnexpectedExceptionOccurs_Returns500ProblemDetails`
+- `Create_Returns500ProblemDetails_WhenUnexpectedExceptionOccurs`
     - API integration
     - Create database failure > 500 ProblemDetails
 

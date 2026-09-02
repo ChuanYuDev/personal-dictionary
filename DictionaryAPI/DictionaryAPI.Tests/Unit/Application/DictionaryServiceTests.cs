@@ -1,13 +1,13 @@
 using Application.Abstractions;
 using Application.Services;
 using NSubstitute;
+using Xunit;
 
 namespace DictionaryAPI.Tests.Unit.Application;
 
-[TestClass]
 public sealed class DictionaryServiceTests
 {
-    [TestMethod]
+    [Fact]
     public async Task CreateAsync_ShouldCreateDictionaryWithDefaultName()
     {
         // Arrange
@@ -20,8 +20,8 @@ public sealed class DictionaryServiceTests
         
         // Assert
         await dictionaryDbManager.Received(1).CreateAsync(result.DbId, defaultName);
-        Assert.AreNotEqual(Guid.Empty, result.DbId);
-        Assert.AreEqual(defaultName, result.DbName);
+        Assert.NotEqual(Guid.Empty, result.DbId);
+        Assert.Equal(defaultName, result.DbName);
     }
     
 }
