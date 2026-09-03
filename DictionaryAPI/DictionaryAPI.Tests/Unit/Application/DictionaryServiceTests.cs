@@ -3,7 +3,7 @@ using Application.Services;
 using NSubstitute;
 using Xunit;
 
-namespace DictionaryAPI.Tests.Unit.Application;
+namespace DictionaryApi.Tests.Unit.Application;
 
 public sealed class DictionaryServiceTests
 {

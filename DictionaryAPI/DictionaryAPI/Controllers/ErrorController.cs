@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 
-namespace DictionaryAPI.Controllers;
+namespace DictionaryApi.Controllers;
 
 public class ErrorController: ControllerBase
 {

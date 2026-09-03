@@ -1,6 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DictionaryAPI", "DictionaryAPI\DictionaryAPI.csproj", "{57F3287C-CB65-4CF4-9A26-EA809A334497}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DictionaryApi", "DictionaryApi\DictionaryApi.csproj", "{57F3287C-CB65-4CF4-9A26-EA809A334497}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domain", "Domain\Domain.csproj", "{9E2ADD1B-D69C-4036-A10F-BF241012B183}"
 EndProject
@@ -8,7 +8,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure", "Infrastru
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Application", "Application\Application.csproj", "{5149903A-B3C5-4E9F-AF02-8D9B4914BE05}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DictionaryAPI.Tests", "DictionaryAPI.Tests\DictionaryAPI.Tests.csproj", "{F1739CA9-BA60-47D6-BDBC-D6FD7DF6BA9A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DictionaryApi.Tests", "DictionaryApi.Tests\DictionaryApi.Tests.csproj", "{F1739CA9-BA60-47D6-BDBC-D6FD7DF6BA9A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

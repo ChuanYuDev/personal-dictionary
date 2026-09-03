@@ -1,6 +1,6 @@
 using Infrastructure.Persistence;
 
-namespace DictionaryAPI.Tests.Integration;
+namespace DictionaryApi.Tests.Integration;
 
 public static class DictionaryDbTestHelper
 {

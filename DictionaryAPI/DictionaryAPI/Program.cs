@@ -1,6 +1,6 @@
 using Application.Abstractions;
 using Application.Services;
-using DictionaryAPI.ExceptionHandling;
+using DictionaryApi.ExceptionHandling;
 using Infrastructure.Persistence;
 
 var builder = WebApplication.CreateBuilder(args);

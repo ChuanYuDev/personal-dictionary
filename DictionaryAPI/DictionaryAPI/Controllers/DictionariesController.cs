@@ -2,7 +2,7 @@ using Application.Dtos;
 using Application.Services;
 using Microsoft.AspNetCore.Mvc;
 
-namespace DictionaryAPI.Controllers;
+namespace DictionaryApi.Controllers;
 
 [Route("api/dictionaries")]
 [ApiController]

@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Diagnostics;
 
-namespace DictionaryAPI.ExceptionHandling;
+namespace DictionaryApi.ExceptionHandling;
 
 public class GlobalExceptionHandler: IExceptionHandler
 {

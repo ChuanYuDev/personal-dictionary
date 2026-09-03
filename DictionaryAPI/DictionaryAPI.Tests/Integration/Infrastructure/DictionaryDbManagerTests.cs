@@ -2,7 +2,7 @@ using Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Xunit;
 
-namespace DictionaryAPI.Tests.Integration.Infrastructure;
+namespace DictionaryApi.Tests.Integration.Infrastructure;
 
 public sealed class DictionaryDbManagerTests: IDisposable
 {

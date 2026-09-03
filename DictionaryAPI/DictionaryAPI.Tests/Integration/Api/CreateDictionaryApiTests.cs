@@ -12,7 +12,7 @@ using NSubstitute;
 using NSubstitute.ExceptionExtensions;
 using Xunit;
 
-namespace DictionaryAPI.Tests.Integration.Api;
+namespace DictionaryApi.Tests.Integration.Api;
 
 public sealed class CreateDictionaryApiTests: IClassFixture<WebApplicationFactory<Program>>, IDisposable
 {
