@@ -20,7 +20,7 @@ public class DictionaryDbManager: IDictionaryDbManager
         await dictionaryDbContext.SaveChangesAsync();
     }
 
-    private DictionaryDbContext CreateDbContext(string dictionaryPath)
+    private static DictionaryDbContext CreateDbContext(string dictionaryPath)
     {
         var options = new DbContextOptionsBuilder<DictionaryDbContext>().UseSqlite($"Data Source={dictionaryPath}").Options;
 

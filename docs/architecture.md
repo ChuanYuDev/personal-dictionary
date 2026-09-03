@@ -148,14 +148,18 @@
     - API integration
     - WebApplicationFactory?
     - `POST /api/dictionaries/create` returns 200 OK
-    - The response body can be deserialized into DictionaryDto
+    - The response body can be deserialized into `DictionaryDto`
     - `dbId` is a valid non-empty Guid
     - `dbName` is "Untitled Dictionary"
     - The database file corresponding to the returned `dbId` exists
 
-- `Create_Returns500ProblemDetails_WhenUnexpectedExceptionOccurs`
+- `Create_Returns500InternalServerErrorWithProblemDetails_WhenUnexpectedExceptionOccurs`
     - API integration
     - Create database failure > 500 ProblemDetails
+    - `POST /api/dictionaries/create` returns 500 Internal Server Error
+    - The response error can be deserialized into `ProblemDetails`
+    - `statusCode` is `StatusCodes.Status500InternalServerError`
+    - `title` is `"An unexpected error occurred."`
 
 ### Tests -- Backend -- Case A
 - Someone changes:
@@ -231,7 +235,7 @@
 
 -  This test has value because it verifies that the application is actually wired together correctly
 
-### Tests -- Frontend
+### Tests -- Frontend (TO DO)
 - Test `ExtractErrorMessages()`
     - Failure - 500 → create-specific error
     - Failure - 500 > ProblemDetails/detail → 显示服务器信息
