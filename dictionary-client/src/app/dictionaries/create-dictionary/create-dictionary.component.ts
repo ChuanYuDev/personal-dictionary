@@ -41,7 +41,7 @@ export class CreateDictionaryComponent {
                     return;
                 }
 
-                this.errors.set(["An unexpected error occurred. Please connect the administrator."]);
+                this.errors.set(["An unexpected error occurred. Please contact the administrator."]);
             }
         });
         

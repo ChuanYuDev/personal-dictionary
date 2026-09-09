@@ -134,27 +134,24 @@
 - A small number of integration tests often provide more value for this kind of application than a large number of heavily mocked unit tests
     - They catch problems involving SQLite, EF Core migrations, routing, dependency injection, middleware, and the actual HTTP pipeline—things that isolated unit tests often cannot detect
 
-- `CreateAsync_ShouldCreateDictionaryWithDefaultName`
-    - Unit test
-    - `DictionaryService`
+- `DictionaryService` unit test
+    - `CreateAsync_ShouldCreateDictionaryWithDefaultName`
 
-- `CreateAsync_ShouldCreateValidDictionaryDatabase`
-    - `DictionaryDbManager` class
-    - Integration test
+- `DictionaryDbManager` class integration test
+    - `CreateAsync_ShouldCreateValidDictionaryDatabase`
     - SQLite database is created
     - Category and Metadata table are created and their data are correct
 
-- `Create_ShouldReturnCreatedDictionary`
-    - API integration
-    - WebApplicationFactory?
+- Create dictionary API integration test
+    - `Create_ShouldReturnCreatedDictionary`
     - `POST /api/dictionaries/create` returns 200 OK
     - The response body can be deserialized into `DictionaryDto`
     - `dbId` is a valid non-empty Guid
     - `dbName` is "Untitled Dictionary"
     - The database file corresponding to the returned `dbId` exists
 
-- `Create_Returns500InternalServerErrorWithProblemDetails_WhenUnexpectedExceptionOccurs`
-    - API integration
+- Create dictionary API integration errors test
+    - `Create_Returns500InternalServerErrorWithProblemDetails_WhenUnexpectedExceptionOccurs`
     - Create database failure > 500 ProblemDetails
     - `POST /api/dictionaries/create` returns 500 Internal Server Error
     - The response error can be deserialized into `ProblemDetails`
@@ -236,23 +233,14 @@
 -  This test has value because it verifies that the application is actually wired together correctly
 
 ### Tests -- Frontend (TO DO)
-- Test `ExtractErrorMessages()`
-    - Failure - 500 → create-specific error
-    - Failure - 500 > ProblemDetails/detail → 显示服务器信息
+- `ExtractErrorMessages()` unit test
 
-- Test `DictionaryService` HTTP request
+- `DictionaryService` HTTP request unit test
 
     ```ts
     it ('should POST to /api/dictionaries/create')
     ```
     - Use `HttpTestingController`
-
-    - Assertion
-
-        ```
-        method === POST
-        URL ===
-        ```
 
     - Get result
 
@@ -261,40 +249,41 @@
             dbId: '...',
             name: 'Untitled Dictionary'
         }
+        ```
 
     - Confirm `dictionaryState` is updated
 
-### Tests -- Frontend -- `CreateDictionaryComponent` test
-- `it('should call DictionaryService.create when the button is clicked')`
-    - Click Create > DictionaryService.create()
+- `CreateDictionaryComponent` unit test
+    - `it('should call DictionaryService.create when the button is clicked')`
+        - Click Create > DictionaryService.create()
 
-- `it('should show creating state while creating a dictionary')`
-    - Button disabled / `Creating...` displayed
+    - `it('should show creating state while creating a dictionary')`
+        - Button disabled / `Creating...` displayed
 
-- `it('should emit created when creation succeeds')`
-    - Success - emit created()
+    - `it('should emit created when creation succeeds')`
+        - Success - emit created()
 
-- `it('should display an error and reset creating state when creation fails')`
-    - For the component test, you only need to choose one representative error case, for example:
-    
-    ```ts
-    dictionaryService.create.and.returnValue(
-        throwError(() => new HttpErrorResponse({
-            status: 500
-        }))
-    );
-    ```
-    - Then verify that the UI displays:
+    - `it('should display an error and reset creating state when creation fails')`
+        - For the component test, you only need to choose one representative error case, for example:
+        
+        ```ts
+        dictionaryService.create.and.returnValue(
+            throwError(() => new HttpErrorResponse({
+                status: 500
+            }))
+        );
+        ```
+        - Then verify that the UI displays:
 
-    ```
-    Unable to create the dictionary. Please try again.
-    ```
+        ```
+        Unable to create the dictionary. Please try again.
+        ```
 
-    - There is no need to repeat every `ExtractErrorMessages()` error case in the component tests, because those cases are already covered by the dedicated `ExtractErrorMessages()` tests
-    - Failure - isCreating === false
+        - There is no need to repeat every `ExtractErrorMessages()` error case in the component tests, because those cases are already covered by the dedicated `ExtractErrorMessages()` tests
+        - Failure - isCreating === false
 
-- `it('should not emit created when creation fails')`
-    - Failure - don’t emit created()
+    - `it('should not emit created when creation fails')`
+        - Failure - don’t emit created()
 
 ## Open a dictionary  (TO DO)
 ### Workflow
@@ -340,7 +329,7 @@
 - App cold start -> CleanupExpiredDatabases() -> start API -> BackgroundService cleans up temporary dictionary periodically
 
 ## Progress
-### Phases
+### Phases (TO DO)
 - Phase 1: Implement the dictionary lifecycle with the real frontend and backend
 
 - Phase 2: Build the Entry UI using dummy data
@@ -400,6 +389,14 @@
     - Id
     - Name
     - CreatedAt
+
+## User system (TO DO)
+### Central metadata (`TemporaryDictionaries`)
+- Schema
+    - DbId
+    - OwnerUserId
+    - TemporaryPath
+    - ExpiresAt
 
 ## Production
 ### Deployment

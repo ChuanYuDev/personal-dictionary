@@ -6,8 +6,6 @@ public static class DictionaryDbTestHelper
 {
     public static void DeleteDb(Guid dbId)
     {
-        if (dbId == Guid.Empty) return;
-        
         var path = DictionaryDbPathProvider.GetPath(dbId);
         
         File.Delete(path);
