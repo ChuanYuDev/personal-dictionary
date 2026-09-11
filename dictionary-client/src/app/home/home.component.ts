@@ -1,6 +1,6 @@
 import {Component, inject} from '@angular/core';
 import {RouterLink} from "@angular/router";
-import {DictionariesService} from "../dictionaries/dictionaries.service";
+import {DictionaryService} from "../dictionaries/dictionary.service";
 import {CreateDictionaryComponent} from "../dictionaries/create-dictionary/create-dictionary.component";
 
 @Component({
@@ -10,6 +10,6 @@ import {CreateDictionaryComponent} from "../dictionaries/create-dictionary/creat
     styleUrl: './home.component.css'
 })
 export class HomeComponent {
-    private dictionariesService = inject(DictionariesService);
-    readonly dictionaryState = this.dictionariesService.dictionaryState;
+    private dictionaryService = inject(DictionaryService);
+    readonly dictionaryState = this.dictionaryService.dictionaryState;
 }

@@ -1,6 +1,6 @@
 import {Component, inject, output, signal} from '@angular/core';
 import {DisplayErrorsComponent} from "../../shared/components/display-errors/display-errors.component";
-import {DictionariesService} from "../dictionaries.service";
+import {DictionaryService} from "../dictionary.service";
 import {extractErrorMessages} from "../../shared/functions/extract-error-messages";
 
 @Component({
@@ -12,14 +12,14 @@ import {extractErrorMessages} from "../../shared/functions/extract-error-message
 export class CreateDictionaryComponent {
     readonly isCreating = signal(false);
     readonly errors = signal<string[]>([]);
-    private dictionariesService = inject(DictionariesService);
+    private dictionaryService = inject(DictionaryService);
     readonly created = output<void>();
 
     CreateDictionary(): void {
         this.isCreating.set(true);
         this.errors.set([]);
 
-        this.dictionariesService.create().subscribe({
+        this.dictionaryService.create().subscribe({
             next: (dictionaryDto) => {
                 this.isCreating.set(false);
                 this.created.emit();

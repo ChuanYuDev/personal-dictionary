@@ -1,13 +1,13 @@
 import {inject, Injectable, signal} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {environment} from "../../environments/environment";
-import {DictionaryDto, DictionaryState} from "./dictionaries.models";
+import {DictionaryDto, DictionaryState} from "./dictionary.models";
 import {tap} from "rxjs";
 
 @Injectable({
     providedIn: 'root'
 })
-export class DictionariesService {
+export class DictionaryService {
     private httpClient = inject(HttpClient);
     private baseUrl = `${environment.apiUrl}/dictionaries`;
     

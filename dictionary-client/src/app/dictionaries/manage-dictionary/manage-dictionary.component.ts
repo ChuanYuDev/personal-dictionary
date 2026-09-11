@@ -1,6 +1,6 @@
 import {Component, inject} from '@angular/core';
 import {Router, RouterLink} from "@angular/router";
-import {DictionariesService} from "../dictionaries.service";
+import {DictionaryService} from "../dictionary.service";
 import {CreateDictionaryComponent} from "../create-dictionary/create-dictionary.component";
 
 @Component({
@@ -10,12 +10,12 @@ import {CreateDictionaryComponent} from "../create-dictionary/create-dictionary.
     styleUrl: './manage-dictionary.component.css'
 })
 export class ManageDictionaryComponent {
-    private readonly dictionariesService = inject(DictionariesService);
+    private readonly dictionaryService = inject(DictionaryService);
     private readonly router = inject(Router);
-    readonly dictionaryState = this.dictionariesService.dictionaryState;
+    readonly dictionaryState = this.dictionaryService.dictionaryState;
     
     disconnectDictionary(): void {
-        this.dictionariesService.disconnect();
+        this.dictionaryService.disconnect();
         this.router.navigate(["/"]);
     }
     

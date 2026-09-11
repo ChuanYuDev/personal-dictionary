@@ -235,23 +235,25 @@
 ### Tests -- Frontend (TO DO)
 - `ExtractErrorMessages()` unit test
 
-- `DictionaryService` HTTP request unit test
+- `DictionaryService` `create` unit test
+    - `it ('should create the service')`
 
-    ```ts
-    it ('should POST to /api/dictionaries/create')
-    ```
-    - Use `HttpTestingController`
+    - `it ('should issue a POST request to create a dictionary')`
+        - Get result
 
-    - Get result
+            ```
+            {
+                dbId: '...',
+                name: 'Untitled Dictionary'
+            }
+            ```
 
-        ```
-        {
-            dbId: '...',
-            name: 'Untitled Dictionary'
-        }
-        ```
+        - Confirm `dictionaryState` is updated
+        - Confirm `window.localStorage.setItem` is invoked with the arguments
 
-    - Confirm `dictionaryState` is updated
+    - `it ('should not update the dictionary state when the creation fails')`
+        - Confirm `dictionaryState` not updated
+        - Confirm `window.localStorage.setItem` is not invoked
 
 - `CreateDictionaryComponent` unit test
     - `it('should call DictionaryService.create when the button is clicked')`
@@ -301,12 +303,12 @@
 - Copy it as a working copy and move to the working directory
 - Apply migration at runtime to working copy
 
-### Backend error handling
+### Error handling -- Backend 
 - Expected failure: Dictionary doesn't exist
 - Unexpected exception: the file is not a valid SQLite database
 - Unexpected exception: Metadata is missing 
 
-### Frontend error handling
+### Error handling -- Frontend
 - Status = 0, server unavailable > "Unable to connect to the server, please try again."
 - Status = 500, server error > "Unable to open the dictionary. Please try again."
 - Other statuses > "An unexpected error occurred. Please connect the administer."
@@ -422,5 +424,3 @@
     - Entry CRUD
     - expected error 是否返回正确 status / ProblemDetails
     - 重要的数据持久化行为
-
-- Load the home page logic
