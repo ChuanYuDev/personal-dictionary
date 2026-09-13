@@ -15,12 +15,12 @@ export class CreateDictionaryComponent {
     private dictionaryService = inject(DictionaryService);
     readonly created = output<void>();
 
-    CreateDictionary(): void {
+    createDictionary(): void {
         this.isCreating.set(true);
         this.errors.set([]);
 
         this.dictionaryService.create().subscribe({
-            next: (dictionaryDto) => {
+            next: () => {
                 this.isCreating.set(false);
                 this.created.emit();
             },

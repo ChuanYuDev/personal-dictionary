@@ -233,9 +233,9 @@
 -  This test has value because it verifies that the application is actually wired together correctly
 
 ### Tests -- Frontend (TO DO)
-- `ExtractErrorMessages()` unit test
+- `extractErrorMessages()` unit test
 
-- `DictionaryService` `create` unit test
+- `DictionaryService.create()` unit test
     - `it ('should create the service')`
 
     - `it ('should issue a POST request to create a dictionary')`
@@ -256,17 +256,14 @@
         - Confirm `window.localStorage.setItem` is not invoked
 
 - `CreateDictionaryComponent` unit test
-    - `it('should call DictionaryService.create when the button is clicked')`
-        - Click Create > DictionaryService.create()
-
-    - `it('should show creating state while creating a dictionary')`
+    - `it('should disable the button and show Creating... when a dictionary is being created')`
         - Button disabled / `Creating...` displayed
 
-    - `it('should emit created when creation succeeds')`
-        - Success - emit created()
+    - `it('should emit created output and reset the button when creation succeeds')`
+        - Click Create > DictionaryService.create()
+        - Success - emit `created`
 
-    - `it('should display an error and reset creating state when creation fails')`
-        - For the component test, you only need to choose one representative error case, for example:
+    - `it('should set errors, reset the button, and not emit created output when creation fails')`
         
         ```ts
         dictionaryService.create.and.returnValue(
@@ -275,17 +272,16 @@
             }))
         );
         ```
-        - Then verify that the UI displays:
 
-        ```
-        Unable to create the dictionary. Please try again.
-        ```
+## Download a dictionary (TO DO)
+### Workflow
+- Download a dictionary to local
 
-        - There is no need to repeat every `ExtractErrorMessages()` error case in the component tests, because those cases are already covered by the dedicated `ExtractErrorMessages()` tests
-        - Failure - isCreating === false
-
-    - `it('should not emit created when creation fails')`
-        - Failure - don’t emit created()
+    Frontend | Backend
+    -|-
+    Download a dictionary request |
+    ||Send db with `DbId` to Frontend
+    Allow user to save the database|
 
 ## Open a dictionary  (TO DO)
 ### Workflow
@@ -312,16 +308,6 @@
 - Status = 0, server unavailable > "Unable to connect to the server, please try again."
 - Status = 500, server error > "Unable to open the dictionary. Please try again."
 - Other statuses > "An unexpected error occurred. Please connect the administer."
-
-## Download a dictionary (TO DO)
-### Workflow
-- Download a dictionary to local
-
-    Frontend | Backend
-    -|-
-    Download a dictionary request |
-    ||Send db with `DbId` to Frontend
-    Allow user to save the database|
 
 ## TTL (time to live) cleanup (TO DO)
 ### TTL

@@ -3,7 +3,7 @@ import {provideHttpClient} from "@angular/common/http";
 import {HttpTestingController, provideHttpClientTesting} from "@angular/common/http/testing";
 import {DictionaryService} from "./dictionary.service";
 import {DictionaryDto} from "./dictionary.models";
-import {firstValueFrom, Observable} from "rxjs";
+import {firstValueFrom} from "rxjs";
 
 describe("DictionaryService", () => {
     let dictionaryService: DictionaryService;
