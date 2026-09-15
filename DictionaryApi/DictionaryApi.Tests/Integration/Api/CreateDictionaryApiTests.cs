@@ -14,43 +14,49 @@ using Xunit;
 
 namespace DictionaryApi.Tests.Integration.Api;
 
-public sealed class CreateDictionaryApiTests: IClassFixture<WebApplicationFactory<Program>>, IDisposable
+public sealed class CreateDictionaryApiTests: IClassFixture<WebApplicationFactory<Program>>
 {
     private readonly WebApplicationFactory<Program> _factory;
     private readonly HttpClient _client;
     private const string DefaultName = "Untitled Dictionary";
-    private Guid _dbId;
 
     public CreateDictionaryApiTests(WebApplicationFactory<Program> factory)
     {
         _factory = factory;
         _client = factory.CreateClient();
     }
-    
-    public void Dispose()
-    {
-        DictionaryDbTestHelper.DeleteDb(_dbId);
-    }
 
     [Fact]
     public async Task Create_ShouldReturnCreatedDictionary()
     {
-        // Act
-        var response = await _client.PostAsync("/api/dictionaries/create", null, TestContext.Current.CancellationToken);
-        
-        // Assert
-        Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+        string? path = null;
 
-        var dictionaryDto = await response.Content.ReadFromJsonAsync<DictionaryDto>(cancellationToken: TestContext.Current.CancellationToken);
-        Assert.NotNull(dictionaryDto);
+        try
+        {
+            // Act
+            var response =
+                await _client.PostAsync("/api/dictionaries/create", null, TestContext.Current.CancellationToken);
 
-        _dbId = dictionaryDto.DbId;
-        Assert.NotEqual(Guid.Empty, _dbId);
-        Assert.Equal(DefaultName, dictionaryDto.DbName);
+            // Assert
+            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
 
-        var path = DictionaryDbPathProvider.GetDbPath(_dbId);
-        
-        Assert.True(File.Exists(path));
+            var dictionaryDto =
+                await response.Content.ReadFromJsonAsync<DictionaryDto>(
+                    cancellationToken: TestContext.Current.CancellationToken);
+            Assert.NotNull(dictionaryDto);
+
+            var dbId = dictionaryDto.DbId;
+            Assert.NotEqual(Guid.Empty, dbId);
+            Assert.Equal(DefaultName, dictionaryDto.DbName);
+
+            path = DictionaryDbPathProvider.GetDbPath(dbId);
+
+            Assert.True(File.Exists(path));
+        }
+        finally
+        {
+            if (path is not null) DictionaryDbTestHelper.DeleteDb(path);
+        }
     }
 
     [Fact]

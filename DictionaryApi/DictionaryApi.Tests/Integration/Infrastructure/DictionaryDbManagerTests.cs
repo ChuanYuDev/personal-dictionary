@@ -6,33 +6,35 @@ namespace DictionaryApi.Tests.Integration.Infrastructure;
 
 public sealed class DictionaryDbManagerTests: IDisposable
 {
-    private Guid _dbId;
+    private string? _dictionaryPath;
     
     public void Dispose()
     {
-        DictionaryDbTestHelper.DeleteDb(_dbId);
+        if (_dictionaryPath is not null) DictionaryDbTestHelper.DeleteDb(_dictionaryPath);
     }
     
     [Fact]
-    public async Task CreateAsync_ShouldCreateValidDictionaryDatabase()
+    public async Task CreateAsync_ShouldCreateValidDictionary()
     {
         // Arrange
-        _dbId = Guid.NewGuid();
-        const string defaultName = "Untitled Dictionary";
+        var dbId = Guid.NewGuid();
+        const string defaultName = "Test Dictionary Name";
         
-        var path = DictionaryDbPathProvider.GetDbPath(_dbId);
+        _dictionaryPath = DictionaryDbPathProvider.GetDbPath(dbId);
         var dictionaryDbManager = new DictionaryDbManager();
 
         // Act
-        await dictionaryDbManager.CreateAsync(_dbId, defaultName);
+        await dictionaryDbManager.CreateAsync(dbId, defaultName);
         
         // Assert
-        Assert.True(File.Exists(path));
+        Assert.True(File.Exists(_dictionaryPath));
         
-        var options = new DbContextOptionsBuilder<DictionaryDbContext>().UseSqlite($"Data Source={path}").Options;
+        var options = new DbContextOptionsBuilder<DictionaryDbContext>().UseSqlite($"Data Source={_dictionaryPath}").Options;
         await using var dictionaryDbContext = new DictionaryDbContext(options);
 
         var categories = await dictionaryDbContext.Categories.ToListAsync(cancellationToken: TestContext.Current.CancellationToken);
+        
+        Assert.Equal(2, categories.Count);
         Assert.Equal("word", categories[0].Name);
         Assert.Equal("phrase", categories[1].Name);
         
@@ -41,8 +43,43 @@ public sealed class DictionaryDbManagerTests: IDisposable
     }
 
     [Fact]
-    public void CreateBackup_ShouldCreateValidBackup()
+    public async Task CreateBackup_ShouldCreateValidBackup()
     {
+        string? backupPath = null;
+
+        try
+        {
+            // Arrange
+            var dbId = Guid.NewGuid();
+            const string defaultName = "Test Dictionary Name";
+        
+            _dictionaryPath = DictionaryDbPathProvider.GetDbPath(dbId);
+            var dictionaryDbManager = new DictionaryDbManager();
+        
+            await dictionaryDbManager.CreateAsync(dbId, defaultName);
+
+            // Act
+            backupPath = dictionaryDbManager.CreateBackup(dbId);
+        
+            // Assert
+            Assert.True(File.Exists(backupPath));
+        
+            var options = new DbContextOptionsBuilder<DictionaryDbContext>().UseSqlite($"Data Source={backupPath}").Options;
+            await using var dictionaryDbContext = new DictionaryDbContext(options);
+
+            var categories = await dictionaryDbContext.Categories.ToListAsync(cancellationToken: TestContext.Current.CancellationToken);
+        
+            Assert.Equal(2, categories.Count);
+            Assert.Equal("word", categories[0].Name);
+            Assert.Equal("phrase", categories[1].Name);
+        
+            var metadata = await dictionaryDbContext.Metadata.SingleAsync(cancellationToken: TestContext.Current.CancellationToken);
+            Assert.Equal(defaultName, metadata.Name);
+        }
+        finally
+        {
+            if (backupPath is not null) DictionaryDbTestHelper.DeleteDb(backupPath);
+        }
         
     }
 }
