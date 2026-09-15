@@ -1,5 +1,6 @@
 using Application.Abstractions;
 using Application.Services;
+using Microsoft.Extensions.Logging.Abstractions;
 using NSubstitute;
 using Xunit;
 
@@ -12,7 +13,9 @@ public sealed class DictionaryServiceTests
     {
         // Arrange
         var dictionaryDbManager = Substitute.For<IDictionaryDbManager>();
-        var dictionaryService = new DictionaryService(dictionaryDbManager);
+        var logger = NullLogger<DictionaryService>.Instance;
+        
+        var dictionaryService = new DictionaryService(dictionaryDbManager, logger);
         const string defaultName = "Untitled Dictionary";
         
         // Act

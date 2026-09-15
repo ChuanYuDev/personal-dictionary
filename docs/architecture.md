@@ -121,6 +121,10 @@
     ||Send `dbId` and `dbName` to Frontend
     Save `dbId` and `dbName` in the browser local storage and `dictionaryState`|
 
+### `DictionaryDbManager`
+- Backend
+- Logging (TO DO, create dictionary log?)
+
 ### Error handling -- Backend
 - Unexpected exception: `PersonalDictionary` folder doesn't exist
     - Return 500 response
@@ -232,7 +236,7 @@
 
 -  This test has value because it verifies that the application is actually wired together correctly
 
-### Tests -- Frontend (TO DO)
+### Tests -- Frontend
 - `extractErrorMessages()` unit test
 
 - `DictionaryService.create()` unit test
@@ -281,7 +285,33 @@
     -|-
     Download a dictionary request |
     ||Send db with `DbId` to Frontend
-    Allow user to save the database|
+    Allow users to save the database|
+
+### Implementations
+- `DictionaryDbManager` creates SQLite backup to include `-wal` latest data
+    - Return the file path
+
+    ```
+    PersonalDictionary/
+    ├── Databases/
+    │   ├── {dbId}.db
+    │   └── ...
+    └── Backups/
+        ├── {dbId}-{guid}.db
+        └── ...
+    ```
+
+- `DictionaryService` creates stream
+
+- Extract `dbId` from Http header using middleware?
+
+- `DictionariesController` return file
+
+- Frontend creates simplest button to test
+
+### Tests -- Backend
+- `DictionaryDbManager` Integration test
+    - `CreateBackup_ShouldCreateValidBackupWithMetadata`
 
 ## Open a dictionary  (TO DO)
 ### Workflow
@@ -294,7 +324,7 @@
     ||Send `dbId` and `dbName` to Frontend
     Save `dbId` and `dbName` in the browser local storage and `dictionaryState`|
 
-### SQLite database operations
+### Implementations
 - Users upload a SQLite database to backend
 - Copy it as a working copy and move to the working directory
 - Apply migration at runtime to working copy
@@ -308,6 +338,13 @@
 - Status = 0, server unavailable > "Unable to connect to the server, please try again."
 - Status = 500, server error > "Unable to open the dictionary. Please try again."
 - Other statuses > "An unexpected error occurred. Please connect the administer."
+
+## Entry
+### `EntryRepository` (TO DO)
+- Read entries based on `DbId`
+- Insert entries based on `DbId`
+- Edit entries based on `DbId`
+- Delete entries based on `DbId`
 
 ## TTL (time to live) cleanup (TO DO)
 ### TTL
@@ -325,30 +362,6 @@
 - Phase 3: Implement the Entry API with EF Core
 
 - Phase 4: Replace the dummy `EntryService` with HTTP calls
-
-## Infrastructure
-### `DictionaryDbManager`
-- Create SQLite database
-    - Backend
-    - Frontend
-    - Logging
-
-- Open SQLite database
-    - Backend (TO DO)
-    - Frontend (TO DO)
-
-- Download SQLite database
-    - Backend (TO DO)
-    - Frontend (TO DO)
-
-- Disconnect SQLite database
-    - Frontend
-
-### `EntryRepository`
-- Read entries based on `DbId`
-- Insert entries based on `DbId`
-- Edit entries based on `DbId`
-- Delete entries based on `DbId`
 
 ## SQLite
 ### Category
@@ -401,10 +414,11 @@
 ### Log
 - Log event id?
 
+### Test
+- Add WAL-specific test when downloading a dictionary?
+
 ## To do
 ### To do
-- 加测试
-
 - 后端优先测这些：
     - Open dictionary 对合法 / 非法 SQLite 文件的处理
     - Entry CRUD
