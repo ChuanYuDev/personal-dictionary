@@ -20,7 +20,7 @@ public sealed class DictionaryDbManagerTests: IDisposable
         _dbId = Guid.NewGuid();
         const string defaultName = "Untitled Dictionary";
         
-        var path = DictionaryDbPathProvider.GetPath(_dbId);
+        var path = DictionaryDbPathProvider.GetDbPath(_dbId);
         var dictionaryDbManager = new DictionaryDbManager();
 
         // Act
@@ -38,5 +38,11 @@ public sealed class DictionaryDbManagerTests: IDisposable
         
         var metadata = await dictionaryDbContext.Metadata.SingleAsync(cancellationToken: TestContext.Current.CancellationToken);
         Assert.Equal(defaultName, metadata.Name);
+    }
+
+    [Fact]
+    public void CreateBackup_ShouldCreateValidBackup()
+    {
+        
     }
 }

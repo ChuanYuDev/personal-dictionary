@@ -8,7 +8,7 @@ public class DictionaryService
 {
     private readonly IDictionaryDbManager _dictionaryDbManager;
     private readonly ILogger<DictionaryService> _logger;
-    private const string DefaultName = "Untitled Dictionary";
+    private const string DefaultDbName = "Untitled Dictionary";
 
     public DictionaryService(IDictionaryDbManager dictionaryDbManager, ILogger<DictionaryService> logger)
     {
@@ -20,10 +20,10 @@ public class DictionaryService
     {
         var dbId = Guid.NewGuid();
 
-        await _dictionaryDbManager.CreateAsync(dbId, DefaultName);
+        await _dictionaryDbManager.CreateAsync(dbId, DefaultDbName);
         
         _logger.LogInformation("Dictionary created. DbId: {DbId}, Time of occurence: {Time}", dbId, DateTime.UtcNow);
 
-        return new DictionaryDto(dbId, DefaultName);
+        return new DictionaryDto(dbId, DefaultDbName);
     }
 }

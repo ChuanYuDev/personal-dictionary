@@ -311,7 +311,7 @@
 
 ### Tests -- Backend
 - `DictionaryDbManager` Integration test
-    - `CreateBackup_ShouldCreateValidBackupWithMetadata`
+    - `CreateBackup_ShouldCreateValidBackup`
 
 ## Open a dictionary  (TO DO)
 ### Workflow
