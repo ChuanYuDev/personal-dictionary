@@ -22,7 +22,7 @@ public class DictionaryService
 
         await _dictionaryDbManager.CreateAsync(dbId, DefaultDbName);
         
-        _logger.LogInformation("Dictionary created. DbId: {DbId}, Time of occurence: {Time}", dbId, DateTime.UtcNow);
+        _logger.LogInformation("Dictionary created. DbId: {DbId}", dbId);
 
         return new DictionaryDto(dbId, DefaultDbName);
     }

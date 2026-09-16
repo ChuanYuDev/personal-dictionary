@@ -96,6 +96,27 @@
 
 - Playwright?
 
+### Log with timestamp
+- `appsettings.json`
+
+    ```json
+    {
+        "Logging": {
+            "LogLevel": {
+                "Default": "Information",
+                "Microsoft.AspNetCore": "Warning"
+            },
+            "Console": {
+                "FormatterName": "simple",
+                "FormatterOptions": {
+                    "TimestampFormat": "yyyy-MM-dd HH:mm:ss ",
+                    "UseUtcTimestamp": true
+                }
+            }
+        }
+    }
+    ```
+
 ### Miscellaneous
 - Directly save dictionary name in SQLite database
 

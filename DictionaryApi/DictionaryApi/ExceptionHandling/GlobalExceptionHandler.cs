@@ -13,7 +13,7 @@ public class GlobalExceptionHandler: IExceptionHandler
 
     public ValueTask<bool> TryHandleAsync(HttpContext httpContext, Exception exception, CancellationToken cancellationToken)
     {
-        _logger.LogError(exception, "Time of occurrence {Time}", DateTime.UtcNow);
+        _logger.LogError(exception, "An unexpected error occurred");
 
         return ValueTask.FromResult(false);
     }
