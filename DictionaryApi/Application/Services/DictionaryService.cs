@@ -26,4 +26,19 @@ public class DictionaryService
 
         return new DictionaryDto(dbId, DefaultDbName);
     }
+
+    public Stream Download(Guid dbId)
+    {
+        var backupPath = _dictionaryDbManager.CreateBackup(dbId);
+
+        var stream = new FileStream(
+            backupPath,
+            FileMode.Open, FileAccess.Read, FileShare.Read,
+            bufferSize: 4096,
+            FileOptions.DeleteOnClose);
+        
+        _logger.LogInformation("Dictionary backup created for download. DbId: {DbId}", dbId);
+
+        return stream;
+    }
 }

@@ -327,12 +327,18 @@
 - Extract `dbId` from Http header using middleware?
 
 - `DictionariesController` return file
+    - `File` releases `Stream`?
 
 - Frontend creates simplest button to test
 
 ### Tests -- Backend
 - `DictionaryDbManager` Integration test
     - `CreateBackup_ShouldCreateValidBackup`
+
+- `DictionaryService` unit test
+    - `Download_ShouldReturnBackupStream`
+
+    - `Download_ShouldDeleteBackup_WhenStreamIsDisposed`
 
 ## Open a dictionary  (TO DO)
 ### Workflow
