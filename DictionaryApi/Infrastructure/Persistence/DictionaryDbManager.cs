@@ -21,9 +21,12 @@ public class DictionaryDbManager: IDictionaryDbManager
         await dictionaryDbContext.SaveChangesAsync();
     }
 
-    public string CreateBackup(Guid dbId)
+    public string? CreateBackup(Guid dbId)
     {
         var sourcePath = DictionaryDbPathProvider.GetDbPath(dbId);
+
+        if (!File.Exists(sourcePath)) return null;
+        
         var destinationPath = DictionaryDbPathProvider.GetBackupPath(dbId);
 
         using var sourceConnection = CreateSqliteConnection(sourcePath);

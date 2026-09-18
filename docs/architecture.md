@@ -298,7 +298,7 @@
         );
         ```
 
-## Download a dictionary (TO DO)
+## Download a dictionary
 ### Workflow
 - Download a dictionary to local
 
@@ -310,7 +310,7 @@
 
 ### Implementations
 - `DictionaryDbManager` creates SQLite backup to include `-wal` latest data
-    - Return the file path
+    - Return the backup path
 
     ```
     PersonalDictionary/
@@ -324,12 +324,16 @@
 
 - `DictionaryService` creates stream
 
-- Extract `dbId` from Http header using middleware?
+- Extract `dbId` from Http header using middleware? (TO DO)
 
-- `DictionariesController` return file
+- `DictionariesController` return file (TO DO)
     - `File` releases `Stream`?
 
-- Frontend creates simplest button to test
+- Frontend creates simplest button to test (TO DO)
+
+### Error handling -- Backend (TO DO)
+- Expected failure: Dictionary with `dbId` doesn't exist
+    - Result pattern
 
 ### Tests -- Backend
 - `DictionaryDbManager` Integration test

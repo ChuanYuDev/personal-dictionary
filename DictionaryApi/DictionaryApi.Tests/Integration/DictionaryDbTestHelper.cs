@@ -1,4 +1,5 @@
 using Infrastructure.Persistence;
+using Microsoft.EntityFrameworkCore;
 
 namespace DictionaryApi.Tests.Integration;
 
@@ -9,5 +10,12 @@ public static class DictionaryDbTestHelper
         File.Delete(path);
         File.Delete($"{path}-shm");
         File.Delete($"{path}-wal");
+    }
+    
+    public static DictionaryDbContext CreateDbContext(string dbPath)
+    {
+        var options = new DbContextOptionsBuilder<DictionaryDbContext>().UseSqlite($"Data Source={dbPath}").Options;
+
+        return new DictionaryDbContext(options);
     }
 }

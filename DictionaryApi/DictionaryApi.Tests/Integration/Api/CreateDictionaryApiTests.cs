@@ -40,9 +40,7 @@ public sealed class CreateDictionaryApiTests: IClassFixture<WebApplicationFactor
             // Assert
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
 
-            var dictionaryDto =
-                await response.Content.ReadFromJsonAsync<DictionaryDto>(
-                    cancellationToken: TestContext.Current.CancellationToken);
+            var dictionaryDto = await response.Content.ReadFromJsonAsync<DictionaryDto>(cancellationToken: TestContext.Current.CancellationToken);
             Assert.NotNull(dictionaryDto);
 
             var dbId = dictionaryDto.DbId;

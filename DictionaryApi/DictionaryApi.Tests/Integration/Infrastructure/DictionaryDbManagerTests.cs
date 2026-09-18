@@ -7,6 +7,12 @@ namespace DictionaryApi.Tests.Integration.Infrastructure;
 public sealed class DictionaryDbManagerTests: IDisposable
 {
     private string? _dictionaryPath;
+    private DictionaryDbManager _dictionaryDbManager;
+
+    public DictionaryDbManagerTests()
+    {
+        _dictionaryDbManager = new DictionaryDbManager();
+    }
     
     public void Dispose()
     {
@@ -21,16 +27,14 @@ public sealed class DictionaryDbManagerTests: IDisposable
         const string defaultName = "Test Dictionary Name";
         
         _dictionaryPath = DictionaryDbPathProvider.GetDbPath(dbId);
-        var dictionaryDbManager = new DictionaryDbManager();
 
         // Act
-        await dictionaryDbManager.CreateAsync(dbId, defaultName);
+        await _dictionaryDbManager.CreateAsync(dbId, defaultName);
         
         // Assert
         Assert.True(File.Exists(_dictionaryPath));
         
-        var options = new DbContextOptionsBuilder<DictionaryDbContext>().UseSqlite($"Data Source={_dictionaryPath}").Options;
-        await using var dictionaryDbContext = new DictionaryDbContext(options);
+        await using var dictionaryDbContext = DictionaryDbTestHelper.CreateDbContext(_dictionaryPath);
 
         var categories = await dictionaryDbContext.Categories.ToListAsync(cancellationToken: TestContext.Current.CancellationToken);
         
@@ -54,18 +58,16 @@ public sealed class DictionaryDbManagerTests: IDisposable
             const string defaultName = "Test Dictionary Name";
         
             _dictionaryPath = DictionaryDbPathProvider.GetDbPath(dbId);
-            var dictionaryDbManager = new DictionaryDbManager();
         
-            await dictionaryDbManager.CreateAsync(dbId, defaultName);
+            await _dictionaryDbManager.CreateAsync(dbId, defaultName);
 
             // Act
-            backupPath = dictionaryDbManager.CreateBackup(dbId);
+            backupPath = _dictionaryDbManager.CreateBackup(dbId);
         
             // Assert
             Assert.True(File.Exists(backupPath));
         
-            var options = new DbContextOptionsBuilder<DictionaryDbContext>().UseSqlite($"Data Source={backupPath}").Options;
-            await using var dictionaryDbContext = new DictionaryDbContext(options);
+            await using var dictionaryDbContext = DictionaryDbTestHelper.CreateDbContext(backupPath);
 
             var categories = await dictionaryDbContext.Categories.ToListAsync(cancellationToken: TestContext.Current.CancellationToken);
         
@@ -80,6 +82,15 @@ public sealed class DictionaryDbManagerTests: IDisposable
         {
             if (backupPath is not null) DictionaryDbTestHelper.DeleteDb(backupPath);
         }
+    }
+
+    [Fact]
+    public void CreateBackup_ShouldReturnNull_WhenDictionaryDoesNotExist()
+    {
+        var dbId = Guid.NewGuid();
+
+        var backupPath = _dictionaryDbManager.CreateBackup(dbId);
         
+        Assert.Null(backupPath);
     }
 }
