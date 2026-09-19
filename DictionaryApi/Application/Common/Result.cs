@@ -4,19 +4,21 @@ namespace Application.Common;
 
 public class Result
 {
+    private readonly Error? _error;
+    
     public bool IsSuccess { get; }
-    public Error? Error { get; }
+    public Error Error => IsSuccess? throw new InvalidOperationException("Cannot access the error of a successful result"): _error!;
 
     protected Result()
     {
         IsSuccess = true;
-        Error = null;
+        _error = null;
     }
 
     protected Result(Error error)
     {
         IsSuccess = false;
-        Error = error;
+        _error = error;
     }
 
     public static Result Success() => new();
@@ -26,11 +28,14 @@ public class Result
 
 public class Result<T> : Result
 {
-    public T? Value { get; }
+    private readonly T? _value;
+
+    public T Value =>
+        IsSuccess ? _value! : throw new InvalidOperationException("Cannot access the value of a failed result");
 
     private Result(T value)
     {
-        Value = value;
+        _value = value;
     }
     
     private Result(Error error): base(error) {}

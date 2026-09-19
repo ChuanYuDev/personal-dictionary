@@ -1,4 +1,5 @@
 using Application.Abstractions;
+using Application.Errors;
 using Application.Services;
 using Infrastructure.Persistence;
 using Microsoft.Extensions.Logging.Abstractions;
@@ -36,6 +37,19 @@ public sealed class DictionaryServiceTests
     }
 
     [Fact]
+    public void Download_ShouldReturnNotFound_WhenDictionaryDoesNotExist()
+    {
+        var dbId = Guid.NewGuid();
+
+        _dictionaryDbManager.CreateBackup(dbId).Returns((string?)null);
+        
+        var result = _dictionaryService.Download(dbId);
+        
+        Assert.False(result.IsSuccess);
+        Assert.Equal(DictionaryErrors.NotFound, result.Error);
+    }
+
+    [Fact]
     public async Task Download_ShouldReturnBackupStream()
     {
         // Arrange
@@ -48,9 +62,12 @@ public sealed class DictionaryServiceTests
         _dictionaryDbManager.CreateBackup(dbId).Returns(backupPath);
         
         // Act
-        await using var stream = _dictionaryService.Download(dbId);
+        var result = _dictionaryService.Download(dbId);
         
         // Assert
+        Assert.True(result.IsSuccess);
+        
+        await using var stream = result.Value;
         await using var memoryStream = new MemoryStream();
         await stream.CopyToAsync(memoryStream, TestContext.Current.CancellationToken);
         Assert.Equal(content, memoryStream.ToArray());
@@ -68,10 +85,13 @@ public sealed class DictionaryServiceTests
         _dictionaryDbManager.CreateBackup(dbId).Returns(backupPath);
         
         // Act
-        var stream = _dictionaryService.Download(dbId);
+        var result = _dictionaryService.Download(dbId);
         
         // Assert
+        Assert.True(result.IsSuccess);
         Assert.True(File.Exists(backupPath));
+        
+        var stream = result.Value;
         await stream.DisposeAsync();
         Assert.False(File.Exists(backupPath));
     }
