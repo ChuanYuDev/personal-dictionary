@@ -1,5 +1,7 @@
 using Application.Abstractions;
+using Application.Common;
 using Application.Dtos;
+using Application.Errors;
 using Microsoft.Extensions.Logging;
 
 namespace Application.Services;
@@ -27,9 +29,11 @@ public class DictionaryService
         return new DictionaryDto(dbId, DefaultDbName);
     }
 
-    public Stream Download(Guid dbId)
+    public Result<Stream> Download(Guid dbId)
     {
         var backupPath = _dictionaryDbManager.CreateBackup(dbId);
+
+        if (backupPath is null) return DictionaryErrors.NotFound;
 
         var stream = new FileStream(
             backupPath,
