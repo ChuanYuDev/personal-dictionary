@@ -2,6 +2,7 @@ using System.Net;
 using System.Net.Http.Json;
 using Application.Abstractions;
 using Application.Dtos;
+using DictionaryApi.Tests.Integration.TestInfrastructure;
 using Infrastructure.Persistence;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -17,13 +18,13 @@ namespace DictionaryApi.Tests.Integration.Api;
 public sealed class CreateDictionaryApiTests: IClassFixture<WebApplicationFactory<Program>>
 {
     private readonly WebApplicationFactory<Program> _factory;
-    private readonly HttpClient _client;
+    private readonly HttpClient _httpClient;
     private const string DefaultName = "Untitled Dictionary";
 
     public CreateDictionaryApiTests(WebApplicationFactory<Program> factory)
     {
         _factory = factory;
-        _client = factory.CreateClient();
+        _httpClient = factory.CreateClient();
     }
 
     [Fact]
@@ -34,12 +35,12 @@ public sealed class CreateDictionaryApiTests: IClassFixture<WebApplicationFactor
         try
         {
             // Act
-            var response = await _client.PostAsync("/api/dictionaries/create", null, TestContext.Current.CancellationToken);
+            var httpResponseMessage = await _httpClient.PostAsync("/api/dictionaries/create", null, TestContext.Current.CancellationToken);
 
             // Assert
-            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+            Assert.Equal(HttpStatusCode.OK, httpResponseMessage.StatusCode);
 
-            var dictionaryDto = await response.Content.ReadFromJsonAsync<DictionaryDto>(cancellationToken: TestContext.Current.CancellationToken);
+            var dictionaryDto = await httpResponseMessage.Content.ReadFromJsonAsync<DictionaryDto>(cancellationToken: TestContext.Current.CancellationToken);
             Assert.NotNull(dictionaryDto);
 
             var dbId = dictionaryDto.DbId;
@@ -71,15 +72,15 @@ public sealed class CreateDictionaryApiTests: IClassFixture<WebApplicationFactor
             });
         });
 
-        var client = factory.CreateClient();
+        var httpClient = factory.CreateClient();
         
         // Act
-        var response = await client.PostAsync("/api/dictionaries/create", null, TestContext.Current.CancellationToken);
+        var httpResponseMessage = await httpClient.PostAsync("/api/dictionaries/create", null, TestContext.Current.CancellationToken);
         
         // Assert
-        Assert.Equal(HttpStatusCode.InternalServerError, response.StatusCode);
+        Assert.Equal(HttpStatusCode.InternalServerError, httpResponseMessage.StatusCode);
 
-        var problemDetails = await response.Content.ReadFromJsonAsync<ProblemDetails>(cancellationToken: TestContext.Current.CancellationToken);
+        var problemDetails = await httpResponseMessage.Content.ReadFromJsonAsync<ProblemDetails>(cancellationToken: TestContext.Current.CancellationToken);
 
         Assert.NotNull(problemDetails);
         Assert.Equal(StatusCodes.Status500InternalServerError, problemDetails.Status);

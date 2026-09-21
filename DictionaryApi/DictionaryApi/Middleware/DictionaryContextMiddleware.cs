@@ -1,5 +1,3 @@
-using Microsoft.Extensions.Primitives;
-
 namespace DictionaryApi.Middleware;
 
 public class DictionaryContextMiddleware

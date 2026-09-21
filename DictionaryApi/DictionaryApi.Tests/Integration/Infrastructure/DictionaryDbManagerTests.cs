@@ -1,3 +1,4 @@
+using DictionaryApi.Tests.Integration.TestInfrastructure;
 using Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Xunit;

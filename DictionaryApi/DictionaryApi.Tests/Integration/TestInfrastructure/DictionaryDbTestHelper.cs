@@ -1,7 +1,7 @@
 using Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 
-namespace DictionaryApi.Tests.Integration;
+namespace DictionaryApi.Tests.Integration.TestInfrastructure;
 
 public static class DictionaryDbTestHelper
 {
