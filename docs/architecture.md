@@ -325,9 +325,41 @@
 - `DictionaryService` creates stream
 
 - Extract `dbId` from Http header using middleware? (TO DO)
+    - Design an interface with `get` method only and an implementation to which we write the actual value
+
+    - Except for the middleware, we use `IDictionaryContext` to get `dbId` to prevent from accidentally overwriting the value of it
+
+    ```cs
+    public interface IDictionaryContext
+    {
+        Guid? DbId { get; }
+    }
+
+    public sealed class DictionaryContext : IDictionaryContext
+    {
+        public Guid? DbId { get; set; }
+    }
+    ```
+
+    ```cs
+    builder.Services.AddScoped<DictionaryContext>();
+
+    builder.Services.AddScoped<IDictionaryContext>(
+        sp => sp.GetRequiredService<DictionaryContext>());
+    ```
+
+    - If we register `DictionaryContext` like this
+        - We have the interface only, and we have to put `set` method to it in order to write a value
+
+    ```cs
+    builder.Services.AddScoped<IDictionaryContext, DictionaryContext>();
+    ```
 
 - `DictionariesController` return file (TO DO)
     - `File` releases `Stream`?
+
+    - If the `DbId` is invalid, the middleware simply doesn’t assign it
+        - Then the controller detects that there is no valid DbId and returns the corresponding error, such as “DbId is missing or invalid,” using `ProblemDetails`
 
 - Frontend creates simplest button to test (TO DO)
 

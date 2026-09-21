@@ -34,8 +34,7 @@ public sealed class CreateDictionaryApiTests: IClassFixture<WebApplicationFactor
         try
         {
             // Act
-            var response =
-                await _client.PostAsync("/api/dictionaries/create", null, TestContext.Current.CancellationToken);
+            var response = await _client.PostAsync("/api/dictionaries/create", null, TestContext.Current.CancellationToken);
 
             // Assert
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);

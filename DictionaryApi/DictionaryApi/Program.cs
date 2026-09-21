@@ -1,6 +1,7 @@
 using Application.Abstractions;
 using Application.Services;
 using DictionaryApi.ExceptionHandling;
+using DictionaryApi.Middleware;
 using Infrastructure.Persistence;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -27,6 +28,9 @@ builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
 builder.Services.AddTransient<IDictionaryDbManager, DictionaryDbManager>();
 builder.Services.AddTransient<DictionaryService>();
 
+builder.Services.AddScoped<DictionaryContext>();
+builder.Services.AddScoped<IDictionaryContext>(provider => provider.GetRequiredService<DictionaryContext>());
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -42,6 +46,8 @@ app.UseSwaggerUI();
 app.UseHttpsRedirection();
 
 app.UseCors();
+
+app.UseDictionaryContext();
 
 app.UseAuthorization();
 
