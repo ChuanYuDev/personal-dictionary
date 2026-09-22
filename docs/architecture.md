@@ -324,7 +324,7 @@
 
 - `DictionaryService` creates stream
 
-- Extract `dbId` from Http header using middleware? (TO DO)
+- Extract `dbId` from Http header using middleware
     - Design an interface with `get` method only and an implementation to which we write the actual value
 
     - Except for the middleware, we use `IDictionaryContext` to get `dbId` to prevent from accidentally overwriting the value of it
@@ -355,7 +355,7 @@
     builder.Services.AddScoped<IDictionaryContext, DictionaryContext>();
     ```
 
-- `DictionariesController` return file (TO DO)
+- `DictionariesController` return file
     - If the `DbId` is invalid, the middleware simply doesn’t assign it
         - Then the controller detects that there is no valid DbId and returns the corresponding error, such as “DbId is missing or invalid,” using `ProblemDetails`
 
@@ -373,6 +373,19 @@
     - `Download_ShouldReturnBackupStream`
 
     - `Download_ShouldDeleteBackup_WhenStreamIsDisposed`
+
+- `DictionariesController` Integration test
+    - `Download_ShouldDownloadDictionary_WhenDictionaryWithDbIdExists`
+        - Create `dbId`
+        - Create a dictionary
+        - `HttpRequestMessage` with `dbId` header
+        - Send the request to the test server
+        - `ResponseHeadersRead`
+        - Assert Content-type media type is `application/vnd.sqlite3`
+        - Create a stream from response
+        - Save the content into a file
+        - Read the file to check if Metadata and Category are correct
+        - Delete files
 
 ## Open a dictionary  (TO DO)
 ### Workflow

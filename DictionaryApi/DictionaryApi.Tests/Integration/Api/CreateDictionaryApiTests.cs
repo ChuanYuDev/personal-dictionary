@@ -19,7 +19,7 @@ public sealed class CreateDictionaryApiTests: IClassFixture<WebApplicationFactor
 {
     private readonly WebApplicationFactory<Program> _factory;
     private readonly HttpClient _httpClient;
-    private const string DefaultName = "Untitled Dictionary";
+    private const string RequestUri = "/api/dictionaries/create";
 
     public CreateDictionaryApiTests(WebApplicationFactory<Program> factory)
     {
@@ -35,7 +35,8 @@ public sealed class CreateDictionaryApiTests: IClassFixture<WebApplicationFactor
         try
         {
             // Act
-            var httpResponseMessage = await _httpClient.PostAsync("/api/dictionaries/create", null, TestContext.Current.CancellationToken);
+            var httpResponseMessage = await _httpClient.PostAsync(RequestUri, null, TestContext.Current.CancellationToken);
+            const string defaultName = "Untitled Dictionary";
 
             // Assert
             Assert.Equal(HttpStatusCode.OK, httpResponseMessage.StatusCode);
@@ -44,10 +45,10 @@ public sealed class CreateDictionaryApiTests: IClassFixture<WebApplicationFactor
             Assert.NotNull(dictionaryDto);
 
             var dbId = dictionaryDto.DbId;
-            Assert.NotEqual(Guid.Empty, dbId);
-            Assert.Equal(DefaultName, dictionaryDto.DbName);
-
             path = DictionaryDbPathProvider.GetDbPath(dbId);
+            
+            Assert.NotEqual(Guid.Empty, dbId);
+            Assert.Equal(defaultName, dictionaryDto.DbName);
 
             Assert.True(File.Exists(path));
         }
@@ -58,7 +59,7 @@ public sealed class CreateDictionaryApiTests: IClassFixture<WebApplicationFactor
     }
 
     [Fact]
-    public async Task Create_Returns500InternalServerErrorWithProblemDetails_WhenUnexpectedExceptionOccurs()
+    public async Task Create_Returns500InternalServerError_WhenUnexpectedExceptionOccurs()
     {
         // Arrange
         var dictionaryDbManager = Substitute.For<IDictionaryDbManager>();
@@ -75,7 +76,7 @@ public sealed class CreateDictionaryApiTests: IClassFixture<WebApplicationFactor
         var httpClient = factory.CreateClient();
         
         // Act
-        var httpResponseMessage = await httpClient.PostAsync("/api/dictionaries/create", null, TestContext.Current.CancellationToken);
+        var httpResponseMessage = await httpClient.PostAsync(RequestUri, null, TestContext.Current.CancellationToken);
         
         // Assert
         Assert.Equal(HttpStatusCode.InternalServerError, httpResponseMessage.StatusCode);
@@ -84,6 +85,6 @@ public sealed class CreateDictionaryApiTests: IClassFixture<WebApplicationFactor
 
         Assert.NotNull(problemDetails);
         Assert.Equal(StatusCodes.Status500InternalServerError, problemDetails.Status);
-        Assert.Equal("An unexpected error occurred.", problemDetails.Title);
+        Assert.Equal("An unexpected error occurred", problemDetails.Title);
     }
 }
