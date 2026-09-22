@@ -356,8 +356,6 @@
     ```
 
 - `DictionariesController` return file (TO DO)
-    - `File` releases `Stream`?
-
     - If the `DbId` is invalid, the middleware simply doesn’t assign it
         - Then the controller detects that there is no valid DbId and returns the corresponding error, such as “DbId is missing or invalid,” using `ProblemDetails`
 

@@ -29,7 +29,7 @@ public class DictionaryService
         return new DictionaryDto(dbId, DefaultDbName);
     }
 
-    public Result<Stream> Download(Guid dbId)
+    public Result<Stream> CreateBackupStream(Guid dbId)
     {
         var backupPath = _dictionaryDbManager.CreateBackup(dbId);
 

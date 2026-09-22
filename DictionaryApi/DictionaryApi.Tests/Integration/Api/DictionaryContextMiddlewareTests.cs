@@ -1,3 +1,4 @@
+using System.Net;
 using System.Net.Http.Json;
 using DictionaryApi.Tests.Integration.TestInfrastructure;
 using Xunit;
@@ -24,6 +25,7 @@ public class DictionaryContextMiddlewareTests: IClassFixture<WebApplicationFacto
         
         var httpResponseMessage = await _httpClient.SendAsync(_httpRequestMessage, TestContext.Current.CancellationToken);
         
+        Assert.Equal(HttpStatusCode.OK, httpResponseMessage.StatusCode);
         var dbId = await httpResponseMessage.Content.ReadFromJsonAsync<Guid>(cancellationToken: TestContext.Current.CancellationToken);
         
         Assert.Equal(expectedDbId, dbId);

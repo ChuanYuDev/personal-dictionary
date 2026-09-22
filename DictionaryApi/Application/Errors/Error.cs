@@ -1,3 +1,3 @@
 namespace Application.Errors;
 
-public record Error(string Id, ErrorType Type, string Description);
+public record Error(string Code, ErrorType Type, string Description);
