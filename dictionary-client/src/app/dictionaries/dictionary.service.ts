@@ -11,8 +11,8 @@ export class DictionaryService {
     private httpClient = inject(HttpClient);
     private baseUrl = `${environment.apiUrl}/dictionaries`;
     
-    private readonly keyDbId = "db-id";
-    private readonly keyDbName = "db-name";
+    private readonly dbIdKey = "db-id";
+    private readonly dbNameKey = "db-name";
     
     private readonly _dictionaryState = signal<DictionaryState | null>(null);
     readonly dictionaryState = this._dictionaryState.asReadonly();
@@ -33,15 +33,15 @@ export class DictionaryService {
     }
     
     disconnect(): void {
-        window.localStorage.removeItem(this.keyDbId);
-        window.localStorage.removeItem(this.keyDbName);
+        window.localStorage.removeItem(this.dbIdKey);
+        window.localStorage.removeItem(this.dbNameKey);
         
         this._dictionaryState.set(null);
     }
     
     restoreDictionaryState(): void {
-        const dbId = window.localStorage.getItem(this.keyDbId);
-        const dbName = window.localStorage.getItem(this.keyDbName);
+        const dbId = window.localStorage.getItem(this.dbIdKey);
+        const dbName = window.localStorage.getItem(this.dbNameKey);
         
         if (dbId && dbName) {
             this._dictionaryState.set({
@@ -51,8 +51,12 @@ export class DictionaryService {
         }
     }
     
+    getDbId(): string | null {
+        return window.localStorage.getItem(this.dbIdKey);
+    }
+    
     private storeDictionaryState(dictionaryDto: DictionaryDto): void {
-        window.localStorage.setItem(this.keyDbId, dictionaryDto.dbId);
-        window.localStorage.setItem(this.keyDbName, dictionaryDto.dbName);
+        window.localStorage.setItem(this.dbIdKey, dictionaryDto.dbId);
+        window.localStorage.setItem(this.dbNameKey, dictionaryDto.dbName);
     }
 }

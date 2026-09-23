@@ -12,9 +12,9 @@ namespace DictionaryApi.Controllers;
 public class DictionariesController: ControllerBase
 {
     private readonly DictionaryService _dictionaryService;
-    private readonly DictionaryContext _dictionaryContext;
+    private readonly IDictionaryContext _dictionaryContext;
 
-    public DictionariesController(DictionaryService dictionaryService, DictionaryContext dictionaryContext)
+    public DictionariesController(DictionaryService dictionaryService, IDictionaryContext dictionaryContext)
     {
         _dictionaryService = dictionaryService;
         _dictionaryContext = dictionaryContext;

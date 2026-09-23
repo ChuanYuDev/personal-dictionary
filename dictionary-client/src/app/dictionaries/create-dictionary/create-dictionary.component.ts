@@ -26,7 +26,7 @@ export class CreateDictionaryComponent {
             },
 
             error: (err) => {
-                console.log(err);
+                // console.log(err);
                 this.isCreating.set(false);
 
                 const errorMessages = extractErrorMessages(err);

@@ -13,17 +13,21 @@ namespace DictionaryApi.Tests.Integration.Api;
 public class DownloadDictionaryApiTests: IClassFixture<WebApplicationFactory<Program>>
 {
     private readonly HttpClient _httpClient;
+    private readonly HttpRequestMessage _httpRequestMessage;
     private const string RequestUri = "/api/dictionaries/download";
+    private const string DbIdHeaderKey = "X-DbId";
 
     public DownloadDictionaryApiTests(WebApplicationFactory<Program> webApplicationFactory)
     {
         _httpClient = webApplicationFactory.CreateClient();
+        _httpRequestMessage = new HttpRequestMessage(HttpMethod.Get, RequestUri);
     }
 
     [Fact]
     public async Task Download_ShouldDownloadDictionary_WhenDictionaryWithDbIdExists()
     {
         string? createdPath = null, downloadedPath = null;
+        
         try
         {
             // Arrange
@@ -34,12 +38,10 @@ public class DownloadDictionaryApiTests: IClassFixture<WebApplicationFactory<Pro
             const string defaultName = "Untitled Dictionary";
             await dictionaryDbManager.CreateAsync(dbId, defaultName);
 
-            var httpRequestMessage = new HttpRequestMessage(HttpMethod.Get, RequestUri);
-            const string dbIdHeaderKey = "X-DbId";
-            httpRequestMessage.Headers.Add(dbIdHeaderKey, dbId.ToString());
+            _httpRequestMessage.Headers.Add(DbIdHeaderKey, dbId.ToString());
         
             // Act
-            var httpResponseMessage = await _httpClient.SendAsync(httpRequestMessage, HttpCompletionOption.ResponseHeadersRead, TestContext.Current.CancellationToken);
+            var httpResponseMessage = await _httpClient.SendAsync(_httpRequestMessage, HttpCompletionOption.ResponseHeadersRead, TestContext.Current.CancellationToken);
         
             // Assert
             Assert.Equal(HttpStatusCode.OK, httpResponseMessage.StatusCode);
@@ -76,10 +78,8 @@ public class DownloadDictionaryApiTests: IClassFixture<WebApplicationFactory<Pro
     [Fact]
     public async Task Download_Returns400BadRequest_WhenDbIdIsMissing()
     {
-        var httpRequestMessage = new HttpRequestMessage(HttpMethod.Get, RequestUri);
-        
         // Act
-        var httpResponseMessage = await _httpClient.SendAsync(httpRequestMessage, HttpCompletionOption.ResponseHeadersRead, TestContext.Current.CancellationToken);
+        var httpResponseMessage = await _httpClient.SendAsync(_httpRequestMessage, HttpCompletionOption.ResponseHeadersRead, TestContext.Current.CancellationToken);
         
         // Assert
         Assert.Equal(HttpStatusCode.BadRequest, httpResponseMessage.StatusCode);
@@ -95,12 +95,10 @@ public class DownloadDictionaryApiTests: IClassFixture<WebApplicationFactory<Pro
     public async Task Download_Returns404NotFound_WhenDictionaryWithDbIdDoesNotExist()
     {
         var dbId = Guid.NewGuid();
-        var httpRequestMessage = new HttpRequestMessage(HttpMethod.Get, RequestUri);
-        const string dbIdHeaderKey = "X-DbId";
-        httpRequestMessage.Headers.Add(dbIdHeaderKey, dbId.ToString());
+        _httpRequestMessage.Headers.Add(DbIdHeaderKey, dbId.ToString());
         
         // Act
-        var httpResponseMessage = await _httpClient.SendAsync(httpRequestMessage, HttpCompletionOption.ResponseHeadersRead, TestContext.Current.CancellationToken);
+        var httpResponseMessage = await _httpClient.SendAsync(_httpRequestMessage, HttpCompletionOption.ResponseHeadersRead, TestContext.Current.CancellationToken);
         
         // Assert
         Assert.Equal(HttpStatusCode.NotFound, httpResponseMessage.StatusCode);
@@ -110,6 +108,5 @@ public class DownloadDictionaryApiTests: IClassFixture<WebApplicationFactory<Pro
         Assert.NotNull(problemDetails);
         Assert.Equal(StatusCodes.Status404NotFound, problemDetails.Status);
         Assert.Equal("Dictionary not found", problemDetails.Title);
-        
     }
 }

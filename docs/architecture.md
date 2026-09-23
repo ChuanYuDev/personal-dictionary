@@ -130,6 +130,11 @@
     localStorage.setItem('hasUndownloadedChanges', 'true');
     ```
 
+### Constants
+- `dbId` key in the window local storage: `db-id`
+- `dbName` key in the window local storage: `db-name`
+- `dbId` key in the request header: `X-DbId`
+
 ## Create a new dictionary
 ### Workflow
 - Create a dictionary and download it to local
@@ -359,7 +364,13 @@
     - If the `DbId` is invalid, the middleware simply doesn’t assign it
         - Then the controller detects that there is no valid DbId and returns the corresponding error, such as “DbId is missing or invalid,” using `ProblemDetails`
 
-- Frontend creates simplest button to test (TO DO)
+- Http interceptor (TO DO)
+
+- `DictionaryService` (TO DO)
+
+- `DownloadDictionaryComponent` (TO DO)
+    - If an error occurs, extract the error and display it
+    - Get the filename from response headers
 
 ### Error handling -- Backend (TO DO)
 - Expected failure: Dictionary with `dbId` doesn't exist
@@ -386,6 +397,12 @@
         - Save the content into a file
         - Read the file to check if Metadata and Category are correct
         - Delete files
+    
+    - Filename assertion (TO DO) ??
+
+        ```cs
+        Assert.Equal("attachment; filename=dictionary.db", httpResponseMessage.Content.Headers.ContentDisposition?.ToString());
+        ```
 
 ## Open a dictionary  (TO DO)
 ### Workflow

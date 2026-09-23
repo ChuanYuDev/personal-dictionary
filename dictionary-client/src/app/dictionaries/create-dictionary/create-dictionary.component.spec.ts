@@ -9,6 +9,7 @@ describe("CreateDictionaryComponent", () => {
     let mockDictionaryService: jasmine.SpyObj<DictionaryService>;
     let fixture: ComponentFixture<CreateDictionaryComponent>;
     let component: CreateDictionaryComponent;
+    let buttonElement: HTMLButtonElement;
     
     beforeEach(async () => {
         mockDictionaryService= jasmine.createSpyObj<DictionaryService>("DictionaryService", ["create"]);
@@ -20,6 +21,11 @@ describe("CreateDictionaryComponent", () => {
         
         fixture = TestBed.createComponent(CreateDictionaryComponent);
         component = fixture.componentInstance;
+        
+        fixture.detectChanges();
+
+        const htmlElement = fixture.nativeElement as HTMLElement;
+        buttonElement = htmlElement.querySelector("button") as HTMLButtonElement;
     });
 
     it('should create the component', () => {
@@ -29,11 +35,6 @@ describe("CreateDictionaryComponent", () => {
     it('should disable the button and show Creating... when a dictionary is being created', () => {
         const subject = new Subject<DictionaryDto>();
         mockDictionaryService.create.and.returnValue(subject);
-
-        fixture.detectChanges();
-
-        const htmlElement = fixture.nativeElement as HTMLElement;
-        const buttonElement = htmlElement.querySelector("button") as HTMLButtonElement;
 
         // Act
         buttonElement.click();
@@ -54,11 +55,6 @@ describe("CreateDictionaryComponent", () => {
             dbName: "test dbName"
         }));
         
-        fixture.detectChanges();
-        
-        const htmlElement = fixture.nativeElement as HTMLElement;
-        const buttonElement = htmlElement.querySelector("button") as HTMLButtonElement;
-        
         spyOn(component.created, "emit");
 
         // Act
@@ -77,11 +73,6 @@ describe("CreateDictionaryComponent", () => {
         // Arrange
         mockDictionaryService.create.and.returnValue(throwError(() => new HttpErrorResponse({status: 500})));
 
-        fixture.detectChanges();
-
-        const htmlElement = fixture.nativeElement as HTMLElement;
-        const buttonElement = htmlElement.querySelector("button") as HTMLButtonElement;
-
         spyOn(component.created, "emit");
 
         // Act
@@ -94,6 +85,5 @@ describe("CreateDictionaryComponent", () => {
         expect(component.created.emit).not.toHaveBeenCalled();
         expect(component.isCreating()).toBeFalse();
         expect(buttonElement.disabled).toBeFalse();
-        
     });
 });
