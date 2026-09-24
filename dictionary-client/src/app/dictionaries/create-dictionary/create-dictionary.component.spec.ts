@@ -69,11 +69,12 @@ describe("CreateDictionaryComponent", () => {
         expect(buttonElement.disabled).toBeFalse();
     });
 
-    it('should set errors, reset the button, and not emit created output when creation fails', () => {
+    it('should log error, set errors, reset the button, and not emit created output when creation fails', () => {
         // Arrange
         mockDictionaryService.create.and.returnValue(throwError(() => new HttpErrorResponse({status: 500})));
 
         spyOn(component.created, "emit");
+        spyOn(console, "error");
 
         // Act
         buttonElement.click();
@@ -81,9 +82,12 @@ describe("CreateDictionaryComponent", () => {
         // Assert
         fixture.detectChanges();
 
-        expect(component.errors()).toEqual(["Unable to create the dictionary. Please try again."])
-        expect(component.created.emit).not.toHaveBeenCalled();
+        expect(console.error).toHaveBeenCalledTimes(2);
+        expect(component.errors()).toEqual(["An unexpected error occurred. Please try again later."])
+        
         expect(component.isCreating()).toBeFalse();
         expect(buttonElement.disabled).toBeFalse();
+        
+        expect(component.created.emit).not.toHaveBeenCalled();
     });
 });

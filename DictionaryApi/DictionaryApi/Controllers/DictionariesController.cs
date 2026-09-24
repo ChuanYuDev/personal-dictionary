@@ -34,7 +34,7 @@ public class DictionariesController: ControllerBase
         if (dbId == Guid.Empty) return Problem(
             statusCode: StatusCodes.Status400BadRequest,
             title: "No dictionary selected",
-            detail: "Please create or open a dictionary."
+            detail: "No dictionary is currently selected. Please create or open a dictionary."
         );
 
         var result = _dictionaryService.CreateBackupStream(dbId);
@@ -47,7 +47,7 @@ public class DictionariesController: ControllerBase
                 ErrorType.NotFound => Problem(
                     statusCode: StatusCodes.Status404NotFound,
                     title: "Dictionary not found",
-                    detail: error.Description
+                    detail: "The dictionary could not be found on the server. Please open the dictionary again."
                 ),
                 _ => throw new UnreachableException($"Result error code: {error.Code}")
             };

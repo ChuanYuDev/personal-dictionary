@@ -81,14 +81,15 @@
 - Handle expected failures
 - Handle unexpected server errors
 
-- Use shared `extractErrorMessages` function to handle connection error and validation errors
+- Use shared `extractErrorMessages` function to handle connection error, validation errors, expected and unexpected errors
     - `extractErrors(err: HttpErrorResponse): string[] | null`
 
     - If `status` is 0, connection error, return `["Unable to connect to the server, please try again later"]`
 
     - Validation error
+    - Expected and unexpected errors 
 
-    - Return `null`
+    - Unexpected error response
 
 ### E2E testing
 - Create Dictionary > Add Entry > Edit Entry > Download Dictionary
@@ -363,8 +364,10 @@
 - `DictionariesController` return file
     - If the `DbId` is invalid, the middleware simply doesn’t assign it
         - Then the controller detects that there is no valid DbId and returns the corresponding error, such as “DbId is missing or invalid,” using `ProblemDetails`
+    
+    - Expose `Content-Disposition` header (TO DO)
 
-- Http interceptor (TO DO)
+- Http interceptor
 
 - `DictionaryService` (TO DO)
 
@@ -372,7 +375,7 @@
     - If an error occurs, extract the error and display it
     - Get the filename from response headers
 
-### Error handling -- Backend (TO DO)
+### Error handling -- Backend
 - Expected failure: Dictionary with `dbId` doesn't exist
     - Result pattern
 
@@ -398,11 +401,31 @@
         - Read the file to check if Metadata and Category are correct
         - Delete files
     
-    - Filename assertion (TO DO) ??
+    - Filename assertion (TO DO)
 
         ```cs
         Assert.Equal("attachment; filename=dictionary.db", httpResponseMessage.Content.Headers.ContentDisposition?.ToString());
         ```
+
+### Tests -- Frontend
+- `DictionaryService`
+    - Test if the response body is blob
+
+        ```ts
+        expect(httpResponse.body).toBe(blob);
+        ```
+
+    - If these two blobs are not the same object, use following conditions
+    - Test if the received value is an instance of blob
+    - Test if the received value has the same size as expected blob
+
+        ```ts
+        expect(response.body).toBeInstanceOf(Blob);
+        expect(response.body?.size).toBe(blob.size);
+        ```
+
+- `DownloadDictionaryComponent`
+    - Test response type
 
 ## Open a dictionary  (TO DO)
 ### Workflow
@@ -501,6 +524,9 @@
 - Add CRUD category operations
 
 ### Sort Entry Card
+
+### Filename
+- Backend sanitizes the filename before downloading
 
 ### Log
 - Log event id?

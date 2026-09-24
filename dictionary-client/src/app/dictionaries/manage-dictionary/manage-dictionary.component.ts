@@ -2,10 +2,11 @@ import {Component, inject} from '@angular/core';
 import {Router, RouterLink} from "@angular/router";
 import {DictionaryService} from "../dictionary.service";
 import {CreateDictionaryComponent} from "../create-dictionary/create-dictionary.component";
+import {DownloadDictionaryComponent} from "../download-dictionary/download-dictionary.component";
 
 @Component({
     selector: 'app-manage-dictionary',
-    imports: [RouterLink, CreateDictionaryComponent],
+    imports: [RouterLink, CreateDictionaryComponent, DownloadDictionaryComponent],
     templateUrl: './manage-dictionary.component.html',
     styleUrl: './manage-dictionary.component.css'
 })

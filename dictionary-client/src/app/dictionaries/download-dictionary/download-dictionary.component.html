@@ -1,1 +1,9 @@
-<p>download-dictionary works!</p>
+<app-display-errors [errors]="errors()"></app-display-errors>
+
+<button
+    type="button"
+    [disabled]="isDownloading()"
+    (click)="downloadDictionary()"
+>
+    {{isDownloading()? "Downloading...": "Download Dictionary"}}
+</button>

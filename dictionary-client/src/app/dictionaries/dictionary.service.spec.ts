@@ -67,7 +67,7 @@ describe("DictionaryService", () => {
 
         it('should not update the dictionary state when the creation fails', () => {
             // Test
-            dictionaryService.create().subscribe({error: (err) => {}});
+            dictionaryService.create().subscribe({error: () => {}});
 
             // Assert
             expect(dictionaryService.dictionaryState()).toBeNull();
@@ -80,6 +80,28 @@ describe("DictionaryService", () => {
 
             expect(window.localStorage.setItem).not.toHaveBeenCalled();
             
+        });
+    });
+    
+    describe("download", () => {
+        it('should issue a GET request and get blob response', async () => {
+            // Arrange
+            const download$ = dictionaryService.download();
+
+            // Test
+            const downloadPromise = firstValueFrom(download$);
+
+            // Assert
+            const testRequest = httpTesting.expectOne((request) => request.url.endsWith("api/dictionaries/download"));
+            expect(testRequest.request.method).toBe("GET");
+
+            const blob = new Blob(["test"]);
+
+            testRequest.flush(blob);
+            const httpResponse = await downloadPromise;
+
+            // expect(httpResponse.body).toBeInstanceOf(Blob);
+            expect(httpResponse.body).toBe(blob);
         });
     });
 });

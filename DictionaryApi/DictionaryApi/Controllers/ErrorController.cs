@@ -10,7 +10,8 @@ public class ErrorController: ControllerBase
     {
         return Problem(
             statusCode: StatusCodes.Status500InternalServerError,
-            title: "An unexpected error occurred"
+            title: "An unexpected error occurred",
+            detail: "An unexpected error occurred while processing your request. Please try again later."
         );
     }
 }

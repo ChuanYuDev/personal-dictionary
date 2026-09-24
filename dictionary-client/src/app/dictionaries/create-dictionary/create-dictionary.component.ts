@@ -26,22 +26,11 @@ export class CreateDictionaryComponent {
             },
 
             error: (err) => {
-                // console.log(err);
+                console.error("Failed to create a dictionary", "error response: ", err);
                 this.isCreating.set(false);
 
                 const errorMessages = extractErrorMessages(err);
-
-                if (errorMessages) {
-                    this.errors.set(errorMessages);
-                    return;
-                }
-
-                if (err.status === 500) {
-                    this.errors.set(["Unable to create the dictionary. Please try again."]);
-                    return;
-                }
-
-                this.errors.set(["An unexpected error occurred. Please contact the administrator."]);
+                this.errors.set(errorMessages);
             }
         });
         
