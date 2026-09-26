@@ -1,20 +1,36 @@
 import {HttpErrorResponse} from "@angular/common/http";
 
-export function extractErrorMessages(err: HttpErrorResponse): string[] {
+export async function extractErrorMessages(err: HttpErrorResponse): Promise<string[]> {
+    const unexpectedErrorMessage = "An unexpected error occurred. Please try again later.";
+    
     if (err.status === 0) return ["Unable to connect to the server. Please try again later."];
     
-    if (err.error?.errors) {
+    let error = err.error;
+    
+    if (error instanceof Blob) {
+        const errorText = await error.text();
+        
+        try {
+            error = JSON.parse(errorText);
+        } catch {
+            console.error("Unable to parse the error text", "errorText: ", errorText);
+            
+            return [unexpectedErrorMessage];
+        }
+    }
+    
+    if (error?.errors) {
         // Validation error
         // To do
         return [];
     }
     
-    if (err.error?.detail) {
+    if (error?.detail) {
         // Expected failure and unexpected error
-        return [err.error.detail];
+        return [error.detail];
     }
     
     console.error("Unexpected error response: ", err);
     
-    return ["An unexpected error occurred. Please try again later."];
+    return [unexpectedErrorMessage];
 }

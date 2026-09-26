@@ -329,6 +329,7 @@
     ```
 
 - `DictionaryService` creates stream
+    - Stream lifetime belongs to filesystem implementation detail, move creation stream to `DictionaryDbManager`?? (TO DO)
 
 - Extract `dbId` from Http header using middleware
     - Design an interface with `get` method only and an implementation to which we write the actual value
@@ -365,19 +366,21 @@
     - If the `DbId` is invalid, the middleware simply doesn’t assign it
         - Then the controller detects that there is no valid DbId and returns the corresponding error, such as “DbId is missing or invalid,” using `ProblemDetails`
     
-    - Expose `Content-Disposition` header (TO DO)
+    - No need to expose `Content-Disposition` header, because the filename is already stored in frontend `DictionaryState()`
 
 - Http interceptor
 
-- `DictionaryService` (TO DO)
+- `DictionaryService`
 
 - `DownloadDictionaryComponent` (TO DO)
     - If an error occurs, extract the error and display it
-    - Get the filename from response headers
+    - Get the filename from `DictionaryState()`
 
 ### Error handling -- Backend
 - Expected failure: Dictionary with `dbId` doesn't exist
     - Result pattern
+
+- For expected failure like `dbId` is missing or the database doesn't exist, there is no need to log them because they belongs to normal workflow
 
 ### Tests -- Backend
 - `DictionaryDbManager` Integration test
@@ -401,7 +404,7 @@
         - Read the file to check if Metadata and Category are correct
         - Delete files
     
-    - Filename assertion (TO DO)
+    - Filename assertion?? (TO DO)
 
         ```cs
         Assert.Equal("attachment; filename=dictionary.db", httpResponseMessage.Content.Headers.ContentDisposition?.ToString());

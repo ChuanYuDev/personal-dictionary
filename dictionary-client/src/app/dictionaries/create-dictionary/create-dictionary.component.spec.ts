@@ -69,7 +69,7 @@ describe("CreateDictionaryComponent", () => {
         expect(buttonElement.disabled).toBeFalse();
     });
 
-    it('should log error, set errors, reset the button, and not emit created output when creation fails', () => {
+    it('should log error, set errors, reset the button, and not emit created output when creation fails', async () => {
         // Arrange
         mockDictionaryService.create.and.returnValue(throwError(() => new HttpErrorResponse({status: 500})));
 
@@ -80,6 +80,7 @@ describe("CreateDictionaryComponent", () => {
         buttonElement.click();
 
         // Assert
+        await fixture.whenStable();
         fixture.detectChanges();
 
         expect(console.error).toHaveBeenCalledTimes(2);

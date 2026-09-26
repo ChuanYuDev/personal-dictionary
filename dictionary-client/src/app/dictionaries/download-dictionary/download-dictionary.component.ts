@@ -21,11 +21,11 @@ export class DownloadDictionaryComponent {
         
         this.dictionaryService.download().subscribe({
             next: () => {},
-            error: (err) => {
+            error: async (err) => {
                 console.error("Failed to download the dictionary", "error response: ", err);
                 this.isDownloading.set(false);
                 
-                const errorMessages = extractErrorMessages(err);
+                const errorMessages = await extractErrorMessages(err);
                 this.errors.set(errorMessages);
             }
         });

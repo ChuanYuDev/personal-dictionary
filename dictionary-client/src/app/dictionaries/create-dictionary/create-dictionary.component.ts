@@ -25,11 +25,11 @@ export class CreateDictionaryComponent {
                 this.created.emit();
             },
 
-            error: (err) => {
+            error: async (err) => {
                 console.error("Failed to create a dictionary", "error response: ", err);
                 this.isCreating.set(false);
 
-                const errorMessages = extractErrorMessages(err);
+                const errorMessages = await extractErrorMessages(err);
                 this.errors.set(errorMessages);
             }
         });

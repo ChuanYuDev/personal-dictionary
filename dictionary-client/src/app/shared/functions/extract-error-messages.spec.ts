@@ -2,15 +2,15 @@ import {HttpErrorResponse} from "@angular/common/http";
 import {extractErrorMessages} from "./extract-error-messages";
 
 describe("extractErrorMessages", () => {
-    it('should return the connection error message when status is 0', () => {
+    it('should return the connection error message when status is 0', async () => {
         const httpErrorResponse = new HttpErrorResponse({status: 0});
         
-        const result = extractErrorMessages(httpErrorResponse);
+        const result = await extractErrorMessages(httpErrorResponse);
         
         expect(result).toEqual(["Unable to connect to the server. Please try again later."]);
     });
 
-    it('should return the validation error message when errors property exists', () => {
+    it('should return the validation error message when errors property exists', async () => {
         const httpErrorResponse = new HttpErrorResponse({
             status: 501,
             error: {
@@ -21,12 +21,12 @@ describe("extractErrorMessages", () => {
             }
         });
         
-        const result = extractErrorMessages(httpErrorResponse);
+        const result = await extractErrorMessages(httpErrorResponse);
 
         expect(result).toEqual([]);
     });
 
-    it('should return the expected failure and unexpected error message when detail property exists', () => {
+    it('should return the expected failure and unexpected error message when detail property exists', async () => {
         const httpErrorResponse = new HttpErrorResponse({
             status: 400,
             error: {
@@ -34,17 +34,17 @@ describe("extractErrorMessages", () => {
             }
         });
 
-        const result = extractErrorMessages(httpErrorResponse);
+        const result = await extractErrorMessages(httpErrorResponse);
 
         expect(result).toEqual(["No dictionary is currently selected. Please create or open a dictionary."]);
         
     });
 
-    it('should log error and return fallback message when receiving an unexpected error response', () => {
+    it('should log error and return fallback message when receiving an unexpected error response', async () => {
         const httpErrorResponse = new HttpErrorResponse({status: 501});
         spyOn(console, "error");
         
-        const result = extractErrorMessages(httpErrorResponse);
+        const result = await extractErrorMessages(httpErrorResponse);
 
         expect(console.error).toHaveBeenCalledTimes(1);
         expect(result).toEqual(["An unexpected error occurred. Please try again later."]);
