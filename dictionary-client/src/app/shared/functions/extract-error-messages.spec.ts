@@ -9,6 +9,40 @@ describe("extractErrorMessages", () => {
         
         expect(result).toEqual(["Unable to connect to the server. Please try again later."]);
     });
+    
+    it('should return the expected failure and unexpected error message when blob can be parsed and detail property exists', async () => {
+        const problemDetails = {
+            detail: "test detail"
+        };
+        
+        const blob = new Blob([JSON.stringify(problemDetails)]);
+        
+        const httpErrorResponse = new HttpErrorResponse({
+            status: 400,
+            error: blob
+        });
+
+        const result = await extractErrorMessages(httpErrorResponse);
+
+        expect(result).toEqual(["test detail"]);
+
+    });
+    
+    it('should log error and return fallback message when blob cannot be parsed', async () => {
+        const blob = new Blob(["Invalid json"]);
+
+        const httpErrorResponse = new HttpErrorResponse({
+            status: 400,
+            error: blob
+        });
+        
+        spyOn(console, "error");
+
+        const result = await extractErrorMessages(httpErrorResponse);
+
+        expect(console.error).toHaveBeenCalledWith("Unable to parse the error text", "errorText: ", jasmine.anything());
+        expect(result).toEqual(["An unexpected error occurred. Please try again later."]);
+    });
 
     it('should return the validation error message when errors property exists', async () => {
         const httpErrorResponse = new HttpErrorResponse({
@@ -30,13 +64,13 @@ describe("extractErrorMessages", () => {
         const httpErrorResponse = new HttpErrorResponse({
             status: 400,
             error: {
-                detail: "No dictionary is currently selected. Please create or open a dictionary."
+                detail: "test detail"
             }
         });
 
         const result = await extractErrorMessages(httpErrorResponse);
 
-        expect(result).toEqual(["No dictionary is currently selected. Please create or open a dictionary."]);
+        expect(result).toEqual(["test detail"]);
         
     });
 
@@ -46,7 +80,7 @@ describe("extractErrorMessages", () => {
         
         const result = await extractErrorMessages(httpErrorResponse);
 
-        expect(console.error).toHaveBeenCalledTimes(1);
+        expect(console.error).toHaveBeenCalledWith("Unexpected error response: ", jasmine.anything());
         expect(result).toEqual(["An unexpected error occurred. Please try again later."]);
     });
 });

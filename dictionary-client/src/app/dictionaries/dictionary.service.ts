@@ -34,7 +34,6 @@ export class DictionaryService {
     
     download() {
         return this.httpClient.get(`${this.baseUrl}/download`, {
-            observe: "response",
             responseType: "blob"
         });
     }

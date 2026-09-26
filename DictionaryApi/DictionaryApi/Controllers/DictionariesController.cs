@@ -52,13 +52,10 @@ public class DictionariesController: ControllerBase
                 _ => throw new UnreachableException($"Result error code: {error.Code}")
             };
         }
-
-        const string fileDownloadName = "dictionary.db";
-
+        
         return File(
             result.Value,
-            "application/vnd.sqlite3",
-            fileDownloadName
+            "application/vnd.sqlite3"
         );
     }
 }

@@ -95,13 +95,13 @@ describe("DictionaryService", () => {
             const testRequest = httpTesting.expectOne((request) => request.url.endsWith("api/dictionaries/download"));
             expect(testRequest.request.method).toBe("GET");
 
-            const blob = new Blob(["test"]);
+            const expectedBlob = new Blob(["test"]);
 
-            testRequest.flush(blob);
-            const httpResponse = await downloadPromise;
+            testRequest.flush(expectedBlob);
+            const actualBlob = await downloadPromise;
 
             // expect(httpResponse.body).toBeInstanceOf(Blob);
-            expect(httpResponse.body).toBe(blob);
+            expect(actualBlob).toBe(expectedBlob);
         });
     });
 });

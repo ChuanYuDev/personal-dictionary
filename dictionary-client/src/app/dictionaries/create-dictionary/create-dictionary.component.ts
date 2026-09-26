@@ -12,7 +12,7 @@ import {extractErrorMessages} from "../../shared/functions/extract-error-message
 export class CreateDictionaryComponent {
     readonly isCreating = signal(false);
     readonly errors = signal<string[]>([]);
-    private dictionaryService = inject(DictionaryService);
+    private readonly dictionaryService = inject(DictionaryService);
     readonly created = output<void>();
 
     createDictionary(): void {

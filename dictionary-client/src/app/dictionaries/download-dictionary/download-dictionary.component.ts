@@ -13,14 +13,27 @@ export class DownloadDictionaryComponent {
     readonly isDownloading = signal(false);
     readonly errors = signal<string[]>([]);
     
-    private dictionaryService = inject(DictionaryService);
+    private readonly dictionaryService = inject(DictionaryService);
+    private readonly dictionaryState = this.dictionaryService.dictionaryState;
     
     downloadDictionary(): void {
         this.isDownloading.set(true);
         this.errors.set([]);
         
         this.dictionaryService.download().subscribe({
-            next: () => {},
+            next: (value) => {
+                const url = URL.createObjectURL(value);
+                
+                const anchor = document.createElement("a")
+                anchor.download = `${this.dictionaryState()?.dbName}.db`
+                anchor.href = url;
+                anchor.click();
+                
+                URL.revokeObjectURL(url);
+                
+                this.isDownloading.set(false);
+            },
+            
             error: async (err) => {
                 console.error("Failed to download the dictionary", "error response: ", err);
                 this.isDownloading.set(false);
