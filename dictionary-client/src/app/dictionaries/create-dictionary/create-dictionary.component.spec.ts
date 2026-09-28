@@ -84,10 +84,11 @@ describe("CreateDictionaryComponent", () => {
         fixture.detectChanges();
 
         expect(console.error).toHaveBeenCalledTimes(2);
-        expect(component.errors()).toEqual(["An unexpected error occurred. Please try again later."])
         
         expect(component.isCreating()).toBeFalse();
         expect(buttonElement.disabled).toBeFalse();
+
+        expect(component.errors()).toEqual(["An unexpected error occurred. Please try again later."])
         
         expect(component.created.emit).not.toHaveBeenCalled();
     });

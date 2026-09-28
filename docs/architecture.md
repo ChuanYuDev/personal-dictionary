@@ -428,7 +428,35 @@
         ```
 
 - `DownloadDictionaryComponent`
-    - Test response type
+    - Because `extractErrorMessage` is an async function, even we use `await fixture.whenStable()`, when we use `blob` as an error of `HttpErrorResponse`, the test always failed
+
+    ```ts
+    it('should log error, set errors, and reset the button when download fails', async () => {
+        const errorBlob = new Blob([JSON.stringify({
+            detail: "test detail"
+        })]);
+        
+        mockDictionaryService.download.and.returnValue(throwError(() => new HttpErrorResponse({status: 500, error: errorBlob})));
+        
+        spyOn(console, "error");
+        
+        // Act
+        buttonElement.click();
+        
+        // Assert
+        await fixture.whenStable();
+        fixture.detectChanges();
+        
+        expect(console.error).toHaveBeenCalledWith("Failed to download the dictionary", "error response: ", jasmine.anything());
+        
+        expect(component.isDownloading()).toBeFalse();
+        expect(buttonElement.disabled).toBeFalse();
+        
+        expect(component.errors()).toEqual(["test detail"]);
+    });
+    ```
+
+    - **We change the error as object instead of blob, but is there a reasonable way to test blob error response??**
 
 ## Open a dictionary  (TO DO)
 ### Workflow

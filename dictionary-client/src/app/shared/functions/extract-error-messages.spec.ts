@@ -11,15 +11,13 @@ describe("extractErrorMessages", () => {
     });
     
     it('should return the expected failure and unexpected error message when blob can be parsed and detail property exists', async () => {
-        const problemDetails = {
+        const errorBlob = new Blob([JSON.stringify({
             detail: "test detail"
-        };
-        
-        const blob = new Blob([JSON.stringify(problemDetails)]);
+        })]);
         
         const httpErrorResponse = new HttpErrorResponse({
             status: 400,
-            error: blob
+            error: errorBlob
         });
 
         const result = await extractErrorMessages(httpErrorResponse);
