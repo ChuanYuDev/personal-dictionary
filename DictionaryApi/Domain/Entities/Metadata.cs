@@ -1,8 +1,13 @@
+using System.ComponentModel.DataAnnotations;
+
 namespace Domain.Entities;
 
 public class Metadata
 {
     public int Id { get; set; }
-    public string? Name { get; set; }
+    
+    [Required]
+    [StringLength(maximumLength: 50)]
+    public required string Name { get; set; }
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 }

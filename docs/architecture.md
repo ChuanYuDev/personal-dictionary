@@ -136,6 +136,15 @@
 - `dbName` key in the window local storage: `db-name`
 - `dbId` key in the request header: `X-DbId`
 
+### Cancellation token
+- https://andrewlock.net/using-cancellationtokens-in-asp-net-core-mvc-controllers/
+
+- https://stackoverflow.com/questions/50329618/should-i-always-add-cancellationtoken-to-my-controller-actions
+
+- We should not always add Cancellation token to controllers
+
+- **Should we add??**
+
 ## Create a new dictionary
 ### Workflow
 - Create a dictionary and download it to local
@@ -457,6 +466,9 @@
     ```
 
     - **We change the error as object instead of blob, but is there a reasonable way to test blob error response??**
+
+    - Maybe useful
+    1. https://jasmine.github.io/tutorials/async
 
 ## Open a dictionary  (TO DO)
 ### Workflow

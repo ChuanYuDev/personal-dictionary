@@ -40,6 +40,30 @@ public class DictionaryDbManager: IDictionaryDbManager
         return destinationPath;
     }
 
+    public async Task<string?> SaveAsync(Guid dbId, Stream sourceStream)
+    {
+        var destinationPath = DictionaryDbPathProvider.GetDbPath(dbId);
+
+        await using (var destinationStream = File.Create(destinationPath))
+        {
+            await sourceStream.CopyToAsync(destinationStream);
+        }
+
+        try
+        {
+            await using var dictionaryDbContext = CreateDbContext(destinationPath);
+            var metadata = await dictionaryDbContext.Metadata.SingleAsync();
+            return metadata.Name;
+        }
+        catch
+        {
+            File.Delete(destinationPath);
+            File.Delete($"{destinationPath}-shm");
+            File.Delete($"{destinationPath}-wal");
+            return null;
+        }
+    }
+
     private static DictionaryDbContext CreateDbContext(string dbPath)
     {
         var options = new DbContextOptionsBuilder<DictionaryDbContext>().UseSqlite($"Data Source={dbPath}").Options;

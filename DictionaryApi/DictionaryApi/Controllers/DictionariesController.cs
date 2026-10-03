@@ -38,24 +38,39 @@ public class DictionariesController: ControllerBase
         );
 
         var result = _dictionaryService.CreateBackupStream(dbId);
+
+        if (result.IsSuccess) return File(result.Value, "application/vnd.sqlite3");
         
-        if (!result.IsSuccess)
+        var error = result.Error;
+        
+        return error.Type switch
         {
-            var error = result.Error;
-            return error.Type switch
-            {
-                ErrorType.NotFound => Problem(
-                    statusCode: StatusCodes.Status404NotFound,
-                    title: "Dictionary not found",
-                    detail: "The dictionary could not be found on the server. Please open the dictionary again."
-                ),
-                _ => throw new UnreachableException($"Result error code: {error.Code}")
-            };
-        }
-        
-        return File(
-            result.Value,
-            "application/vnd.sqlite3"
-        );
+            ErrorType.NotFound => Problem(
+                statusCode: StatusCodes.Status404NotFound,
+                title: "Dictionary not found",
+                detail: "The dictionary could not be found on the server. Please create or open a dictionary."
+            ),
+            _ => throw new UnreachableException($"Result error code: {error.Code}")
+        };
+    }
+
+    [HttpPost("open")]
+    public async Task<ActionResult<DictionaryDto>> Open(IFormFile dbFile)
+    {
+        var result = await _dictionaryService.SaveAsync(dbFile.OpenReadStream());
+
+        if (result.IsSuccess) return result.Value;
+
+        var error = result.Error;
+
+        return error.Type switch
+        {
+            ErrorType.Invalid => Problem(
+                statusCode: StatusCodes.Status400BadRequest,
+                title: "Dictionary invalid",
+                detail: "The dictionary file is not valid. Please open another dictionary."
+            ),
+            _ => throw new UnreachableException($"Result error code: {error.Code}")
+        };
     }
 }

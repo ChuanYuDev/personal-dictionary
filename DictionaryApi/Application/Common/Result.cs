@@ -30,8 +30,7 @@ public class Result<T> : Result
 {
     private readonly T? _value;
 
-    public T Value =>
-        IsSuccess ? _value! : throw new InvalidOperationException("Cannot access the value of a failed result");
+    public T Value => IsSuccess ? _value! : throw new InvalidOperationException("Cannot access the value of a failed result");
 
     private Result(T value)
     {

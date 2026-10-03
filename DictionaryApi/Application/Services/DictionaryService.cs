@@ -45,4 +45,16 @@ public class DictionaryService
 
         return stream;
     }
+
+    public async Task<Result<DictionaryDto>> SaveAsync(Stream dbStream)
+    {
+        var dbId = Guid.NewGuid();
+        var dbName = await _dictionaryDbManager.SaveAsync(dbId, dbStream);
+
+        if (dbName is null) return DictionaryErrors.Invalid;
+        
+        _logger.LogInformation("Dictionary saved. DbId: {DbId}", dbId);
+
+        return new DictionaryDto(dbId, dbName);
+    }
 }

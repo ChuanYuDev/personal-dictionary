@@ -74,7 +74,7 @@ describe("CreateDictionaryComponent", () => {
         mockDictionaryService.create.and.returnValue(throwError(() => new HttpErrorResponse({status: 500})));
 
         spyOn(component.created, "emit");
-        spyOn(console, "error");
+        const consoleErrorSpy = spyOn(console, "error");
 
         // Act
         buttonElement.click();
@@ -83,8 +83,9 @@ describe("CreateDictionaryComponent", () => {
         await fixture.whenStable();
         fixture.detectChanges();
 
-        expect(console.error).toHaveBeenCalledTimes(2);
-        
+        expect(consoleErrorSpy.calls.argsFor(0)).toEqual(["Failed to create a dictionary", "error response: ", jasmine.anything()]);
+        expect(consoleErrorSpy.calls.argsFor(1)).toEqual(["Unexpected error response: ", jasmine.anything()]);
+
         expect(component.isCreating()).toBeFalse();
         expect(buttonElement.disabled).toBeFalse();
 
