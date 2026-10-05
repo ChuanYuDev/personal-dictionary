@@ -1,0 +1,11 @@
+<app-display-errors [errors]="errors()"></app-display-errors>
+
+<button
+    type="button"
+    [disabled]="isOpening()"
+    (click)="fileInput.click()"
+>
+    {{ isOpening()? "Opening...": buttonText() }}
+</button>
+
+<input type="file" #fileInput (change)="change($event)" />

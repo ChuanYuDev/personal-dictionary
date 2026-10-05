@@ -21,14 +21,7 @@ export class DictionaryService {
     
     create() {
         return this.httpClient.post<DictionaryDto>(`${this.baseUrl}/create`, null).pipe(tap(
-            dictionaryDto => {
-                this.storeDictionaryState(dictionaryDto);
-                
-                this._dictionaryState.set({
-                    dbId: dictionaryDto.dbId,
-                    dbName: dictionaryDto.dbName
-                });
-            }
+            dictionaryDto => { this.storeDictionaryState(dictionaryDto); }
         ));
     }
     
@@ -36,6 +29,15 @@ export class DictionaryService {
         return this.httpClient.get(`${this.baseUrl}/download`, {
             responseType: "blob"
         });
+    }
+    
+    open(file: File) {
+        const formData = new FormData();
+        formData.append("file", file);
+        
+        return this.httpClient.post<DictionaryDto>(`${this.baseUrl}/open`, formData).pipe(tap(
+            dictionaryDto => { this.storeDictionaryState(dictionaryDto); }
+        ));
     }
     
     disconnect(): void {
@@ -64,5 +66,10 @@ export class DictionaryService {
     private storeDictionaryState(dictionaryDto: DictionaryDto): void {
         window.localStorage.setItem(this.dbIdKey, dictionaryDto.dbId);
         window.localStorage.setItem(this.dbNameKey, dictionaryDto.dbName);
+        
+        this._dictionaryState.set({
+            dbId: dictionaryDto.dbId,
+            dbName: dictionaryDto.dbName
+        });
     }
 }

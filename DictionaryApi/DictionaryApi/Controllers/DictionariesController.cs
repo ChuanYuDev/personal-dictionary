@@ -55,9 +55,9 @@ public class DictionariesController: ControllerBase
     }
 
     [HttpPost("open")]
-    public async Task<ActionResult<DictionaryDto>> Open(IFormFile dbFile)
+    public async Task<ActionResult<DictionaryDto>> Open(IFormFile file)
     {
-        var result = await _dictionaryService.SaveAsync(dbFile.OpenReadStream());
+        var result = await _dictionaryService.SaveAsync(file.OpenReadStream());
 
         if (result.IsSuccess) return result.Value;
 
@@ -68,7 +68,7 @@ public class DictionariesController: ControllerBase
             ErrorType.Invalid => Problem(
                 statusCode: StatusCodes.Status400BadRequest,
                 title: "Dictionary invalid",
-                detail: "The dictionary file is not valid. Please open another dictionary."
+                detail: "The selected file is not valid dictionary. Please open another dictionary."
             ),
             _ => throw new UnreachableException($"Result error code: {error.Code}")
         };

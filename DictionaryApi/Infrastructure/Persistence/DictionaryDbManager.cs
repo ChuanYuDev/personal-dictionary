@@ -52,10 +52,11 @@ public class DictionaryDbManager: IDictionaryDbManager
         try
         {
             await using var dictionaryDbContext = CreateDbContext(destinationPath);
+            await dictionaryDbContext.Database.MigrateAsync();
             var metadata = await dictionaryDbContext.Metadata.SingleAsync();
             return metadata.Name;
         }
-        catch
+        catch (Exception ex) when (ex is SqliteException or InvalidOperationException)
         {
             File.Delete(destinationPath);
             File.Delete($"{destinationPath}-shm");

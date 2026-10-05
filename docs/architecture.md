@@ -487,14 +487,10 @@
 - Apply migration at runtime to working copy
 
 ### Error handling -- Backend 
-- Expected failure: Dictionary doesn't exist
-- Unexpected exception: the file is not a valid SQLite database
-- Unexpected exception: Metadata is missing 
+- Expected failure: the file is not a valid SQLite database
+    - Throw `SqliteException`
 
-### Error handling -- Frontend
-- Status = 0, server unavailable > "Unable to connect to the server, please try again."
-- Status = 500, server error > "Unable to open the dictionary. Please try again."
-- Other statuses > "An unexpected error occurred. Please connect the administer."
+- Expected failure: Metadata is missing 
 
 ## Entry
 ### `EntryRepository` (TO DO)

@@ -3,10 +3,11 @@ import {Router, RouterLink} from "@angular/router";
 import {DictionaryService} from "../dictionary.service";
 import {CreateDictionaryComponent} from "../create-dictionary/create-dictionary.component";
 import {DownloadDictionaryComponent} from "../download-dictionary/download-dictionary.component";
+import {OpenDictionaryComponent} from "../open-dictionary/open-dictionary.component";
 
 @Component({
     selector: 'app-manage-dictionary',
-    imports: [RouterLink, CreateDictionaryComponent, DownloadDictionaryComponent],
+    imports: [RouterLink, CreateDictionaryComponent, DownloadDictionaryComponent, OpenDictionaryComponent],
     templateUrl: './manage-dictionary.component.html',
     styleUrl: './manage-dictionary.component.css'
 })
