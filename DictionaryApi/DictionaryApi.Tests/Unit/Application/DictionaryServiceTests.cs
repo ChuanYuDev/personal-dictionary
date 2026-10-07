@@ -37,19 +37,6 @@ public sealed class DictionaryServiceTests
     }
 
     [Fact]
-    public void CreateBackupStream_ShouldReturnNotFound_WhenDictionaryDoesNotExist()
-    {
-        var dbId = Guid.NewGuid();
-
-        _dictionaryDbManager.CreateBackup(dbId).Returns((string?)null);
-        
-        var result = _dictionaryService.CreateBackupStream(dbId);
-        
-        Assert.False(result.IsSuccess);
-        Assert.Equal(DictionaryErrors.NotFound, result.Error);
-    }
-
-    [Fact]
     public async Task CreateBackupStream_ShouldReturnBackupStream()
     {
         // Arrange
@@ -94,5 +81,18 @@ public sealed class DictionaryServiceTests
         var stream = result.Value;
         await stream.DisposeAsync();
         Assert.False(File.Exists(backupPath));
+    }
+    
+    [Fact]
+    public void CreateBackupStream_ShouldReturnNotFound_WhenDictionaryDoesNotExist()
+    {
+        var dbId = Guid.NewGuid();
+
+        _dictionaryDbManager.CreateBackup(dbId).Returns((string?)null);
+        
+        var result = _dictionaryService.CreateBackupStream(dbId);
+        
+        Assert.False(result.IsSuccess);
+        Assert.Equal(DictionaryErrors.NotFound, result.Error);
     }
 }

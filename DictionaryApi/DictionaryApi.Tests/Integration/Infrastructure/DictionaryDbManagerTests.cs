@@ -5,52 +5,55 @@ using Xunit;
 
 namespace DictionaryApi.Tests.Integration.Infrastructure;
 
-public sealed class DictionaryDbManagerTests: IDisposable
+public sealed class DictionaryDbManagerTests
 {
-    private string? _dictionaryPath;
-    private DictionaryDbManager _dictionaryDbManager;
+    private readonly DictionaryDbManager _dictionaryDbManager;
 
     public DictionaryDbManagerTests()
     {
         _dictionaryDbManager = new DictionaryDbManager();
     }
     
-    public void Dispose()
-    {
-        if (_dictionaryPath is not null) DictionaryDbTestHelper.DeleteDb(_dictionaryPath);
-    }
-    
     [Fact]
     public async Task CreateAsync_ShouldCreateValidDictionary()
     {
-        // Arrange
-        var dbId = Guid.NewGuid();
-        const string defaultName = "Test Dictionary Name";
-        
-        _dictionaryPath = DictionaryDbPathProvider.GetDbPath(dbId);
+        string? dictionaryPath = null;
 
-        // Act
-        await _dictionaryDbManager.CreateAsync(dbId, defaultName);
-        
-        // Assert
-        Assert.True(File.Exists(_dictionaryPath));
-        
-        await using var dictionaryDbContext = DictionaryDbTestHelper.CreateDbContext(_dictionaryPath);
+        try
+        {
+            // Arrange
+            var dbId = Guid.NewGuid();
+            const string defaultName = "Test Dictionary Name";
 
-        var categories = await dictionaryDbContext.Categories.ToListAsync(cancellationToken: TestContext.Current.CancellationToken);
-        
-        Assert.Equal(2, categories.Count);
-        Assert.Equal("word", categories[0].Name);
-        Assert.Equal("phrase", categories[1].Name);
-        
-        var metadata = await dictionaryDbContext.Metadata.SingleAsync(cancellationToken: TestContext.Current.CancellationToken);
-        Assert.Equal(defaultName, metadata.Name);
+            dictionaryPath = DictionaryDbPathProvider.GetDbPath(dbId);
+
+            // Act
+            await _dictionaryDbManager.CreateAsync(dbId, defaultName);
+
+            // Assert
+            Assert.True(File.Exists(dictionaryPath));
+
+            await using var dictionaryDbContext = DictionaryDbTestHelper.CreateDbContext(dictionaryPath);
+
+            var categories = await dictionaryDbContext.Categories.ToListAsync(cancellationToken: TestContext.Current.CancellationToken);
+
+            Assert.Equal(2, categories.Count);
+            Assert.Equal("word", categories[0].Name);
+            Assert.Equal("phrase", categories[1].Name);
+
+            var metadata = await dictionaryDbContext.Metadata.SingleAsync(cancellationToken: TestContext.Current.CancellationToken);
+            Assert.Equal(defaultName, metadata.Name);
+        }
+        finally
+        { 
+            DictionaryDbTestHelper.DeleteDb(dictionaryPath);
+        }
     }
 
     [Fact]
     public async Task CreateBackup_ShouldCreateValidBackup()
     {
-        string? backupPath = null;
+        string? dictionaryPath = null, backupPath = null;
 
         try
         {
@@ -58,7 +61,7 @@ public sealed class DictionaryDbManagerTests: IDisposable
             var dbId = Guid.NewGuid();
             const string defaultName = "Test Dictionary Name";
         
-            _dictionaryPath = DictionaryDbPathProvider.GetDbPath(dbId);
+            dictionaryPath = DictionaryDbPathProvider.GetDbPath(dbId);
         
             await _dictionaryDbManager.CreateAsync(dbId, defaultName);
 
@@ -81,7 +84,8 @@ public sealed class DictionaryDbManagerTests: IDisposable
         }
         finally
         {
-            if (backupPath is not null) DictionaryDbTestHelper.DeleteDb(backupPath);
+            DictionaryDbTestHelper.DeleteDb(dictionaryPath);
+            DictionaryDbTestHelper.DeleteDb(backupPath);
         }
     }
 
@@ -93,5 +97,59 @@ public sealed class DictionaryDbManagerTests: IDisposable
         var backupPath = _dictionaryDbManager.CreateBackup(dbId);
         
         Assert.Null(backupPath);
+    }
+
+    [Fact]
+    public async Task SaveAsync_ShouldSaveDictionary_WhenDictionaryIsValid()
+    {
+        string? dictionaryPath = null, backupPath = null, savePath = null;
+
+        try
+        {
+            // Arrange
+            var dbId = Guid.NewGuid();
+            dictionaryPath = DictionaryDbPathProvider.GetDbPath(dbId);
+            
+            const string defaultName = "Test Dictionary Name";
+            await _dictionaryDbManager.CreateAsync(dbId, defaultName);
+
+            var saveDbId = Guid.NewGuid();
+            backupPath = _dictionaryDbManager.CreateBackup(dbId);
+            Assert.NotNull(backupPath);
+            await using var stream = File.OpenRead(backupPath);
+
+            // Act
+            var saveName = await _dictionaryDbManager.SaveAsync(saveDbId, stream);
+        
+            // Assert
+            Assert.Equal(defaultName, saveName);
+
+            savePath = DictionaryDbPathProvider.GetDbPath(saveDbId);
+            Assert.True(File.Exists(savePath));
+        }
+        finally
+        {
+            DictionaryDbTestHelper.DeleteDb(dictionaryPath);
+            DictionaryDbTestHelper.DeleteDb(backupPath);
+            DictionaryDbTestHelper.DeleteDb(savePath);
+        }
+    }
+
+    [Fact]
+    public async Task SaveAsync_ShouldReturnNull_WhenDictionaryIsInvalid()
+    {
+        var saveDbId = Guid.NewGuid();
+        
+        byte[] bytes = [1, 2, 3, 4, 5];
+        var stream = new MemoryStream(bytes);
+        
+        // Act
+        var saveName = await _dictionaryDbManager.SaveAsync(saveDbId, stream);
+        
+        // Assert
+        Assert.Null(saveName);
+        
+        var savePath = DictionaryDbPathProvider.GetDbPath(saveDbId);
+        Assert.False(File.Exists(savePath));
     }
 }

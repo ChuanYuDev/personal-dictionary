@@ -5,8 +5,10 @@ namespace DictionaryApi.Tests.Integration.TestInfrastructure;
 
 public static class DictionaryDbTestHelper
 {
-    public static void DeleteDb(string path)
+    public static void DeleteDb(string? path)
     {
+        if (path is null) return;
+        
         File.Delete(path);
         File.Delete($"{path}-shm");
         File.Delete($"{path}-wal");

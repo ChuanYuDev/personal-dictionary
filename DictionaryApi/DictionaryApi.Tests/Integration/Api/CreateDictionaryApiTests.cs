@@ -45,16 +45,16 @@ public sealed class CreateDictionaryApiTests: IClassFixture<WebApplicationFactor
             Assert.NotNull(dictionaryDto);
 
             var dbId = dictionaryDto.DbId;
-            path = DictionaryDbPathProvider.GetDbPath(dbId);
             
             Assert.NotEqual(Guid.Empty, dbId);
             Assert.Equal(defaultName, dictionaryDto.DbName);
 
+            path = DictionaryDbPathProvider.GetDbPath(dbId);
             Assert.True(File.Exists(path));
         }
         finally
         {
-            if (path is not null) DictionaryDbTestHelper.DeleteDb(path);
+            DictionaryDbTestHelper.DeleteDb(path);
         }
     }
 

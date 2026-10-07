@@ -26,13 +26,13 @@ public class DownloadDictionaryApiTests: IClassFixture<WebApplicationFactory<Pro
     [Fact]
     public async Task Download_ShouldDownloadDictionary_WhenDictionaryWithDbIdExists()
     {
-        string? createdPath = null, downloadedPath = null;
+        string? dictionaryPath = null, downloadedPath = null;
         
         try
         {
             // Arrange
             var dbId = Guid.NewGuid();
-            createdPath = DictionaryDbPathProvider.GetDbPath(dbId);
+            dictionaryPath = DictionaryDbPathProvider.GetDbPath(dbId);
         
             var dictionaryDbManager = new DictionaryDbManager();
             const string defaultName = "Untitled Dictionary";
@@ -70,8 +70,8 @@ public class DownloadDictionaryApiTests: IClassFixture<WebApplicationFactory<Pro
         }
         finally
         {
-            if (createdPath is not null) DictionaryDbTestHelper.DeleteDb(createdPath);
-            if (downloadedPath is not null) DictionaryDbTestHelper.DeleteDb(downloadedPath);
+            DictionaryDbTestHelper.DeleteDb(dictionaryPath);
+            DictionaryDbTestHelper.DeleteDb(downloadedPath);
         }
     }
 

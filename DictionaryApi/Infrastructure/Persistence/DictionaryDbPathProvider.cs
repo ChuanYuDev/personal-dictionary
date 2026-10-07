@@ -18,10 +18,10 @@ public static class DictionaryDbPathProvider
         return Path.Combine(directoryPath, $"{dbId}-{Guid.NewGuid()}.db");
     }
 
-    private static string CreateDirectory(string dictionaryName)
+    private static string CreateDirectory(string subDictionaryName)
     {
         var tempPath = Path.GetTempPath();
-        var directoryPath = Path.Combine(tempPath, DirectoryName, dictionaryName);
+        var directoryPath = Path.Combine(tempPath, DirectoryName, subDictionaryName);
 
         if (!Directory.Exists(directoryPath)) Directory.CreateDirectory(directoryPath);
 
