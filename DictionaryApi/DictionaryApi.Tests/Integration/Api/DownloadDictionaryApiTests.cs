@@ -32,7 +32,7 @@ public class DownloadDictionaryApiTests: IClassFixture<WebApplicationFactory<Pro
         {
             // Arrange
             var dbId = Guid.NewGuid();
-            dictionaryPath = DictionaryDbPathProvider.GetDbPath(dbId);
+            dictionaryPath = DictionaryDbManager.GetDbPath(dbId);
         
             var dictionaryDbManager = new DictionaryDbManager();
             const string defaultName = "Untitled Dictionary";
@@ -50,7 +50,7 @@ public class DownloadDictionaryApiTests: IClassFixture<WebApplicationFactory<Pro
 
             await using (var stream = await httpResponseMessage.Content.ReadAsStreamAsync(TestContext.Current.CancellationToken))
             {
-                downloadedPath = DictionaryDbPathProvider.GetDbPath(Guid.NewGuid());
+                downloadedPath = DictionaryDbManager.GetDbPath(Guid.NewGuid());
                 await using (var fileStream = File.Create(downloadedPath))
                 {
                     await stream.CopyToAsync(fileStream, TestContext.Current.CancellationToken);

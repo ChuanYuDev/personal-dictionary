@@ -37,52 +37,33 @@ public sealed class DictionaryServiceTests
     }
 
     [Fact]
-    public async Task CreateBackupStream_ShouldReturnBackupStream()
+    public async Task CreateBackupStream_ShouldReturnBackupStreamAndDeleteBackup_WhenStreamIsDisposed()
     {
         // Arrange
         var dbId = Guid.NewGuid();
         
-        var backupPath = DictionaryDbPathProvider.GetBackupPath(dbId);
+        var path = DictionaryDbManager.GetDbPath(dbId);
         byte[] content = [1, 2, 3, 4, 5];
-        await File.WriteAllBytesAsync(backupPath, content, TestContext.Current.CancellationToken);
+        await File.WriteAllBytesAsync(path, content, TestContext.Current.CancellationToken);
 
-        _dictionaryDbManager.CreateBackup(dbId).Returns(backupPath);
+        _dictionaryDbManager.CreateBackup(dbId).Returns(path);
         
         // Act
         var result = _dictionaryService.CreateBackupStream(dbId);
         
         // Assert
         Assert.True(result.IsSuccess);
+
+        await using (var stream = result.Value)
+        {
+            await using var memoryStream = new MemoryStream();
+            await stream.CopyToAsync(memoryStream, TestContext.Current.CancellationToken);
+            Assert.Equal(content, memoryStream.ToArray());
+        }
         
-        await using var stream = result.Value;
-        await using var memoryStream = new MemoryStream();
-        await stream.CopyToAsync(memoryStream, TestContext.Current.CancellationToken);
-        Assert.Equal(content, memoryStream.ToArray());
+        Assert.False(File.Exists(path));
     }
 
-    [Fact]
-    public async Task CreateBackupStream_ShouldDeleteBackup_WhenStreamIsDisposed()
-    {
-        var dbId = Guid.NewGuid();
-        
-        var backupPath = DictionaryDbPathProvider.GetBackupPath(dbId);
-        byte[] content = [1, 2, 3, 4, 5];
-        await File.WriteAllBytesAsync(backupPath, content, TestContext.Current.CancellationToken);
-
-        _dictionaryDbManager.CreateBackup(dbId).Returns(backupPath);
-        
-        // Act
-        var result = _dictionaryService.CreateBackupStream(dbId);
-        
-        // Assert
-        Assert.True(result.IsSuccess);
-        Assert.True(File.Exists(backupPath));
-        
-        var stream = result.Value;
-        await stream.DisposeAsync();
-        Assert.False(File.Exists(backupPath));
-    }
-    
     [Fact]
     public void CreateBackupStream_ShouldReturnNotFound_WhenDictionaryDoesNotExist()
     {

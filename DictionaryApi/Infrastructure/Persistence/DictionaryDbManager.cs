@@ -7,9 +7,13 @@ namespace Infrastructure.Persistence;
 
 public class DictionaryDbManager: IDictionaryDbManager
 {
+    private const string DirectoryName = "PersonalDictionary";
+    private const string DbDirectoryName = "Databases";
+    private const string BackupDirectoryName = "Backups";
+    
     public async Task CreateAsync(Guid dbId, string defaultDbName)
     {
-        var dictionaryPath = DictionaryDbPathProvider.GetDbPath(dbId);
+        var dictionaryPath = GetDbPath(dbId);
         await using var dictionaryDbContext = CreateDbContext(dictionaryPath);
         
         // Simulate a delay in database creation.
@@ -23,11 +27,11 @@ public class DictionaryDbManager: IDictionaryDbManager
 
     public string? CreateBackup(Guid dbId)
     {
-        var sourcePath = DictionaryDbPathProvider.GetDbPath(dbId);
+        var sourcePath = GetDbPath(dbId);
 
         if (!File.Exists(sourcePath)) return null;
         
-        var destinationPath = DictionaryDbPathProvider.GetBackupPath(dbId);
+        var destinationPath = GetBackupPath(dbId);
 
         using var sourceConnection = CreateSqliteConnection(sourcePath);
         using var destinationConnection = CreateSqliteConnection(destinationPath);
@@ -42,7 +46,7 @@ public class DictionaryDbManager: IDictionaryDbManager
 
     public async Task<string?> SaveAsync(Guid dbId, Stream sourceStream)
     {
-        var destinationPath = DictionaryDbPathProvider.GetDbPath(dbId);
+        var destinationPath = GetDbPath(dbId);
 
         await using (var destinationStream = File.Create(destinationPath))
         {
@@ -63,6 +67,28 @@ public class DictionaryDbManager: IDictionaryDbManager
             File.Delete($"{destinationPath}-wal");
             return null;
         }
+    }
+    
+    internal static string GetDbPath(Guid dbId)
+    {
+        var directoryPath = CreateDirectory(DbDirectoryName);
+        return Path.Combine(directoryPath, $"{dbId}.db");
+    }
+    
+    private static string GetBackupPath(Guid dbId)
+    {
+        var directoryPath = CreateDirectory(BackupDirectoryName);
+        return Path.Combine(directoryPath, $"{dbId}-{Guid.NewGuid()}.db");
+    }
+
+    private static string CreateDirectory(string subDictionaryName)
+    {
+        var tempPath = Path.GetTempPath();
+        var directoryPath = Path.Combine(tempPath, DirectoryName, subDictionaryName);
+
+        if (!Directory.Exists(directoryPath)) Directory.CreateDirectory(directoryPath);
+
+        return directoryPath;
     }
 
     private static DictionaryDbContext CreateDbContext(string dbPath)

@@ -49,7 +49,7 @@ public sealed class CreateDictionaryApiTests: IClassFixture<WebApplicationFactor
             Assert.NotEqual(Guid.Empty, dbId);
             Assert.Equal(defaultName, dictionaryDto.DbName);
 
-            path = DictionaryDbPathProvider.GetDbPath(dbId);
+            path = DictionaryDbManager.GetDbPath(dbId);
             Assert.True(File.Exists(path));
         }
         finally

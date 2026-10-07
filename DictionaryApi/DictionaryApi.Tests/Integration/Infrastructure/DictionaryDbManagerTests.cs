@@ -25,7 +25,7 @@ public sealed class DictionaryDbManagerTests
             var dbId = Guid.NewGuid();
             const string defaultName = "Test Dictionary Name";
 
-            dictionaryPath = DictionaryDbPathProvider.GetDbPath(dbId);
+            dictionaryPath = DictionaryDbManager.GetDbPath(dbId);
 
             // Act
             await _dictionaryDbManager.CreateAsync(dbId, defaultName);
@@ -61,7 +61,7 @@ public sealed class DictionaryDbManagerTests
             var dbId = Guid.NewGuid();
             const string defaultName = "Test Dictionary Name";
         
-            dictionaryPath = DictionaryDbPathProvider.GetDbPath(dbId);
+            dictionaryPath = DictionaryDbManager.GetDbPath(dbId);
         
             await _dictionaryDbManager.CreateAsync(dbId, defaultName);
 
@@ -108,7 +108,7 @@ public sealed class DictionaryDbManagerTests
         {
             // Arrange
             var dbId = Guid.NewGuid();
-            dictionaryPath = DictionaryDbPathProvider.GetDbPath(dbId);
+            dictionaryPath = DictionaryDbManager.GetDbPath(dbId);
             
             const string defaultName = "Test Dictionary Name";
             await _dictionaryDbManager.CreateAsync(dbId, defaultName);
@@ -124,7 +124,7 @@ public sealed class DictionaryDbManagerTests
             // Assert
             Assert.Equal(defaultName, saveName);
 
-            savePath = DictionaryDbPathProvider.GetDbPath(saveDbId);
+            savePath = DictionaryDbManager.GetDbPath(saveDbId);
             Assert.True(File.Exists(savePath));
         }
         finally
@@ -149,7 +149,7 @@ public sealed class DictionaryDbManagerTests
         // Assert
         Assert.Null(saveName);
         
-        var savePath = DictionaryDbPathProvider.GetDbPath(saveDbId);
+        var savePath = DictionaryDbManager.GetDbPath(saveDbId);
         Assert.False(File.Exists(savePath));
     }
 }
