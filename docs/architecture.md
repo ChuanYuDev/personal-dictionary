@@ -572,6 +572,7 @@
 
 ### Test
 - Add WAL-specific test when downloading a dictionary?
+- `DictionaryDbManager` test, add a new entry into the database during `CreateBackup` and `SaveAsync` arrange stage?
 
 ## To do
 ### To do

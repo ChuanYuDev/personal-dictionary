@@ -21,7 +21,7 @@ public class DictionariesController: ControllerBase
     }
     
     [HttpPost("create")]
-    public async Task<DictionaryDto> Create()
+    public async Task<DictionaryDto> CreateAsync()
     {
         return await _dictionaryService.CreateAsync();
     }
@@ -55,7 +55,7 @@ public class DictionariesController: ControllerBase
     }
 
     [HttpPost("open")]
-    public async Task<ActionResult<DictionaryDto>> Open(IFormFile file)
+    public async Task<ActionResult<DictionaryDto>> OpenAsync(IFormFile file)
     {
         await using var stream = file.OpenReadStream();
         var result = await _dictionaryService.SaveAsync(stream);

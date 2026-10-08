@@ -23,26 +23,17 @@ public sealed class DictionaryDbManagerTests
         {
             // Arrange
             var dbId = Guid.NewGuid();
-            const string defaultName = "Test Dictionary Name";
+            const string dbName = "Test Dictionary Name";
 
             dictionaryPath = DictionaryDbManager.GetDbPath(dbId);
 
             // Act
-            await _dictionaryDbManager.CreateAsync(dbId, defaultName);
+            await _dictionaryDbManager.CreateAsync(dbId, dbName);
 
             // Assert
             Assert.True(File.Exists(dictionaryPath));
 
-            await using var dictionaryDbContext = DictionaryDbTestHelper.CreateDbContext(dictionaryPath);
-
-            var categories = await dictionaryDbContext.Categories.ToListAsync(cancellationToken: TestContext.Current.CancellationToken);
-
-            Assert.Equal(2, categories.Count);
-            Assert.Equal("word", categories[0].Name);
-            Assert.Equal("phrase", categories[1].Name);
-
-            var metadata = await dictionaryDbContext.Metadata.SingleAsync(cancellationToken: TestContext.Current.CancellationToken);
-            Assert.Equal(defaultName, metadata.Name);
+            await DictionaryDbTestHelper.AssertDatabaseAsync(dictionaryPath, dbName);
         }
         finally
         { 
@@ -59,28 +50,19 @@ public sealed class DictionaryDbManagerTests
         {
             // Arrange
             var dbId = Guid.NewGuid();
-            const string defaultName = "Test Dictionary Name";
+            const string dbName = "Test Dictionary Name";
         
             dictionaryPath = DictionaryDbManager.GetDbPath(dbId);
         
-            await _dictionaryDbManager.CreateAsync(dbId, defaultName);
+            await _dictionaryDbManager.CreateAsync(dbId, dbName);
 
             // Act
             backupPath = _dictionaryDbManager.CreateBackup(dbId);
         
             // Assert
             Assert.True(File.Exists(backupPath));
-        
-            await using var dictionaryDbContext = DictionaryDbTestHelper.CreateDbContext(backupPath);
 
-            var categories = await dictionaryDbContext.Categories.ToListAsync(cancellationToken: TestContext.Current.CancellationToken);
-        
-            Assert.Equal(2, categories.Count);
-            Assert.Equal("word", categories[0].Name);
-            Assert.Equal("phrase", categories[1].Name);
-        
-            var metadata = await dictionaryDbContext.Metadata.SingleAsync(cancellationToken: TestContext.Current.CancellationToken);
-            Assert.Equal(defaultName, metadata.Name);
+            await DictionaryDbTestHelper.AssertDatabaseAsync(backupPath, dbName);
         }
         finally
         {
@@ -113,9 +95,10 @@ public sealed class DictionaryDbManagerTests
             const string defaultName = "Test Dictionary Name";
             await _dictionaryDbManager.CreateAsync(dbId, defaultName);
 
-            var saveDbId = Guid.NewGuid();
             backupPath = _dictionaryDbManager.CreateBackup(dbId);
             Assert.NotNull(backupPath);
+            
+            var saveDbId = Guid.NewGuid();
             await using var stream = File.OpenRead(backupPath);
 
             // Act

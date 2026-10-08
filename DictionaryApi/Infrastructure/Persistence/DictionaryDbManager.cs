@@ -11,7 +11,7 @@ public class DictionaryDbManager: IDictionaryDbManager
     private const string DbDirectoryName = "Databases";
     private const string BackupDirectoryName = "Backups";
     
-    public async Task CreateAsync(Guid dbId, string defaultDbName)
+    public async Task CreateAsync(Guid dbId, string dbName)
     {
         var dictionaryPath = GetDbPath(dbId);
         await using var dictionaryDbContext = CreateDbContext(dictionaryPath);
@@ -21,7 +21,7 @@ public class DictionaryDbManager: IDictionaryDbManager
 
         await dictionaryDbContext.Database.MigrateAsync();
 
-        dictionaryDbContext.Metadata.Add(new Metadata {Name = defaultDbName});
+        dictionaryDbContext.Metadata.Add(new Metadata {Name = dbName});
         await dictionaryDbContext.SaveChangesAsync();
     }
 

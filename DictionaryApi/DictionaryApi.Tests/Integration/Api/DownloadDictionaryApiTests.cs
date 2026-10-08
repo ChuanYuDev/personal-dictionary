@@ -10,7 +10,7 @@ using Xunit;
 
 namespace DictionaryApi.Tests.Integration.Api;
 
-public class DownloadDictionaryApiTests: IClassFixture<WebApplicationFactory<Program>>
+public sealed class DownloadDictionaryApiTests: IClassFixture<WebApplicationFactory<Program>>, IDisposable
 {
     private readonly HttpClient _httpClient;
     private readonly HttpRequestMessage _httpRequestMessage;
@@ -21,6 +21,11 @@ public class DownloadDictionaryApiTests: IClassFixture<WebApplicationFactory<Pro
     {
         _httpClient = webApplicationFactory.CreateClient();
         _httpRequestMessage = new HttpRequestMessage(HttpMethod.Get, RequestUri);
+    }
+
+    public void Dispose()
+    {
+        _httpRequestMessage.Dispose();
     }
 
     [Fact]
@@ -35,13 +40,13 @@ public class DownloadDictionaryApiTests: IClassFixture<WebApplicationFactory<Pro
             dictionaryPath = DictionaryDbManager.GetDbPath(dbId);
         
             var dictionaryDbManager = new DictionaryDbManager();
-            const string defaultName = "Untitled Dictionary";
-            await dictionaryDbManager.CreateAsync(dbId, defaultName);
+            const string defaultDbName = "Untitled Dictionary";
+            await dictionaryDbManager.CreateAsync(dbId, defaultDbName);
 
             _httpRequestMessage.Headers.Add(DbIdHeaderKey, dbId.ToString());
         
             // Act
-            var httpResponseMessage = await _httpClient.SendAsync(_httpRequestMessage, HttpCompletionOption.ResponseHeadersRead, TestContext.Current.CancellationToken);
+            using var httpResponseMessage = await _httpClient.SendAsync(_httpRequestMessage, HttpCompletionOption.ResponseHeadersRead, TestContext.Current.CancellationToken);
         
             // Assert
             Assert.Equal(HttpStatusCode.OK, httpResponseMessage.StatusCode);
@@ -56,17 +61,8 @@ public class DownloadDictionaryApiTests: IClassFixture<WebApplicationFactory<Pro
                     await stream.CopyToAsync(fileStream, TestContext.Current.CancellationToken);
                 }
             }
-        
-            await using var dictionaryDbContext = DictionaryDbTestHelper.CreateDbContext(downloadedPath);
 
-            var categories = await dictionaryDbContext.Categories.ToListAsync(cancellationToken: TestContext.Current.CancellationToken);
-        
-            Assert.Equal(2, categories.Count);
-            Assert.Equal("word", categories[0].Name);
-            Assert.Equal("phrase", categories[1].Name);
-        
-            var metadata = await dictionaryDbContext.Metadata.SingleAsync(cancellationToken: TestContext.Current.CancellationToken);
-            Assert.Equal(defaultName, metadata.Name);
+            await DictionaryDbTestHelper.AssertDatabaseAsync(downloadedPath, defaultDbName);
         }
         finally
         {
@@ -79,7 +75,7 @@ public class DownloadDictionaryApiTests: IClassFixture<WebApplicationFactory<Pro
     public async Task Download_Returns400BadRequest_WhenDbIdIsMissing()
     {
         // Act
-        var httpResponseMessage = await _httpClient.SendAsync(_httpRequestMessage, HttpCompletionOption.ResponseHeadersRead, TestContext.Current.CancellationToken);
+        using var httpResponseMessage = await _httpClient.SendAsync(_httpRequestMessage, HttpCompletionOption.ResponseHeadersRead, TestContext.Current.CancellationToken);
         
         // Assert
         Assert.Equal(HttpStatusCode.BadRequest, httpResponseMessage.StatusCode);
@@ -98,7 +94,7 @@ public class DownloadDictionaryApiTests: IClassFixture<WebApplicationFactory<Pro
         _httpRequestMessage.Headers.Add(DbIdHeaderKey, dbId.ToString());
         
         // Act
-        var httpResponseMessage = await _httpClient.SendAsync(_httpRequestMessage, HttpCompletionOption.ResponseHeadersRead, TestContext.Current.CancellationToken);
+        using var httpResponseMessage = await _httpClient.SendAsync(_httpRequestMessage, HttpCompletionOption.ResponseHeadersRead, TestContext.Current.CancellationToken);
         
         // Assert
         Assert.Equal(HttpStatusCode.NotFound, httpResponseMessage.StatusCode);

@@ -22,18 +22,18 @@ public sealed class DictionaryServiceTests
     }
     
     [Fact]
-    public async Task CreateAsync_ShouldCreateDictionaryWithDefaultName()
+    public async Task CreateAsync_ShouldReturnDbIdAndDefaultName()
     {
         // Arrange
         const string defaultName = "Untitled Dictionary";
         
         // Act
-        var result = await _dictionaryService.CreateAsync();
+        var dictionaryDto = await _dictionaryService.CreateAsync();
         
         // Assert
-        await _dictionaryDbManager.Received(1).CreateAsync(result.DbId, defaultName);
-        Assert.NotEqual(Guid.Empty, result.DbId);
-        Assert.Equal(defaultName, result.DbName);
+        await _dictionaryDbManager.Received(1).CreateAsync(dictionaryDto.DbId, defaultName);
+        Assert.NotEqual(Guid.Empty, dictionaryDto.DbId);
+        Assert.Equal(defaultName, dictionaryDto.DbName);
     }
 
     [Fact]
@@ -52,6 +52,7 @@ public sealed class DictionaryServiceTests
         var result = _dictionaryService.CreateBackupStream(dbId);
         
         // Assert
+        _dictionaryDbManager.Received(1).CreateBackup(dbId);
         Assert.True(result.IsSuccess);
 
         await using (var stream = result.Value)
@@ -75,5 +76,37 @@ public sealed class DictionaryServiceTests
         
         Assert.False(result.IsSuccess);
         Assert.Equal(DictionaryErrors.NotFound, result.Error);
+    }
+
+    [Fact]
+    public async Task SaveAsync_ShouldReturnDbIdAndDbName()
+    {
+        var stream = new MemoryStream();
+        const string dbName = "Test Dictionary Name";
+
+        _dictionaryDbManager.SaveAsync(Arg.Any<Guid>(), stream).Returns(dbName);
+
+        var result = await _dictionaryService.SaveAsync(stream);
+
+        Assert.True(result.IsSuccess);
+        var dictionaryDto = result.Value;
+        
+        await _dictionaryDbManager.Received(1).SaveAsync(dictionaryDto.DbId, stream);
+
+        Assert.NotEqual(Guid.Empty, dictionaryDto.DbId);
+        Assert.Equal(dbName, dictionaryDto.DbName);
+    }
+    
+    [Fact]
+    public async Task SaveAsync_ShouldReturnInvalid_WhenDictionaryIsInvalid()
+    {
+        var stream = new MemoryStream();
+        
+        _dictionaryDbManager.SaveAsync(Arg.Any<Guid>(), stream).Returns((string?) null);
+
+        var result = await _dictionaryService.SaveAsync(stream);
+        
+        Assert.False(result.IsSuccess);
+        Assert.Equal(result.Error, DictionaryErrors.Invalid);
     }
 }

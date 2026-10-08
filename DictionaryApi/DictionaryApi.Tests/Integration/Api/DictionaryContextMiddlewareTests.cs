@@ -5,7 +5,7 @@ using Xunit;
 
 namespace DictionaryApi.Tests.Integration.Api;
 
-public class DictionaryContextMiddlewareTests: IClassFixture<WebApplicationFactoryWithTestController<Program>>
+public sealed class DictionaryContextMiddlewareTests: IClassFixture<WebApplicationFactoryWithTestController<Program>>, IDisposable
 {
     private readonly HttpClient _httpClient;
     private readonly HttpRequestMessage _httpRequestMessage;
@@ -16,6 +16,11 @@ public class DictionaryContextMiddlewareTests: IClassFixture<WebApplicationFacto
         _httpClient = factory.CreateClient();
         _httpRequestMessage = new HttpRequestMessage(HttpMethod.Get, "/api/test/dictionary-context");
     }
+    
+    public void Dispose()
+    {
+        _httpRequestMessage.Dispose();
+    }
 
     [Fact]
     public async Task InvokeAsync_ShouldReturnDbId_WhenDbIdHeaderIsValid()
@@ -23,7 +28,7 @@ public class DictionaryContextMiddlewareTests: IClassFixture<WebApplicationFacto
         var expectedDbId = Guid.NewGuid();
         _httpRequestMessage.Headers.Add(DbIdHeaderKey, expectedDbId.ToString());
         
-        var httpResponseMessage = await _httpClient.SendAsync(_httpRequestMessage, TestContext.Current.CancellationToken);
+        using var httpResponseMessage = await _httpClient.SendAsync(_httpRequestMessage, TestContext.Current.CancellationToken);
         
         Assert.Equal(HttpStatusCode.OK, httpResponseMessage.StatusCode);
         var dbId = await httpResponseMessage.Content.ReadFromJsonAsync<Guid>(cancellationToken: TestContext.Current.CancellationToken);
@@ -34,7 +39,7 @@ public class DictionaryContextMiddlewareTests: IClassFixture<WebApplicationFacto
     [Fact]
     public async Task InvokeAsync_ShouldReturnEmpty_WhenDbIdHeaderIsMissing()
     {
-        var httpResponseMessage = await _httpClient.SendAsync(_httpRequestMessage, TestContext.Current.CancellationToken);
+        using var httpResponseMessage = await _httpClient.SendAsync(_httpRequestMessage, TestContext.Current.CancellationToken);
         
         var dbId = await httpResponseMessage.Content.ReadFromJsonAsync<Guid>(cancellationToken: TestContext.Current.CancellationToken);
         
@@ -46,7 +51,7 @@ public class DictionaryContextMiddlewareTests: IClassFixture<WebApplicationFacto
     {
         _httpRequestMessage.Headers.Add(DbIdHeaderKey, "Invalid-DbId");
         
-        var httpResponseMessage = await _httpClient.SendAsync(_httpRequestMessage, TestContext.Current.CancellationToken);
+        using var httpResponseMessage = await _httpClient.SendAsync(_httpRequestMessage, TestContext.Current.CancellationToken);
         
         var dbId = await httpResponseMessage.Content.ReadFromJsonAsync<Guid>(cancellationToken: TestContext.Current.CancellationToken);
         

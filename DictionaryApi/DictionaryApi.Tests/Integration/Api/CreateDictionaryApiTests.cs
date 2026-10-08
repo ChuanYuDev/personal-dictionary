@@ -28,15 +28,15 @@ public sealed class CreateDictionaryApiTests: IClassFixture<WebApplicationFactor
     }
 
     [Fact]
-    public async Task Create_ShouldReturnCreatedDictionary()
+    public async Task CreateAsync_ShouldReturnCreatedDictionary()
     {
         string? path = null;
 
         try
         {
             // Act
-            var httpResponseMessage = await _httpClient.PostAsync(RequestUri, null, TestContext.Current.CancellationToken);
-            const string defaultName = "Untitled Dictionary";
+            using var httpResponseMessage = await _httpClient.PostAsync(RequestUri, null, TestContext.Current.CancellationToken);
+            const string defaultDbName = "Untitled Dictionary";
 
             // Assert
             Assert.Equal(HttpStatusCode.OK, httpResponseMessage.StatusCode);
@@ -47,7 +47,7 @@ public sealed class CreateDictionaryApiTests: IClassFixture<WebApplicationFactor
             var dbId = dictionaryDto.DbId;
             
             Assert.NotEqual(Guid.Empty, dbId);
-            Assert.Equal(defaultName, dictionaryDto.DbName);
+            Assert.Equal(defaultDbName, dictionaryDto.DbName);
 
             path = DictionaryDbManager.GetDbPath(dbId);
             Assert.True(File.Exists(path));
@@ -59,7 +59,7 @@ public sealed class CreateDictionaryApiTests: IClassFixture<WebApplicationFactor
     }
 
     [Fact]
-    public async Task Create_Returns500InternalServerError_WhenUnexpectedExceptionOccurs()
+    public async Task CreateAsync_Returns500InternalServerError_WhenUnexpectedExceptionOccurs()
     {
         // Arrange
         var dictionaryDbManager = Substitute.For<IDictionaryDbManager>();
@@ -76,7 +76,7 @@ public sealed class CreateDictionaryApiTests: IClassFixture<WebApplicationFactor
         var httpClient = factory.CreateClient();
         
         // Act
-        var httpResponseMessage = await httpClient.PostAsync(RequestUri, null, TestContext.Current.CancellationToken);
+        using var httpResponseMessage = await httpClient.PostAsync(RequestUri, null, TestContext.Current.CancellationToken);
         
         // Assert
         Assert.Equal(HttpStatusCode.InternalServerError, httpResponseMessage.StatusCode);
