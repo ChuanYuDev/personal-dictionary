@@ -3,6 +3,7 @@ using System.Net.Http.Json;
 using Application.Dtos;
 using DictionaryApi.Tests.Integration.TestInfrastructure;
 using Infrastructure.Persistence;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Xunit;
@@ -47,16 +48,12 @@ public sealed class SaveDictionaryApiTests: IClassFixture<WebApplicationFactory<
             await using var backupStream = File.OpenRead(backupPath);
             using var streamContent = new StreamContent(backupStream);
             
-            using var content = new MultipartFormDataContent();
-            content.Add(streamContent, "file");
-            _httpRequestMessage.Content = content;
+            _httpRequestMessage.Content = streamContent;
 
             // Act
             using var httpResponseMessage = await _httpClient.SendAsync(_httpRequestMessage, TestContext.Current.CancellationToken);
             
             // Assert
-            var problemDetails = await httpResponseMessage.Content.ReadFromJsonAsync<ValidationProblemDetails>(cancellationToken: TestContext.Current.CancellationToken);
-
             Assert.Equal(HttpStatusCode.OK, httpResponseMessage.StatusCode);
             
             var dictionaryDto = await httpResponseMessage.Content.ReadFromJsonAsync<DictionaryDto>(TestContext.Current.CancellationToken);
@@ -77,5 +74,29 @@ public sealed class SaveDictionaryApiTests: IClassFixture<WebApplicationFactory<
             DictionaryDbTestHelper.DeleteDb(backupPath);
             DictionaryDbTestHelper.DeleteDb(savePath);
         }
+    }
+    
+    [Fact]
+    public async Task OpenAsync_ShouldReturn400BadRequest_WhenDictionaryIsInvalid()
+    {
+        // Arrange
+        byte[] bytes = [1, 2, 3, 4, 5];
+        var stream = new MemoryStream(bytes);
+
+        using var streamContent = new StreamContent(stream);
+        
+        _httpRequestMessage.Content = streamContent;
+
+        // Act
+        using var httpResponseMessage = await _httpClient.SendAsync(_httpRequestMessage, TestContext.Current.CancellationToken);
+        
+        // Assert
+        Assert.Equal(HttpStatusCode.BadRequest, httpResponseMessage.StatusCode);
+        
+        var problemDetails = await httpResponseMessage.Content.ReadFromJsonAsync<ProblemDetails>(TestContext.Current.CancellationToken);
+        
+        Assert.NotNull(problemDetails);
+        Assert.Equal(StatusCodes.Status400BadRequest, problemDetails.Status);
+        Assert.Equal("Dictionary invalid", problemDetails.Title);
     }
 }

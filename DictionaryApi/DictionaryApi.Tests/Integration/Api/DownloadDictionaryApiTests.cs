@@ -71,7 +71,7 @@ public sealed class DownloadDictionaryApiTests: IClassFixture<WebApplicationFact
     }
 
     [Fact]
-    public async Task Download_Returns400BadRequest_WhenDbIdIsMissing()
+    public async Task Download_ShouldReturn400BadRequest_WhenDbIdIsMissing()
     {
         // Act
         using var httpResponseMessage = await _httpClient.SendAsync(_httpRequestMessage, HttpCompletionOption.ResponseHeadersRead, TestContext.Current.CancellationToken);
@@ -87,7 +87,7 @@ public sealed class DownloadDictionaryApiTests: IClassFixture<WebApplicationFact
     }
     
     [Fact]
-    public async Task Download_Returns404NotFound_WhenDictionaryWithDbIdDoesNotExist()
+    public async Task Download_ShouldReturn404NotFound_WhenDictionaryWithDbIdDoesNotExist()
     {
         var dbId = Guid.NewGuid();
         _httpRequestMessage.Headers.Add(DbIdHeaderKey, dbId.ToString());
@@ -98,7 +98,7 @@ public sealed class DownloadDictionaryApiTests: IClassFixture<WebApplicationFact
         // Assert
         Assert.Equal(HttpStatusCode.NotFound, httpResponseMessage.StatusCode);
 
-        var problemDetails = await httpResponseMessage.Content.ReadFromJsonAsync<ProblemDetails>(cancellationToken: TestContext.Current.CancellationToken);
+        var problemDetails = await httpResponseMessage.Content.ReadFromJsonAsync<ProblemDetails>(TestContext.Current.CancellationToken);
 
         Assert.NotNull(problemDetails);
         Assert.Equal(StatusCodes.Status404NotFound, problemDetails.Status);
