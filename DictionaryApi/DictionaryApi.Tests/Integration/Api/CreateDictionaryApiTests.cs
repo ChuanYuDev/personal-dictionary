@@ -30,7 +30,7 @@ public sealed class CreateDictionaryApiTests: IClassFixture<WebApplicationFactor
     [Fact]
     public async Task CreateAsync_ShouldReturnCreatedDictionary()
     {
-        string? path = null;
+        string? dictionaryPath = null;
 
         try
         {
@@ -49,12 +49,13 @@ public sealed class CreateDictionaryApiTests: IClassFixture<WebApplicationFactor
             Assert.NotEqual(Guid.Empty, dbId);
             Assert.Equal(defaultDbName, dictionaryDto.DbName);
 
-            path = DictionaryDbManager.GetDbPath(dbId);
-            Assert.True(File.Exists(path));
+            dictionaryPath = DictionaryDbManager.GetDbPath(dbId);
+            Assert.True(File.Exists(dictionaryPath));
+            await DictionaryDbTestHelper.AssertDatabaseAsync(dictionaryPath, defaultDbName);
         }
         finally
         {
-            DictionaryDbTestHelper.DeleteDb(path);
+            DictionaryDbTestHelper.DeleteDb(dictionaryPath);
         }
     }
 

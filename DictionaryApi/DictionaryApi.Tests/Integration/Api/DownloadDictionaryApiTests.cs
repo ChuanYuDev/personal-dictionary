@@ -5,7 +5,6 @@ using Infrastructure.Persistence;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Testing;
-using Microsoft.EntityFrameworkCore;
 using Xunit;
 
 namespace DictionaryApi.Tests.Integration.Api;
@@ -29,7 +28,7 @@ public sealed class DownloadDictionaryApiTests: IClassFixture<WebApplicationFact
     }
 
     [Fact]
-    public async Task Download_ShouldDownloadDictionary_WhenDictionaryWithDbIdExists()
+    public async Task Download_ShouldDownloadDictionary()
     {
         string? dictionaryPath = null, downloadedPath = null;
         
@@ -40,8 +39,8 @@ public sealed class DownloadDictionaryApiTests: IClassFixture<WebApplicationFact
             dictionaryPath = DictionaryDbManager.GetDbPath(dbId);
         
             var dictionaryDbManager = new DictionaryDbManager();
-            const string defaultDbName = "Untitled Dictionary";
-            await dictionaryDbManager.CreateAsync(dbId, defaultDbName);
+            const string dbName = "Test Dictionary Name";
+            await dictionaryDbManager.CreateAsync(dbId, dbName);
 
             _httpRequestMessage.Headers.Add(DbIdHeaderKey, dbId.ToString());
         
@@ -62,7 +61,7 @@ public sealed class DownloadDictionaryApiTests: IClassFixture<WebApplicationFact
                 }
             }
 
-            await DictionaryDbTestHelper.AssertDatabaseAsync(downloadedPath, defaultDbName);
+            await DictionaryDbTestHelper.AssertDatabaseAsync(downloadedPath, dbName);
         }
         finally
         {

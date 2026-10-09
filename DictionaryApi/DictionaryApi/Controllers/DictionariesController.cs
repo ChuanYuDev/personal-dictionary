@@ -55,9 +55,9 @@ public class DictionariesController: ControllerBase
     }
 
     [HttpPost("open")]
-    public async Task<ActionResult<DictionaryDto>> OpenAsync(IFormFile file)
+    public async Task<ActionResult<DictionaryDto>> OpenAsync()
     {
-        await using var stream = file.OpenReadStream();
+        var stream = Request.Body;
         var result = await _dictionaryService.SaveAsync(stream);
 
         if (result.IsSuccess) return result.Value;

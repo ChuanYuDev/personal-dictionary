@@ -32,10 +32,7 @@ export class DictionaryService {
     }
     
     open(file: File) {
-        const formData = new FormData();
-        formData.append("file", file);
-        
-        return this.httpClient.post<DictionaryDto>(`${this.baseUrl}/open`, formData).pipe(tap(
+        return this.httpClient.post<DictionaryDto>(`${this.baseUrl}/open`, file).pipe(tap(
             dictionaryDto => { this.storeDictionaryState(dictionaryDto); }
         ));
     }

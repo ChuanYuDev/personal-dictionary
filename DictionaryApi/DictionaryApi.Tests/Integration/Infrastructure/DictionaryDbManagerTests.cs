@@ -50,10 +50,9 @@ public sealed class DictionaryDbManagerTests
         {
             // Arrange
             var dbId = Guid.NewGuid();
-            const string dbName = "Test Dictionary Name";
-        
             dictionaryPath = DictionaryDbManager.GetDbPath(dbId);
-        
+            
+            const string dbName = "Test Dictionary Name";
             await _dictionaryDbManager.CreateAsync(dbId, dbName);
 
             // Act
@@ -82,7 +81,7 @@ public sealed class DictionaryDbManagerTests
     }
 
     [Fact]
-    public async Task SaveAsync_ShouldSaveDictionary_WhenDictionaryIsValid()
+    public async Task SaveAsync_ShouldSaveDictionary()
     {
         string? dictionaryPath = null, backupPath = null, savePath = null;
 
@@ -92,8 +91,8 @@ public sealed class DictionaryDbManagerTests
             var dbId = Guid.NewGuid();
             dictionaryPath = DictionaryDbManager.GetDbPath(dbId);
             
-            const string defaultName = "Test Dictionary Name";
-            await _dictionaryDbManager.CreateAsync(dbId, defaultName);
+            const string dbName = "Test Dictionary Name";
+            await _dictionaryDbManager.CreateAsync(dbId, dbName);
 
             backupPath = _dictionaryDbManager.CreateBackup(dbId);
             Assert.NotNull(backupPath);
@@ -105,10 +104,11 @@ public sealed class DictionaryDbManagerTests
             var saveName = await _dictionaryDbManager.SaveAsync(saveDbId, stream);
         
             // Assert
-            Assert.Equal(defaultName, saveName);
+            Assert.Equal(dbName, saveName);
 
             savePath = DictionaryDbManager.GetDbPath(saveDbId);
             Assert.True(File.Exists(savePath));
+            await DictionaryDbTestHelper.AssertDatabaseAsync(savePath, dbName);
         }
         finally
         {
