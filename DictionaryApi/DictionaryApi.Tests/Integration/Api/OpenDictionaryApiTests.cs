@@ -10,13 +10,13 @@ using Xunit;
 
 namespace DictionaryApi.Tests.Integration.Api;
 
-public sealed class SaveDictionaryApiTests: IClassFixture<WebApplicationFactory<Program>>, IDisposable
+public sealed class OpenDictionaryApiTests: IClassFixture<WebApplicationFactory<Program>>, IDisposable
 {
     private readonly HttpClient _httpClient;
     private readonly HttpRequestMessage _httpRequestMessage;
     private const string RequestUri = "/api/dictionaries/open";
 
-    public SaveDictionaryApiTests(WebApplicationFactory<Program> webApplicationFactory)
+    public OpenDictionaryApiTests(WebApplicationFactory<Program> webApplicationFactory)
     {
         _httpClient = webApplicationFactory.CreateClient();
         _httpRequestMessage = new HttpRequestMessage(HttpMethod.Post, RequestUri);

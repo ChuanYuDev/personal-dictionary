@@ -1,4 +1,4 @@
-import {Component, inject, input, signal} from '@angular/core';
+import {Component, inject, input, output, signal} from '@angular/core';
 import {DisplayErrorsComponent} from "../../shared/components/display-errors/display-errors.component";
 import {DictionaryService} from "../dictionary.service";
 import {extractErrorMessages} from "../../shared/functions/extract-error-messages";
@@ -16,6 +16,7 @@ export class OpenDictionaryComponent {
     readonly buttonText = input.required<string>();
     
     readonly dictionaryService = inject(DictionaryService);
+    readonly opened = output<void>();
     
     change(event: Event) {
         const inputElement = event.target as HTMLInputElement;
@@ -30,6 +31,7 @@ export class OpenDictionaryComponent {
             this.dictionaryService.open(file).subscribe({
                 next: () => {
                     this.isOpening.set(false);
+                    this.opened.emit();
                 },
                 
                 error: async (err) => {

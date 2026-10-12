@@ -34,11 +34,11 @@ describe("DictionaryService", () => {
             spyOn(window.localStorage, "setItem");
         });
         
-        it('should issue a POST request, update the dictionary state when the creation succeeds', async () => {
+        it('should issue a POST request, update the dictionary state', async () => {
             // Arrange
             const create$ = dictionaryService.create();
             
-            // Test
+            // Act
             const createPromise = firstValueFrom(create$);
             
             // Assert
@@ -66,7 +66,7 @@ describe("DictionaryService", () => {
         });
 
         it('should not update the dictionary state when the creation fails', () => {
-            // Test
+            // Act
             dictionaryService.create().subscribe({error: () => {}});
 
             // Assert
@@ -102,6 +102,63 @@ describe("DictionaryService", () => {
 
             // expect(httpResponse.body).toBeInstanceOf(Blob);
             expect(actualBlob).toBe(expectedBlob);
+        });
+    });
+    
+    describe("open", () => {
+        let file: File;
+        
+        beforeEach(() => {
+            file = new File(["test"], "dictionary.db");
+            spyOn(window.localStorage, "setItem");
+        });
+
+        it('should issue a POST request, update the dictionary state', async () => {
+            // Arrange
+            const open$ = dictionaryService.open(file);
+
+            // Act
+            const openPromise = firstValueFrom(open$);
+
+            // Assert
+            expect(dictionaryService.dictionaryState()).toBeNull();
+
+            const testRequest = httpTesting.expectOne((request) => request.url.endsWith("api/dictionaries/open"));
+            expect(testRequest.request.method).toBe("POST");
+
+            const dictionaryDto: DictionaryDto = {
+                dbId: "test dbId",
+                dbName: "test dbName"
+            };
+
+            testRequest.flush(dictionaryDto);
+
+            expect(await openPromise).toEqual(dictionaryDto);
+            expect(dictionaryService.dictionaryState()).toEqual({
+                dbId: dictionaryDto.dbId,
+                dbName: dictionaryDto.dbName
+            });
+
+            expect(window.localStorage.setItem).toHaveBeenCalledTimes(2);
+            expect(window.localStorage.setItem).toHaveBeenCalledWith("db-id", dictionaryDto.dbId);
+            expect(window.localStorage.setItem).toHaveBeenCalledWith("db-name", dictionaryDto.dbName);
+        });
+
+        it('should not update the dictionary state when the open fails', () => {
+            // Test
+            dictionaryService.open(file).subscribe({error: () => {}});
+
+            // Assert
+            expect(dictionaryService.dictionaryState()).toBeNull();
+
+            const testRequest = httpTesting.expectOne((request) => request.url.endsWith("api/dictionaries/open"));
+
+            testRequest.flush(null, {status: 500, statusText: "Internal server error"});
+
+            expect(dictionaryService.dictionaryState()).toBeNull();
+
+            expect(window.localStorage.setItem).not.toHaveBeenCalled();
+
         });
     });
 });

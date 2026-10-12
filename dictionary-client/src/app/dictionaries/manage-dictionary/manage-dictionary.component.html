@@ -16,11 +16,11 @@
         </div>
 
         <div class="col-12">
-            <app-open-dictionary buttonText="Open Another Dictionary"></app-open-dictionary>
+            <app-open-dictionary buttonText="Open Another Dictionary" (opened)="navigateToHome()"></app-open-dictionary>
         </div>
 
         <div class="col-12">
-            <app-create-dictionary (created)="onDictionaryCreated()"></app-create-dictionary>
+            <app-create-dictionary (created)="navigateToHome()"></app-create-dictionary>
         </div>
         
         <div class="col-12">

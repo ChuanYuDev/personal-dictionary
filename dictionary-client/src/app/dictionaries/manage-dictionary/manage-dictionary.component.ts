@@ -21,7 +21,7 @@ export class ManageDictionaryComponent {
         this.router.navigate(["/"]);
     }
     
-    onDictionaryCreated(): void {
+    navigateToHome(): void {
         this.router.navigate(["/"]);
     }
 }
