@@ -1,4 +1,5 @@
 using Application.Abstractions;
+using Application.Mappings;
 using Application.Services;
 using DictionaryApi.ExceptionHandling;
 using DictionaryApi.Middleware;
@@ -30,6 +31,13 @@ builder.Services.AddTransient<DictionaryService>();
 
 builder.Services.AddScoped<DictionaryContext>();
 builder.Services.AddScoped<IDictionaryContext>(provider => provider.GetRequiredService<DictionaryContext>());
+
+var autoMapperLicenseKey = builder.Configuration.GetValue<string>("AutoMapperLicenseKey") ?? throw new InvalidOperationException("AutoMapper license key not found");
+
+builder.Services.AddAutoMapper(cfg =>
+{
+    cfg.LicenseKey = autoMapperLicenseKey;
+}, typeof(EntryProfile).Assembly);
 
 var app = builder.Build();
 
