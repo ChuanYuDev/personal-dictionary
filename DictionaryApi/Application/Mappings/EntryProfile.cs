@@ -8,6 +8,7 @@ public class EntryProfile: Profile
 {
     public EntryProfile()
     {
+        CreateMap<EntryCreationDto, Entry>();
         CreateMap<Entry, EntryDto>();
     }
 }

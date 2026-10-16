@@ -2,8 +2,10 @@ using Application.Abstractions;
 using Application.Mappings;
 using Application.Services;
 using DictionaryApi.ExceptionHandling;
+using DictionaryApi.Filters;
 using DictionaryApi.Middleware;
 using Infrastructure.Persistence;
+using Infrastructure.Persistence.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -27,10 +29,20 @@ builder.Services.AddCors(options =>
 builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
 
 builder.Services.AddTransient<IDictionaryDbManager, DictionaryDbManager>();
+builder.Services.AddTransient<IEntryRepository, EntryRepository>();
 builder.Services.AddTransient<DictionaryService>();
+builder.Services.AddTransient<EntryService>();
 
 builder.Services.AddScoped<DictionaryContext>();
-builder.Services.AddScoped<IDictionaryContext>(provider => provider.GetRequiredService<DictionaryContext>());
+builder.Services.AddScoped<IDictionaryContext>(serviceProvider => serviceProvider.GetRequiredService<DictionaryContext>());
+
+builder.Services.AddScoped<RequireDictionaryActionFilter>();
+
+builder.Services.AddDictionaryDbContext(serviceProvider =>
+{
+    var dictionaryContext = serviceProvider.GetRequiredService<IDictionaryContext>();
+    return dictionaryContext.DbId;
+});
 
 var autoMapperLicenseKey = builder.Configuration.GetValue<string>("AutoMapperLicenseKey") ?? throw new InvalidOperationException("AutoMapper license key not found");
 

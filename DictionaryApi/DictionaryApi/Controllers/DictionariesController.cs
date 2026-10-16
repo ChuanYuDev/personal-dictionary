@@ -2,6 +2,7 @@ using System.Diagnostics;
 using Application.Dtos;
 using Application.Errors;
 using Application.Services;
+using DictionaryApi.Filters;
 using DictionaryApi.Middleware;
 using Microsoft.AspNetCore.Mvc;
 
@@ -27,16 +28,11 @@ public class DictionariesController: ControllerBase
     }
 
     [HttpGet("download")]
+    [ServiceFilter<RequireDictionaryActionFilter>]
     public IActionResult Download()
     {
         var dbId = _dictionaryContext.DbId;
         
-        if (dbId == Guid.Empty) return Problem(
-            statusCode: StatusCodes.Status400BadRequest,
-            title: "No dictionary selected",
-            detail: "No dictionary is currently selected. Please create or open a dictionary."
-        );
-
         var result = _dictionaryService.CreateBackupStream(dbId);
 
         if (result.IsSuccess) return File(result.Value, "application/vnd.sqlite3");
