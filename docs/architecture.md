@@ -43,7 +43,29 @@
 
 - Delete modal dialog (TO DO)
 
+## Workflow
+### `DictionariesController`
+- Download
+    - Get `dbId` from `DictionaryContext`
+    - If `dbId` is empty, return bad request
+    - Create backup stream, get result
+    - If result is successful, return a file
+    - If result is failed, return dictionary not found
+
+### `EntriesController` 
+- CreateAsync
+    - Get `dbId` from `DictionaryContext`
+    - If `dbId` is empty, return bad request
+    - Create the entry, get result
+    - If result is successful, return 201 created
+    - If result is failed, return dictionary not found
+
 ## Features
+### Pipeline
+- Pipeline
+
+    ![](../images/pipeline.png)
+
 ### Dictionary state
 - We use the singleton `DictionaryService` to store `dictionaryState` signal, therefore we only retore `dictionaryState` when we reload the application
 

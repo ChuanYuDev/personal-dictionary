@@ -28,26 +28,14 @@ public class DictionariesController: ControllerBase
     }
 
     [HttpGet("download")]
-    [ServiceFilter<RequireDictionaryActionFilter>]
+    [ServiceFilter<ValidateDbIdActionFilter>]
     public IActionResult Download()
     {
         var dbId = _dictionaryContext.DbId;
         
-        var result = _dictionaryService.CreateBackupStream(dbId);
+        var backupStream = _dictionaryService.CreateBackupStream(dbId);
 
-        if (result.IsSuccess) return File(result.Value, "application/vnd.sqlite3");
-        
-        var error = result.Error;
-        
-        return error.Type switch
-        {
-            ErrorType.NotFound => Problem(
-                statusCode: StatusCodes.Status404NotFound,
-                title: "Dictionary not found",
-                detail: "The dictionary could not be found on the server. Please create or open a dictionary."
-            ),
-            _ => throw new UnreachableException($"Result error code: {error.Code}")
-        };
+        return File(backupStream, "application/vnd.sqlite3");
     }
 
     [HttpPost("open")]

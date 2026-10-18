@@ -71,13 +71,14 @@ public sealed class DictionaryDbManagerTests
     }
 
     [Fact]
-    public void CreateBackup_ShouldReturnNull_WhenDictionaryDoesNotExist()
+    public void CreateBackup_ShouldThrowException_WhenDictionaryDoesNotExist()
     {
         var dbId = Guid.NewGuid();
 
-        var backupPath = _dictionaryDbManager.CreateBackup(dbId);
-        
-        Assert.Null(backupPath);
+        Assert.Throws<InvalidOperationException>(() =>
+        {
+            _dictionaryDbManager.CreateBackup(dbId);
+        });
     }
 
     [Fact]

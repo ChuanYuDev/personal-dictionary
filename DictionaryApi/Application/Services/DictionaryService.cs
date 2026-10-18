@@ -29,11 +29,9 @@ public class DictionaryService
         return new DictionaryDto(dbId, DefaultDbName);
     }
 
-    public Result<Stream> CreateBackupStream(Guid dbId)
+    public Stream CreateBackupStream(Guid dbId)
     {
         var backupPath = _dictionaryDbManager.CreateBackup(dbId);
-
-        if (backupPath is null) return DictionaryErrors.NotFound;
 
         var stream = new FileStream(
             backupPath,

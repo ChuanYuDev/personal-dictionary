@@ -49,13 +49,12 @@ public sealed class DictionaryServiceTests
         _dictionaryDbManager.CreateBackup(dbId).Returns(path);
         
         // Act
-        var result = _dictionaryService.CreateBackupStream(dbId);
+        var backupStream = _dictionaryService.CreateBackupStream(dbId);
         
         // Assert
         _dictionaryDbManager.Received(1).CreateBackup(dbId);
-        Assert.True(result.IsSuccess);
 
-        await using (var stream = result.Value)
+        await using (var stream = backupStream)
         {
             await using var memoryStream = new MemoryStream();
             await stream.CopyToAsync(memoryStream, TestContext.Current.CancellationToken);
@@ -63,19 +62,6 @@ public sealed class DictionaryServiceTests
         }
         
         Assert.False(File.Exists(path));
-    }
-
-    [Fact]
-    public void CreateBackupStream_ShouldReturnNotFound_WhenDictionaryDoesNotExist()
-    {
-        var dbId = Guid.NewGuid();
-
-        _dictionaryDbManager.CreateBackup(dbId).Returns((string?)null);
-        
-        var result = _dictionaryService.CreateBackupStream(dbId);
-        
-        Assert.False(result.IsSuccess);
-        Assert.Equal(DictionaryErrors.NotFound, result.Error);
     }
 
     [Fact]

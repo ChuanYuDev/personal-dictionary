@@ -10,7 +10,14 @@ public class DictionaryDbManager: IDictionaryDbManager
     private const string DirectoryName = "PersonalDictionary";
     private const string DbDirectoryName = "Databases";
     private const string BackupDirectoryName = "Backups";
-    
+
+    public bool DictionaryExists(Guid dbId)
+    {
+        var dictionaryPath = GetDbPath(dbId);
+
+        return File.Exists(dictionaryPath);
+    }
+
     public async Task CreateAsync(Guid dbId, string dbName)
     {
         var dictionaryPath = GetDbPath(dbId);
@@ -25,11 +32,13 @@ public class DictionaryDbManager: IDictionaryDbManager
         await dictionaryDbContext.SaveChangesAsync();
     }
 
-    public string? CreateBackup(Guid dbId)
+    public string CreateBackup(Guid dbId)
     {
         var sourcePath = GetDbPath(dbId);
-
-        if (!File.Exists(sourcePath)) return null;
+        
+        // DbId has been validated by ValidateDbIdActionFilter
+        // If sourcePath doesn't exist, it's an unexpected error
+        if (!File.Exists(sourcePath)) throw new InvalidOperationException($"The dictionary with {dbId} doesn't exist");
         
         var destinationPath = GetBackupPath(dbId);
 

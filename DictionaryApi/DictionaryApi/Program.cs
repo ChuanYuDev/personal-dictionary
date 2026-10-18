@@ -36,7 +36,7 @@ builder.Services.AddTransient<EntryService>();
 builder.Services.AddScoped<DictionaryContext>();
 builder.Services.AddScoped<IDictionaryContext>(serviceProvider => serviceProvider.GetRequiredService<DictionaryContext>());
 
-builder.Services.AddScoped<RequireDictionaryActionFilter>();
+builder.Services.AddScoped<ValidateDbIdActionFilter>();
 
 builder.Services.AddDictionaryDbContext(serviceProvider =>
 {
