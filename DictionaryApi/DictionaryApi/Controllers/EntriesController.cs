@@ -1,5 +1,6 @@
 using Application.Dtos;
 using Application.Services;
+using DictionaryApi.Filters;
 using DictionaryApi.Middleware;
 using Microsoft.AspNetCore.Mvc;
 
@@ -7,6 +8,7 @@ namespace DictionaryApi.Controllers;
 
 [Route("api/entries")]
 [ApiController]
+[ServiceFilter<ValidateDbIdActionFilter>]
 public class EntriesController: ControllerBase
 {
     private readonly EntryService _entryService;

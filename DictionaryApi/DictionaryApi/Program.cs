@@ -4,6 +4,7 @@ using Application.Services;
 using DictionaryApi.ExceptionHandling;
 using DictionaryApi.Filters;
 using DictionaryApi.Middleware;
+using DictionaryApi.Swagger;
 using Infrastructure.Persistence;
 using Infrastructure.Persistence.Repositories;
 
@@ -14,7 +15,10 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(options =>
+{
+    options.OperationFilter<AddDbIdParameterOperationFilter>();
+});
 
 var allowedOrigins = builder.Configuration.GetValue<string>("AllowedOrigins")?.Split(",") ?? throw new InvalidOperationException("Allowed origins are not found.");
 
