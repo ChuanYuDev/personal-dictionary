@@ -3,7 +3,7 @@ namespace DictionaryApi.Middleware;
 public class DictionaryContextMiddleware
 {
     private readonly RequestDelegate _next;
-    private const string DbIdHeaderKey = "X-DbId";
+    private const string DbIdHeaderKey = "db-id";
 
     public DictionaryContextMiddleware(RequestDelegate next)
     {

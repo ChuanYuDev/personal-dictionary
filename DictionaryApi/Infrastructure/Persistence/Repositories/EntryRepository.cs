@@ -33,7 +33,12 @@ public class EntryRepository: IEntryRepository
             .ToListAsync();
     }
 
-    // public async Task<EntryDto?>
+    public async Task<EntryDto?> GetAsync(int id)
+    {
+        return await _context.Entries
+            .ProjectTo<EntryDto>(_mapper.ConfigurationProvider)
+            .FirstOrDefaultAsync(e => e.Id == id);
+    }
     
     public async Task<EntryDto> CreateAsync(EntryCreationDto entryCreationDto)
     {
@@ -42,10 +47,8 @@ public class EntryRepository: IEntryRepository
         _context.Add(entry);
         await _context.SaveChangesAsync();
 
-        var entryDto = await _context.Entries
+        return await _context.Entries
             .ProjectTo<EntryDto>(_mapper.ConfigurationProvider)
             .SingleAsync(e => e.Id == entry.Id);
-        
-        return entryDto;
     }
 }

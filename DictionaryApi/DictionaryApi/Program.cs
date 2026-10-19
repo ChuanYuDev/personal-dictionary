@@ -30,6 +30,11 @@ builder.Services.AddCors(options =>
     });
 });
 
+builder.Services.AddOutputCache(options =>
+{
+    options.DefaultExpirationTimeSpan = TimeSpan.FromSeconds(60);
+});
+
 builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
 
 builder.Services.AddTransient<IDictionaryDbManager, DictionaryDbManager>();
@@ -71,6 +76,8 @@ app.UseHttpsRedirection();
 app.UseCors();
 
 app.UseDictionaryContext();
+
+app.UseOutputCache();
 
 app.UseAuthorization();
 

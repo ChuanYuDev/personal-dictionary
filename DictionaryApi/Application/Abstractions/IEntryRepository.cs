@@ -8,6 +8,8 @@ public interface IEntryRepository
     Task<int> CountAsync();
 
     Task<List<EntryDto>> GetAsync(PaginationDto paginationDto);
+
+    Task<EntryDto?> GetAsync(int id);
     
     Task<EntryDto> CreateAsync(EntryCreationDto entryCreationDto);
 }

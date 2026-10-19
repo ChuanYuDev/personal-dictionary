@@ -8,7 +8,7 @@ describe("dbIdInterceptor", () => {
     let httpTesting: HttpTestingController;
     
     const dbIdKey = "db-id";
-    const dbIdHeaderKey = "X-DbId";
+    const dbIdHeaderKey = "db-id";
     const testUrl = "/api/db-id-test";
     
     beforeEach(() => {
@@ -30,7 +30,7 @@ describe("dbIdInterceptor", () => {
         window.localStorage.removeItem(dbIdKey);
     });
 
-    it('should add X-DbId header when dbId exists in localStorage', () => {
+    it('should add db-id header when dbId exists in localStorage', () => {
         const dbId = "test dbId";
         window.localStorage.setItem(dbIdKey, dbId);
         
@@ -45,7 +45,7 @@ describe("dbIdInterceptor", () => {
         testRequest.flush({});
     });
 
-    it('should not add X-DbId header when dbId does not exist', () => {
+    it('should not add db-id header when dbId does not exist', () => {
         httpClient.get(testUrl).subscribe();
 
         const testRequest = httpTesting.expectOne(testUrl);

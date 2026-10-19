@@ -10,7 +10,7 @@ export const dbIdInterceptor: HttpInterceptorFn = (req, next) => {
     if (dbId) {
         req = req.clone({
             setHeaders: {
-                "X-DbId": dbId
+                "db-id": dbId
             }
         });
     }

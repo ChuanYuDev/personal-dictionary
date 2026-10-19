@@ -11,7 +11,7 @@ public class AddDbIdParameterOperationFilter: IOperationFilter
         
         operation.Parameters.Add(new OpenApiParameter
         {
-            Name = "X-DbId",
+            Name = "db-id",
             In = ParameterLocation.Header,
             Description = "The dictionary Id",
             Required = false
