@@ -36,8 +36,11 @@ public class Result<T> : Result
     {
         _value = value;
     }
-    
-    private Result(Error error): base(error) {}
+
+    private Result(Error error) : base(error)
+    {
+        _value = default;
+    }
 
     public static implicit operator Result<T>(T value) => new(value);
     public static implicit operator Result<T>(Error error) => new(error);

@@ -26,7 +26,7 @@ builder.Services.AddCors(options =>
 {
     options.AddDefaultPolicy(policy =>
     {
-        policy.WithOrigins(allowedOrigins).AllowAnyMethod().AllowAnyHeader();
+        policy.WithOrigins(allowedOrigins).AllowAnyMethod().AllowAnyHeader().WithExposedHeaders("total-count");
     });
 });
 
@@ -35,7 +35,6 @@ builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
 builder.Services.AddTransient<IDictionaryDbManager, DictionaryDbManager>();
 builder.Services.AddTransient<IEntryRepository, EntryRepository>();
 builder.Services.AddTransient<DictionaryService>();
-builder.Services.AddTransient<EntryService>();
 
 builder.Services.AddScoped<DictionaryContext>();
 builder.Services.AddScoped<IDictionaryContext>(serviceProvider => serviceProvider.GetRequiredService<DictionaryContext>());

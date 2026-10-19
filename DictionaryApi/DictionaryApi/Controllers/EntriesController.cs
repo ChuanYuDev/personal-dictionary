@@ -1,5 +1,7 @@
+using Application.Abstractions;
 using Application.Dtos;
 using Application.Services;
+using DictionaryApi.Extensions;
 using DictionaryApi.Filters;
 using DictionaryApi.Middleware;
 using Microsoft.AspNetCore.Mvc;
@@ -11,14 +13,21 @@ namespace DictionaryApi.Controllers;
 [ServiceFilter<ValidateDbIdActionFilter>]
 public class EntriesController: ControllerBase
 {
-    private readonly EntryService _entryService;
-    private readonly IDictionaryContext _dictionaryContext;
+    private readonly IEntryRepository _entryRepository;
     private const string GetByIdName = "GetEntryById";
     
-    public EntriesController(EntryService entryService, IDictionaryContext dictionaryContext)
+    public EntriesController(IEntryRepository entryRepository)
     {
-        _entryService = entryService;
-        _dictionaryContext = dictionaryContext;
+        _entryRepository = entryRepository;
+    }
+
+    [HttpGet]
+    public async Task<List<EntryDto>> GetAsync([FromQuery] PaginationDto paginationDto)
+    {
+        var totalCount = await _entryRepository.CountAsync();
+        HttpContext.AppendTotalCountInHeader(totalCount);
+
+        return await _entryRepository.GetAsync(paginationDto);
     }
 
     [HttpGet("{id:int}", Name = GetByIdName)]
@@ -30,7 +39,7 @@ public class EntriesController: ControllerBase
     [HttpPost]
     public async Task<CreatedAtRouteResult> CreateAsync([FromBody] EntryCreationDto entryCreationDto)
     {
-        var entryDto = await _entryService.CreateAsync(entryCreationDto);
+        var entryDto = await _entryRepository.CreateAsync(entryCreationDto);
         return CreatedAtRoute(GetByIdName, new { id = entryDto.Id }, entryDto);
     }
 
