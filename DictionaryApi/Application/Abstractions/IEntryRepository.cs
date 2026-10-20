@@ -12,4 +12,8 @@ public interface IEntryRepository
     Task<EntryDto?> GetAsync(int id);
     
     Task<EntryDto> CreateAsync(EntryCreationDto entryCreationDto);
+
+    Task<bool> UpdateAsync(int id, EntryCreationDto entryCreationDto);
+
+    Task<bool> DeleteAsync(int id);
 }

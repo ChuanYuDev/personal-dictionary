@@ -51,4 +51,26 @@ public class EntryRepository: IEntryRepository
             .ProjectTo<EntryDto>(_mapper.ConfigurationProvider)
             .SingleAsync(e => e.Id == entry.Id);
     }
+
+    public async Task<bool> UpdateAsync(int id, EntryCreationDto entryCreationDto)
+    {
+        var entry = await _context.Entries.FirstOrDefaultAsync(e => e.Id == id);
+
+        if (entry is null) return false;
+
+        _mapper.Map(entryCreationDto, entry);
+        await _context.SaveChangesAsync();
+        return true;
+    }
+
+    public async Task<bool> DeleteAsync(int id)
+    {
+        var entry = await _context.Entries.FirstOrDefaultAsync(e => e.Id == id);
+
+        if (entry is null) return false;
+
+        _context.Remove(entry);
+        await _context.SaveChangesAsync();
+        return true;
+    }
 }

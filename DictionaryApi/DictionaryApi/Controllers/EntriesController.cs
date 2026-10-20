@@ -41,11 +41,7 @@ public class EntriesController: ControllerBase
     {
         var entryDto = await _entryRepository.GetAsync(id);
 
-        if (entryDto is null) return Problem(
-            statusCode: StatusCodes.Status404NotFound,
-            title: "Entry not found",
-            detail: $"The entry with id {id} is not found."
-        );
+        if (entryDto is null) return EntryNotFoundProblem(id);
 
         return entryDto;
     }
@@ -58,15 +54,34 @@ public class EntriesController: ControllerBase
         return CreatedAtRoute(GetByIdName, new { id = entryDto.Id }, entryDto);
     }
 
-    // [HttpPut("{id:int}")]
-    // public async Task<IActionResult> UpdateAsync(int id, [FromBody] EntryCreationDto entryCreationDto)
-    // {
-    //     
-    // }
-    //
-    // [HttpDelete("{id:int}")]
-    // public async Task<IActionResult> DeleteAsync(int id)
-    // {
-    //     
-    // }
+    [HttpPut("{id:int}")]
+    public async Task<IActionResult> UpdateAsync(int id, [FromBody] EntryCreationDto entryCreationDto)
+    {
+        var updated = await _entryRepository.UpdateAsync(id, entryCreationDto);
+
+        if (!updated) return EntryNotFoundProblem(id);
+        
+        await _outputCacheStore.EvictByTagAsync(CacheTag, CancellationToken.None);
+        return NoContent();
+    }
+    
+    [HttpDelete("{id:int}")]
+    public async Task<IActionResult> DeleteAsync(int id)
+    {
+        var deleted = await _entryRepository.DeleteAsync(id);
+
+        if (!deleted) return EntryNotFoundProblem(id);
+        
+        await _outputCacheStore.EvictByTagAsync(CacheTag, CancellationToken.None);
+        return NoContent();
+    }
+
+    private ObjectResult EntryNotFoundProblem(int id)
+    {
+        return Problem(
+            statusCode: StatusCodes.Status404NotFound,
+            title: "Entry not found",
+            detail: $"The entry with id {id} is not found."
+        );
+    }
 }
