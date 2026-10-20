@@ -19,18 +19,39 @@ public class EntryRepository: IEntryRepository
         _mapper = mapper;
     }
 
-    public async Task<int> CountAsync()
-    {
-        return await _context.Entries.CountAsync();
-    }
+    // public async Task<int> CountAsync()
+    // {
+    //     return await _context.Entries.CountAsync();
+    // }
+    //
+    // public async Task<List<EntryDto>> GetAsync(PaginationDto paginationDto)
+    // {
+    //     return await _context.Entries
+    //         .OrderByDescending(e => e.CreatedAt)
+    //         .Paginate(paginationDto)
+    //         .ProjectTo<EntryDto>(_mapper.ConfigurationProvider)
+    //         .ToListAsync();
+    // }
 
-    public async Task<List<EntryDto>> GetAsync(PaginationDto paginationDto)
+    public async Task<(List<EntryDto>, int count)> GetAsync(EntryFilterDto entryFilterDto)
     {
-        return await _context.Entries
+        var entries = _context.Entries.AsQueryable();
+
+        if (!string.IsNullOrEmpty(entryFilterDto.Term)) entries = entries.Where(e => e.Term.Contains(entryFilterDto.Term));
+
+        if (entryFilterDto.IsFavorite) entries = entries.Where(e => e.IsFavorite);
+
+        if (entryFilterDto.CategoryId != 0) entries = entries.Where(e => e.CategoryId == entryFilterDto.CategoryId);
+
+        var entryDtos = await entries
             .OrderByDescending(e => e.CreatedAt)
-            .Paginate(paginationDto)
+            .Paginate(entryFilterDto)
             .ProjectTo<EntryDto>(_mapper.ConfigurationProvider)
             .ToListAsync();
+        
+        var count = await entries.CountAsync();
+
+        return (entryDtos, count);
     }
 
     public async Task<EntryDto?> GetAsync(int id)

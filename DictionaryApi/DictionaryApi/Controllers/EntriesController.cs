@@ -25,14 +25,24 @@ public class EntriesController: ControllerBase
         _outputCacheStore = outputCacheStore;
     }
 
+    // [HttpGet]
+    // [OutputCache(Tags = [CacheTag])]
+    // public async Task<List<EntryDto>> GetAsync([FromQuery] PaginationDto paginationDto)
+    // {
+    //     var totalCount = await _entryRepository.CountAsync();
+    //     HttpContext.AppendTotalCountInHeader(totalCount);
+    //
+    //     return await _entryRepository.GetAsync(paginationDto);
+    // }
+    
     [HttpGet]
     [OutputCache(Tags = [CacheTag])]
-    public async Task<List<EntryDto>> GetAsync([FromQuery] PaginationDto paginationDto)
+    public async Task<List<EntryDto>> GetAsync([FromQuery] EntryFilterDto entryFilterDto)
     {
-        var totalCount = await _entryRepository.CountAsync();
-        HttpContext.AppendTotalCountInHeader(totalCount);
+        var (entryDtos, count) = await _entryRepository.GetAsync(entryFilterDto);
+        HttpContext.AppendTotalCountInHeader(count);
 
-        return await _entryRepository.GetAsync(paginationDto);
+        return entryDtos;
     }
 
     [HttpGet("{id:int}", Name = GetByIdName)]

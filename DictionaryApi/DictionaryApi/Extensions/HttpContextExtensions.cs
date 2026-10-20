@@ -4,8 +4,8 @@ public static class HttpContextExtensions
 {
     private const string TotalCountKey = "total-count";
     
-    public static void AppendTotalCountInHeader(this HttpContext httpContext, int totalCount)
+    public static void AppendTotalCountInHeader(this HttpContext httpContext, int count)
     {
-        httpContext.Response.Headers.Append(TotalCountKey, totalCount.ToString());
+        httpContext.Response.Headers.Append(TotalCountKey, count.ToString());
     }
 }
