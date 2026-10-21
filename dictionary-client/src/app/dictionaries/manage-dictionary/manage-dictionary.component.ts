@@ -4,10 +4,11 @@ import {DictionaryService} from "../dictionary.service";
 import {CreateDictionaryComponent} from "../create-dictionary/create-dictionary.component";
 import {DownloadDictionaryComponent} from "../download-dictionary/download-dictionary.component";
 import {OpenDictionaryComponent} from "../open-dictionary/open-dictionary.component";
+import {MatIconModule} from "@angular/material/icon";
 
 @Component({
     selector: 'app-manage-dictionary',
-    imports: [RouterLink, CreateDictionaryComponent, DownloadDictionaryComponent, OpenDictionaryComponent],
+    imports: [RouterLink, CreateDictionaryComponent, DownloadDictionaryComponent, OpenDictionaryComponent, MatIconModule],
     templateUrl: './manage-dictionary.component.html',
     styleUrl: './manage-dictionary.component.css'
 })

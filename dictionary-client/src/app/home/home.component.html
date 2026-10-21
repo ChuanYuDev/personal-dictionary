@@ -3,7 +3,10 @@
         <h1 class="page-title">My Dictionary</h1>
         
         @if (dictionaryState()) {
-            <a routerLink="dictionaries/manage" class="navigation-link">{{dictionaryState()?.dbName}} &rsaquo;</a>
+            <a routerLink="dictionaries/manage" class="navigation-link">
+                {{dictionaryState()?.dbName}} 
+                <mat-icon>chevron_right</mat-icon>
+            </a>
         }
     </div>
 
@@ -20,4 +23,8 @@
             </div>
         </div>
     }
+    
+    <app-favorite [(isFavorite)]="isFavorite"></app-favorite>
+    
+    {{ isFavorite() }}
 </div>

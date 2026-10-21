@@ -609,3 +609,13 @@
     - Entry CRUD
     - expected error 是否返回正确 status / ProblemDetails
     - 重要的数据持久化行为
+
+- **Add `EntrySummaryDto` ??**
+    - Term
+	- pronunciation
+	- IsFavorite
+	- Category name
+	- Part of speech
+	- meaning	
+
+- Favorite star border is still black?
