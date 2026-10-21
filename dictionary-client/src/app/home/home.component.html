@@ -27,4 +27,16 @@
     <app-favorite [(isFavorite)]="isFavorite"></app-favorite>
     
     {{ isFavorite() }}
+    
+    <app-favorite [isFavorite]="isFavorite2()" ></app-favorite>
+
+    {{ isFavorite2() }}
+    
+    <app-favorite [isFavorite]="isFavorite2()" [readonlyMode]="true"></app-favorite>
+
+    {{ isFavorite2() }}
+
+    @for (entryDto of entryDtos; track entryDto.id) {
+        <app-entry-card [entryDto]="entryDto"></app-entry-card>
+    }
 </div>

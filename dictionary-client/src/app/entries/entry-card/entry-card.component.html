@@ -1,1 +1,18 @@
-<p>entry-card works!</p>
+<div class="card-container">
+    <div class="card-header">
+        <div>
+            {{ entryDto().term }} {{ entryDto().pronunciation}}
+        </div>
+
+        <app-favorite [isFavorite]="entryDto().isFavorite" [readonlyMode]="true"></app-favorite>
+        
+    </div>
+
+    <div class="text-nowrap">
+        @if (entryDto().category.name === "word") {
+            {{ entryDto().partOfSpeech }} &middot;
+        }
+
+        {{entryDto().meaning}}
+    </div>
+</div>

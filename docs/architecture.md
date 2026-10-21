@@ -619,3 +619,6 @@
 	- meaning	
 
 - Favorite star border is still black?
+
+- Entry card
+    - meaning one line
