@@ -6,6 +6,7 @@
 }
 
 .entries-container {
+    flex-grow: 1;
     padding-right: 8px;
     overflow-y: auto;
 }
@@ -22,3 +23,7 @@ mat-icon {
     width: 80px;
 }
 
+.footer {
+    height: 106px;    
+    text-align: center;
+}

@@ -20,7 +20,7 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
     left: 0;
 }
 
-.navigation-link {
+.unstyled-link {
     text-decoration: none;
     color: inherit;
 }
@@ -29,4 +29,8 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+}
+
+.cdk-virtual-scroll-content-wrapper {
+    width: 90%;
 }

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {EntryCardComponent} from "../entry-card/entry-card.component";
 import {EntryDto} from "../entry.models";
 import {EntrySearchComponent} from "../entry-search/entry-search.component";
@@ -12,7 +12,8 @@ import {ScrollingModule} from "@angular/cdk/scrolling";
     templateUrl: './index-entry.component.html',
     styleUrl: './index-entry.component.css'
 })
-export class IndexEntryComponent {
+export class IndexEntryComponent implements OnInit {
+    totalCount: number = 0;
     readonly entryDtos: EntryDto[] = [
         {
             id: 1,
@@ -267,4 +268,12 @@ export class IndexEntryComponent {
 
         },
     ];
+    
+    ngOnInit(): void {
+        this.totalCount = this.entryDtos.length;
+    }
+    
+    handleScrollIndex(index: number) {
+        console.log(index);
+    }
 }
