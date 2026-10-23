@@ -622,3 +622,10 @@
 
 - Entry card
     - meaning one line
+
+- Test create entry
+	- json content
+	- success
+	- dbid missing
+	- dictionary not exist
+	- validation error

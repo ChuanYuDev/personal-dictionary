@@ -1,0 +1,22 @@
+<div class="index-entry-container">
+    <app-entry-search></app-entry-search>
+
+<!--    <cdk-virtual-scroll-viewport-->
+<!--        itemSize="106"-->
+<!--        class="entries-container"-->
+<!--    >-->
+<!--        -->
+<!--        <app-entry-card [entryDto]="entryDto" *cdkVirtualFor="let entryDto of entryDtos"></app-entry-card>-->
+<!--        -->
+<!--    </cdk-virtual-scroll-viewport>-->
+    
+    <div class="entries-container">
+        @for (entryDto of entryDtos; track $index) {
+            <app-entry-card [entryDto]="entryDto"></app-entry-card>
+        }
+    </div>
+
+    <a routerLink="/entries/create" class="navigation-link right-bottom-float">
+        <mat-icon>add_circle_outline</mat-icon>
+    </a>
+</div>

@@ -1,3 +1,4 @@
+using System.Linq.Expressions;
 using Application.Abstractions;
 using Application.Dtos;
 using AutoMapper;
@@ -37,14 +38,18 @@ public class EntryRepository: IEntryRepository
     {
         var entries = _context.Entries.AsQueryable();
 
-        if (!string.IsNullOrEmpty(entryFilterDto.Term)) entries = entries.Where(e => e.Term.Contains(entryFilterDto.Term));
+        if (string.IsNullOrEmpty(entryFilterDto.Term)) entries = entries.OrderByDescending(e => e.CreatedAt);
+        else
+        {
+            entries = entries.Where(e => e.Term.Contains(entryFilterDto.Term));
+            entries = entries.OrderBy(e => e.Term).ThenBy(e => e.CategoryId).ThenBy(e => e.Id);
+        }
 
         if (entryFilterDto.IsFavorite) entries = entries.Where(e => e.IsFavorite);
 
         if (entryFilterDto.CategoryId != 0) entries = entries.Where(e => e.CategoryId == entryFilterDto.CategoryId);
 
         var entryDtos = await entries
-            .OrderByDescending(e => e.CreatedAt)
             .Paginate(entryFilterDto)
             .ProjectTo<EntryDto>(_mapper.ConfigurationProvider)
             .ToListAsync();

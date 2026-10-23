@@ -1,7 +1,19 @@
+.home-container {
+    display: flex;    
+    flex-direction: column;
+    height: 100dvh;
+}
+
 .home-header {
     display: flex;
     justify-content: space-between;
     align-items: end;
+    margin-bottom: 1rem;
+}
+
+.home-content {
+    flex-grow: 1;
+    overflow-y: hidden;
 }
 
 mat-icon {
