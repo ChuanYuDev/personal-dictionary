@@ -8,14 +8,9 @@
     display: flex;
     justify-content: space-between;
     align-items: end;
-    margin-bottom: 1rem;
 }
 
 .home-content {
     flex-grow: 1;
     overflow: hidden;
-}
-
-mat-icon {
-    vertical-align: middle;
 }

@@ -3,7 +3,7 @@
         <h1 class="page-title">My Dictionary</h1>
         
         @if (dictionaryState()) {
-            <a routerLink="dictionaries/manage" class="unstyled-link">
+            <a routerLink="dictionaries/manage" class="unstyled-link flex-center">
                 {{dictionaryState()?.dbName}} 
                 <mat-icon>chevron_right</mat-icon>
             </a>

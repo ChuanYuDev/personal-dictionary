@@ -1,5 +1,24 @@
-<p>entry-details works!</p>
-
+<div class="container">
+    
+    <div class="page-header flex-center">
+        <a routerLink="/" class="unstyled-link back-link flex-center">
+            <mat-icon>chevron_left</mat-icon>
+        </a>
+        
+        <h1 class="page-title">Entry Details</h1>
+        
+        <app-favorite [isFavorite]="isFavorite()" [readonlyMode]="true"></app-favorite>
+    </div>
+    
+    <div class="row">
+       <div class="col-12">
+           <a
+               class="unstyled-link button"
+               [routerLink]="['/entries/update', id()]"
+           >
+               Edit
+           </a>
+       </div>
+    </div> 
+</div>
 {{id()}}
-
-<a [routerLink]="['/entries/update', id()]">Edit</a>
