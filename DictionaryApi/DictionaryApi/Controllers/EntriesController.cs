@@ -37,7 +37,7 @@ public class EntriesController: ControllerBase
     
     [HttpGet]
     [OutputCache(Tags = [CacheTag])]
-    public async Task<List<EntryDto>> GetAsync([FromQuery] EntryFilterDto entryFilterDto)
+    public async Task<List<EntrySummaryDto>> GetAsync([FromQuery] EntryFilterDto entryFilterDto)
     {
         var (entryDtos, count) = await _entryRepository.GetAsync(entryFilterDto);
         HttpContext.AppendTotalCountInHeader(count);
@@ -47,7 +47,7 @@ public class EntriesController: ControllerBase
 
     [HttpGet("{id:int}", Name = GetByIdName)]
     [OutputCache(Tags = [CacheTag])]
-    public async Task<ActionResult<EntryDto>> GetAsync(int id)
+    public async Task<ActionResult<EntryDetailsDto>> GetAsync(int id)
     {
         var entryDto = await _entryRepository.GetAsync(id);
 

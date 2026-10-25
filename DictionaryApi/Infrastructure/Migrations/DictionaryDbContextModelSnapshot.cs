@@ -63,6 +63,9 @@ namespace Infrastructure.Migrations
                     b.Property<string>("Meaning")
                         .HasColumnType("TEXT");
 
+                    b.Property<DateTime>("ModifiedAt")
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("Notes")
                         .HasColumnType("TEXT");
 

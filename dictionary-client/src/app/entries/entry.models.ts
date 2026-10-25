@@ -19,5 +19,6 @@ export interface EntryDto {
     notes?: string;
     isFavorite: boolean;
     category: CategoryDto;
+    // modifiedAt: Date;
     createdAt: Date;
 }

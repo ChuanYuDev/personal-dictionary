@@ -1,6 +1,6 @@
 namespace Application.Dtos;
 
-public class EntryDto
+public class EntrySummaryDto
 {
     public int Id { get; set; }
     
@@ -12,11 +12,7 @@ public class EntryDto
     
     public string? Meaning { get; set; }
     
-    public string? Notes { get; set; }
-    
     public bool IsFavorite { get; set; }
 
     public CategoryDto Category { get; set; } = null!;
-
-    public DateTime CreatedAt { get; set; }
 }

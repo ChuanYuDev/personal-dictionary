@@ -34,11 +34,11 @@ public class EntryRepository: IEntryRepository
     //         .ToListAsync();
     // }
 
-    public async Task<(List<EntryDto>, int count)> GetAsync(EntryFilterDto entryFilterDto)
+    public async Task<(List<EntrySummaryDto>, int count)> GetAsync(EntryFilterDto entryFilterDto)
     {
         var entries = _context.Entries.AsQueryable();
 
-        if (string.IsNullOrEmpty(entryFilterDto.Term)) entries = entries.OrderByDescending(e => e.CreatedAt);
+        if (string.IsNullOrEmpty(entryFilterDto.Term)) entries = entries.OrderByDescending(e => e.ModifiedAt);
         else
         {
             entries = entries.Where(e => e.Term.Contains(entryFilterDto.Term));
@@ -51,7 +51,7 @@ public class EntryRepository: IEntryRepository
 
         var entryDtos = await entries
             .Paginate(entryFilterDto)
-            .ProjectTo<EntryDto>(_mapper.ConfigurationProvider)
+            .ProjectTo<EntrySummaryDto>(_mapper.ConfigurationProvider)
             .ToListAsync();
         
         var count = await entries.CountAsync();
@@ -59,14 +59,14 @@ public class EntryRepository: IEntryRepository
         return (entryDtos, count);
     }
 
-    public async Task<EntryDto?> GetAsync(int id)
+    public async Task<EntryDetailsDto?> GetAsync(int id)
     {
         return await _context.Entries
-            .ProjectTo<EntryDto>(_mapper.ConfigurationProvider)
+            .ProjectTo<EntryDetailsDto>(_mapper.ConfigurationProvider)
             .FirstOrDefaultAsync(e => e.Id == id);
     }
     
-    public async Task<EntryDto> CreateAsync(EntryCreationDto entryCreationDto)
+    public async Task<EntryDetailsDto> CreateAsync(EntryCreationDto entryCreationDto)
     {
         var entry = _mapper.Map<Entry>(entryCreationDto);
         
@@ -74,7 +74,7 @@ public class EntryRepository: IEntryRepository
         await _context.SaveChangesAsync();
 
         return await _context.Entries
-            .ProjectTo<EntryDto>(_mapper.ConfigurationProvider)
+            .ProjectTo<EntryDetailsDto>(_mapper.ConfigurationProvider)
             .SingleAsync(e => e.Id == entry.Id);
     }
 
@@ -85,6 +85,7 @@ public class EntryRepository: IEntryRepository
         if (entry is null) return false;
 
         _mapper.Map(entryCreationDto, entry);
+        entry.ModifiedAt = DateTime.UtcNow;
         await _context.SaveChangesAsync();
         return true;
     }

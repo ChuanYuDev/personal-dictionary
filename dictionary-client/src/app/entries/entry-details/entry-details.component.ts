@@ -17,19 +17,19 @@ export class EntryDetailsComponent implements OnInit {
     readonly isFavorite = computed(() => this.entryDto()?.isFavorite ?? false);
     
     ngOnInit(): void {
-        // this.entryDto.set({
-        //     id: 2,
-        //     term: "string2",
-        //     pronunciation: "string",
-        //     partOfSpeech: "string",
-        //     meaning: "meaning",
-        //     notes: "string",
-        //     isFavorite: true,
-        //     category: {
-        //         id: 1,
-        //         name: "word"
-        //     },
-        //     createdAt: new Date("2026-10-19T00:08:00.770028")
-        // });
+        this.entryDto.set({
+            id: 2,
+            term: "string2",
+            pronunciation: "string",
+            partOfSpeech: "string",
+            meaning: "meaning",
+            notes: "string",
+            isFavorite: true,
+            category: {
+                id: 1,
+                name: "word"
+            },
+            createdAt: new Date("2026-10-19T00:08:00.770028")
+        });
     }
 }
