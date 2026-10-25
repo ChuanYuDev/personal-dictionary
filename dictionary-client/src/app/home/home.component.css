@@ -8,9 +8,9 @@
     display: flex;
     justify-content: space-between;
     align-items: end;
+    margin: 1rem 0;
 }
 
 .home-content {
     flex-grow: 1;
-    overflow: hidden;
 }

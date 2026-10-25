@@ -12,7 +12,59 @@
 
     @if (entryDto(); as entryDto) {
 
-        {{entryDto.term}}
+        <div class="entry-term">
+            {{ entryDto.term }}
+        </div>
+
+        @if ((entryDto.category.name === "word") && entryDto.partOfSpeech) {
+            <div class="entry-field">
+                Part of Speech
+            </div>
+
+            <div class="entry-detail">
+                {{ entryDto.partOfSpeech }} &middot;
+            </div>
+        }
+
+        @if (entryDto.pronunciation) {
+            <div class="entry-field">
+                Pronunciation
+            </div>
+
+            <div class="entry-detail">
+                {{ entryDto.pronunciation }}
+            </div>
+        }
+
+        @if (entryDto.meaning) {
+            <div class="entry-field">
+                Meaning
+            </div>
+
+            <div class="entry-detail">
+                {{ entryDto.meaning }}
+            </div>
+        }
+
+        @if (entryDto.notes) {
+            <div class="entry-field">
+                Notes
+            </div>
+
+            <div class="entry-detail">
+                {{ entryDto.notes }}
+            </div>
+        }
+        
+        <div class="entry-time">
+            <div>
+                <span class="entry-field"> Last Modified: </span>  {{entryDto.modifiedAt | date: "yyyy-MM-dd HH:mm:ss"}}
+            </div>
+            
+            <div>
+                <span class="entry-field"> Created: </span> {{entryDto.createdAt | date: "yyyy-MM-dd HH:mm:ss"}}
+            </div>
+        </div>
         
         <div class="row">
             <div class="col-12">

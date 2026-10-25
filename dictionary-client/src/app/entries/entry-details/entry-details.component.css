@@ -3,3 +3,22 @@ app-favorite {
     right: 0;
     font-size: 36px;
 }
+
+.entry-term {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+}
+
+.entry-field {
+    font-weight: 600;
+}
+
+.entry-detail {
+    margin-bottom: 1rem;
+}
+
+.entry-time {
+    text-align: right;
+    margin-bottom: 1rem;
+}

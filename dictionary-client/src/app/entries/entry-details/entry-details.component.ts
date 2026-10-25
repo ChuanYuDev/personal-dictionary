@@ -1,19 +1,20 @@
 import {Component, computed, input, numberAttribute, OnInit, signal} from '@angular/core';
 import {RouterLink} from "@angular/router";
 import {MatIconModule} from "@angular/material/icon";
-import {EntryDto} from "../entry.models";
+import {EntryDetailsDto, EntrySummaryDto} from "../entry.models";
 import {FavoriteComponent} from "../../shared/components/favorite/favorite.component";
+import {DatePipe} from "@angular/common";
 
 @Component({
     selector: 'app-entry-details',
-    imports: [RouterLink, MatIconModule, FavoriteComponent],
+    imports: [RouterLink, MatIconModule, FavoriteComponent, DatePipe],
     templateUrl: './entry-details.component.html',
     styleUrl: './entry-details.component.css'
 })
 export class EntryDetailsComponent implements OnInit {
     id = input.required({transform: numberAttribute});
     
-    readonly entryDto = signal<EntryDto | null>(null);
+    readonly entryDto = signal<EntryDetailsDto | null>(null);
     readonly isFavorite = computed(() => this.entryDto()?.isFavorite ?? false);
     
     ngOnInit(): void {
@@ -22,14 +23,15 @@ export class EntryDetailsComponent implements OnInit {
             term: "string2",
             pronunciation: "string",
             partOfSpeech: "string",
-            meaning: "meaning",
-            notes: "string",
-            isFavorite: true,
+            // meaning: "meaning",
+            // notes: "string",
+            isFavorite: false,
             category: {
                 id: 1,
                 name: "word"
             },
-            createdAt: new Date("2026-10-19T00:08:00.770028")
+            modifiedAt: new Date("2026-10-19T20:08:00.770028"),
+            createdAt: new Date("2026-10-19T10:08:00.770028")
         });
     }
 }

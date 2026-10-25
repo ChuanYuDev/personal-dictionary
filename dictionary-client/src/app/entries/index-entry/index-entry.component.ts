@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {EntryCardComponent} from "../entry-card/entry-card.component";
-import {EntryDto} from "../entry.models";
+import {EntrySummaryDto} from "../entry.models";
 import {EntrySearchComponent} from "../entry-search/entry-search.component";
 import {RouterLink} from "@angular/router";
 import {MatIconModule} from "@angular/material/icon";
@@ -14,20 +14,18 @@ import {ScrollingModule} from "@angular/cdk/scrolling";
 })
 export class IndexEntryComponent implements OnInit {
     totalCount: number = 0;
-    readonly entryDtos: EntryDto[] = [
+    readonly entryDtos: EntrySummaryDto[] = [
         {
             id: 1,
             term: "string1",
             pronunciation: "string",
             partOfSpeech: "string",
             meaning: "meaning",
-            notes: "string",
             isFavorite: true,
             category: {
                 id: 1,
                 name: "word"
             },
-            createdAt: new Date("2026-10-19T00:08:00.770028")
         },
         {
             id: 2,
@@ -35,13 +33,11 @@ export class IndexEntryComponent implements OnInit {
             pronunciation: "string",
             partOfSpeech: "string",
             meaning: "meaning",
-            notes: "string",
             isFavorite: true,
             category: {
                 id: 1,
                 name: "word"
             },
-            createdAt: new Date("2026-10-19T00:08:00.770028")
         },
         {
             id: 3,
@@ -49,54 +45,44 @@ export class IndexEntryComponent implements OnInit {
             // pronunciation: "string",
             partOfSpeech: "string",
             meaning: "meaningmeaningmeaningmeaningmeaningmeaningmeaningmeaningmeaningmeaningmeaning",
-            notes: "string",
             isFavorite: false,
             category: {
                 id: 1,
                 name: "word"
             },
-            createdAt: new Date("2026-10-19T00:08:00.770028")
         },
         {
             id: 4,
             term: "string4",
             // pronunciation: "string",
             meaning: "meaning",
-            notes: "string",
             isFavorite: true,
             category: {
                 id: 2,
                 name: "phrase"
             },
-            createdAt: new Date("2026-10-19T00:08:00.770028")
-
         },
         {
             id: 5,
             term: "string5",
             // pronunciation: "string",
             meaning: "meaning",
-            notes: "string",
             isFavorite: true,
             category: {
                 id: 2,
                 name: "phrase"
             },
-            createdAt: new Date("2026-10-19T00:08:00.770028")
-
         },
         {
             id: 6,
             term: "string6",
             // pronunciation: "string",
             meaning: "meaning",
-            notes: "string",
             isFavorite: true,
             category: {
                 id: 2,
                 name: "phrase"
             },
-            createdAt: new Date("2026-10-19T00:08:00.770028")
 
         },
         {
@@ -104,13 +90,11 @@ export class IndexEntryComponent implements OnInit {
             term: "string7",
             // pronunciation: "string",
             meaning: "meaning",
-            notes: "string",
             isFavorite: true,
             category: {
                 id: 2,
                 name: "phrase"
             },
-            createdAt: new Date("2026-10-19T00:08:00.770028")
 
         },
         {
@@ -118,13 +102,11 @@ export class IndexEntryComponent implements OnInit {
             term: "string8",
             // pronunciation: "string",
             meaning: "meaning",
-            notes: "string",
             isFavorite: true,
             category: {
                 id: 2,
                 name: "phrase"
             },
-            createdAt: new Date("2026-10-19T00:08:00.770028")
 
         },
         {
@@ -132,13 +114,11 @@ export class IndexEntryComponent implements OnInit {
             term: "string9",
             // pronunciation: "string",
             meaning: "meaning",
-            notes: "string",
             isFavorite: true,
             category: {
                 id: 2,
                 name: "phrase"
             },
-            createdAt: new Date("2026-10-19T00:08:00.770028")
 
         },
         {
@@ -147,13 +127,11 @@ export class IndexEntryComponent implements OnInit {
             pronunciation: "string",
             partOfSpeech: "string",
             meaning: "meaning",
-            notes: "string",
             isFavorite: true,
             category: {
                 id: 1,
                 name: "word"
             },
-            createdAt: new Date("2026-10-19T00:08:00.770028")
         },
         {
             id: 2,
@@ -161,13 +139,11 @@ export class IndexEntryComponent implements OnInit {
             pronunciation: "string",
             partOfSpeech: "string",
             meaning: "meaning",
-            notes: "string",
             isFavorite: true,
             category: {
                 id: 1,
                 name: "word"
             },
-            createdAt: new Date("2026-10-19T00:08:00.770028")
         },
         {
             id: 3,
@@ -175,26 +151,22 @@ export class IndexEntryComponent implements OnInit {
             // pronunciation: "string",
             partOfSpeech: "string",
             meaning: "meaningmeaningmeaningmeaningmeaningmeaningmeaningmeaningmeaningmeaningmeaning",
-            notes: "string",
             isFavorite: false,
             category: {
                 id: 1,
                 name: "word"
             },
-            createdAt: new Date("2026-10-19T00:08:00.770028")
         },
         {
             id: 4,
             term: "string4",
             // pronunciation: "string",
             meaning: "meaning",
-            notes: "string",
             isFavorite: true,
             category: {
                 id: 2,
                 name: "phrase"
             },
-            createdAt: new Date("2026-10-19T00:08:00.770028")
 
         },
         {
@@ -202,13 +174,11 @@ export class IndexEntryComponent implements OnInit {
             term: "string5",
             // pronunciation: "string",
             meaning: "meaning",
-            notes: "string",
             isFavorite: true,
             category: {
                 id: 2,
                 name: "phrase"
             },
-            createdAt: new Date("2026-10-19T00:08:00.770028")
 
         },
         {
@@ -216,13 +186,11 @@ export class IndexEntryComponent implements OnInit {
             term: "string6",
             // pronunciation: "string",
             meaning: "meaning",
-            notes: "string",
             isFavorite: true,
             category: {
                 id: 2,
                 name: "phrase"
             },
-            createdAt: new Date("2026-10-19T00:08:00.770028")
 
         },
         {
@@ -230,13 +198,11 @@ export class IndexEntryComponent implements OnInit {
             term: "string7",
             // pronunciation: "string",
             meaning: "meaning",
-            notes: "string",
             isFavorite: true,
             category: {
                 id: 2,
                 name: "phrase"
             },
-            createdAt: new Date("2026-10-19T00:08:00.770028")
 
         },
         {
@@ -244,13 +210,11 @@ export class IndexEntryComponent implements OnInit {
             term: "string8",
             // pronunciation: "string",
             meaning: "meaning",
-            notes: "string",
             isFavorite: true,
             category: {
                 id: 2,
                 name: "phrase"
             },
-            createdAt: new Date("2026-10-19T00:08:00.770028")
 
         },
         {
@@ -258,13 +222,11 @@ export class IndexEntryComponent implements OnInit {
             term: "string9",
             // pronunciation: "string",
             meaning: "meaning",
-            notes: "string",
             isFavorite: true,
             category: {
                 id: 2,
                 name: "phrase"
             },
-            createdAt: new Date("2026-10-19T00:08:00.770028")
 
         },
     ];

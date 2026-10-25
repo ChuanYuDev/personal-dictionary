@@ -10,15 +10,18 @@ export interface EntryCreateDto {
     categoryId: number;
 }
 
-export interface EntryDto {
+export interface EntrySummaryDto {
     id: number;
     term: string;
     pronunciation?: string;
     partOfSpeech?: string;
     meaning?: string;
-    notes?: string;
     isFavorite: boolean;
     category: CategoryDto;
-    // modifiedAt: Date;
+}
+
+export interface EntryDetailsDto extends EntrySummaryDto {
+    notes?: string;
+    modifiedAt: Date;
     createdAt: Date;
 }

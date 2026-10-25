@@ -1,5 +1,5 @@
 import {Component, input} from '@angular/core';
-import {EntryDto} from "../entry.models";
+import {EntrySummaryDto} from "../entry.models";
 import {FavoriteComponent} from "../../shared/components/favorite/favorite.component";
 
 @Component({
@@ -9,5 +9,5 @@ import {FavoriteComponent} from "../../shared/components/favorite/favorite.compo
     styleUrl: './entry-card.component.css'
 })
 export class EntryCardComponent {
-    readonly entryDto = input.required<EntryDto>();
+    readonly entryDto = input.required<EntrySummaryDto>();
 }
