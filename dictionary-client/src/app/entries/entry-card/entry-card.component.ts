@@ -9,5 +9,5 @@ import {FavoriteComponent} from "../../shared/components/favorite/favorite.compo
     styleUrl: './entry-card.component.css'
 })
 export class EntryCardComponent {
-    readonly entryDto = input.required<EntrySummaryDto>();
+    readonly entrySummaryDto = input.required<EntrySummaryDto>();
 }

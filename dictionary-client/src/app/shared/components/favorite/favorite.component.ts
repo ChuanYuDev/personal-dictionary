@@ -9,8 +9,8 @@ import {MatIconModule} from "@angular/material/icon";
     styleUrl: './favorite.component.css'
 })
 export class FavoriteComponent {
-    isFavorite = model<Boolean>(false);
-    readonlyMode = input(false);
+    readonly isFavorite = model<Boolean>(false);
+    readonly readonlyMode = input(false);
     
     favoriteToggle() {
         if (this.readonlyMode()) return; 

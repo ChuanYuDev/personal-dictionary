@@ -1,16 +1,42 @@
-import {booleanAttribute, Component, input, numberAttribute, OnInit} from '@angular/core';
+import {Component, input, numberAttribute, OnInit, signal} from '@angular/core';
+import {EntryFormComponent} from "../entry-form/entry-form.component";
+import {RouterLink} from "@angular/router";
+import {MatIconModule} from "@angular/material/icon";
+import {EntryDetailsDto} from "../entry.models";
+import {FavoriteComponent} from "../../shared/components/favorite/favorite.component";
+import {PageHeaderComponent} from "../../shared/components/page-header/page-header.component";
 
 @Component({
     selector: 'app-update-entry',
-    imports: [],
+    imports: [EntryFormComponent, RouterLink, MatIconModule, FavoriteComponent, PageHeaderComponent],
     templateUrl: './update-entry.component.html',
     styleUrl: './update-entry.component.css'
 })
 export class UpdateEntryComponent implements OnInit{
     id = input.required({transform: numberAttribute});
+    readonly entryDetailsDto = signal<EntryDetailsDto | null>(null);
+    isFavorite = signal<boolean>(false);
 
     ngOnInit(): void {
-        console.log(typeof this.id());
+        const entryDetailsDtoObject: EntryDetailsDto = {
+            id: 2,
+            term: "string2",
+            pronunciation: "string",
+            partOfSpeech: "string",
+            // meaning: "meaning",
+            // notes: "string",
+            isFavorite: true,
+            category: {
+                id: 1,
+                name: "word"
+            },
+            modifiedAt: new Date("2026-10-19T20:08:00.770028"),
+            createdAt: new Date("2026-10-19T10:08:00.770028")
+        };
+
+        this.entryDetailsDto.set(entryDetailsDtoObject);
+
+        this.isFavorite.set(entryDetailsDtoObject.isFavorite);
     }
     
 }

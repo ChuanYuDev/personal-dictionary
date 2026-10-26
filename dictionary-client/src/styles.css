@@ -2,20 +2,10 @@
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
-.page-header {
-    position: relative;
-    margin: 1rem 0;
-}
-
 .page-title {
     margin: 0;
     font-size: 1.5rem;
     font-weight: 600;
-}
-
-.back-link {
-    position: absolute;
-    left: 0;
 }
 
 .flex-center {

@@ -1,18 +1,18 @@
 <div class="card-container">
     <div class="card-header">
         <div>
-            {{ entryDto().term }} {{ entryDto().pronunciation}}
+            {{ entrySummaryDto().term }} {{ entrySummaryDto().pronunciation}}
         </div>
 
-        <app-favorite [isFavorite]="entryDto().isFavorite" [readonlyMode]="true"></app-favorite>
+        <app-favorite [isFavorite]="entrySummaryDto().isFavorite" [readonlyMode]="true"></app-favorite>
         
     </div>
 
     <div class="text-nowrap">
-        @if (entryDto().category.name === "word") {
-            {{ entryDto().partOfSpeech }} &middot;
+        @if (entrySummaryDto().category.name === "word") {
+            {{ entrySummaryDto().partOfSpeech }} &middot;
         }
 
-        {{entryDto().meaning}}
+        {{entrySummaryDto().meaning}}
     </div>
 </div>

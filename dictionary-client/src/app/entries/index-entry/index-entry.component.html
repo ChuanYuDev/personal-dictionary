@@ -7,11 +7,11 @@
         (scrolledIndexChange)="handleScrollIndex($event)"
     >
         <a
-            [routerLink]="['/entries', entryDto.id]"
-            *cdkVirtualFor="let entryDto of entryDtos"
+            [routerLink]="['/entries', entrySummaryDto.id]"
+            *cdkVirtualFor="let entrySummaryDto of entrySummaryDtos"
             class="unstyled-link"
         >
-            <app-entry-card [entryDto]="entryDto" >
+            <app-entry-card [entrySummaryDto]="entrySummaryDto" >
             </app-entry-card>
         </a>
         

@@ -1,1 +1,7 @@
-<p>create-entry works!</p>
+<div class="container">
+    <app-page-header [backRoute]="['/']" title="Create Entry">
+        <app-favorite [(isFavorite)]="isFavorite"></app-favorite>
+    </app-page-header>
+    
+    <app-entry-form></app-entry-form>
+</div>

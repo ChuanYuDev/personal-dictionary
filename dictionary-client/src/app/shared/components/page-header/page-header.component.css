@@ -1,0 +1,14 @@
+.page-header {
+    position: relative;
+    margin: 1rem 0;
+}
+
+.back-link {
+    position: absolute;
+    left: 0;
+}
+
+.page-actions {
+    position: absolute;
+    right: 0;
+}

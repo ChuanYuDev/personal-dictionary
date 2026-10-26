@@ -1,3 +1,13 @@
-<p>edit-entry works!</p>
+<div class="container">
+    <app-page-header [backRoute]="['/entries', id()]" title="Edit Entry">
+        @if (entryDetailsDto()) {
+            <app-favorite [(isFavorite)]="isFavorite"></app-favorite>
+        }
+    </app-page-header>
 
-{{id()}}
+    @if (entryDetailsDto()) {
+        <app-entry-form></app-entry-form>
+    } @else {
+        Loading...
+    }
+</div>

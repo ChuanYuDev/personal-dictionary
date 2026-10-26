@@ -1,16 +1,12 @@
 <div class="container">
     
-    <div class="page-header flex-center">
-        <a routerLink="/" class="unstyled-link back-link flex-center">
-            <mat-icon>chevron_left</mat-icon>
-        </a>
-        
-        <h1 class="page-title">Entry Details</h1>
-        
-        <app-favorite [isFavorite]="isFavorite()" [readonlyMode]="true"></app-favorite>
-    </div>
+    <app-page-header [backRoute]="['/']" title="Entry Details">
+        @if (entryDetailsDto()) {
+            <app-favorite [isFavorite]="isFavorite()" [readonlyMode]="true"></app-favorite>
+        }
+    </app-page-header>
 
-    @if (entryDto(); as entryDto) {
+    @if (entryDetailsDto(); as entryDto) {
 
         <div class="entry-term">
             {{ entryDto.term }}

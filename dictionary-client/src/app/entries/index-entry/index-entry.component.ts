@@ -14,7 +14,7 @@ import {ScrollingModule} from "@angular/cdk/scrolling";
 })
 export class IndexEntryComponent implements OnInit {
     totalCount: number = 0;
-    readonly entryDtos: EntrySummaryDto[] = [
+    readonly entrySummaryDtos: EntrySummaryDto[] = [
         {
             id: 1,
             term: "string1",
@@ -232,7 +232,7 @@ export class IndexEntryComponent implements OnInit {
     ];
     
     ngOnInit(): void {
-        this.totalCount = this.entryDtos.length;
+        this.totalCount = this.entrySummaryDtos.length;
     }
     
     handleScrollIndex(index: number) {

@@ -1,0 +1,11 @@
+<header class="page-header flex-center">
+    <a [routerLink]="backRoute()" class="unstyled-link back-link flex-center">
+        <mat-icon>chevron_left</mat-icon>
+    </a>
+
+    <h1 class="page-title">{{ title() }}</h1>
+    
+    <div class="page-actions">
+        <ng-content></ng-content>
+    </div>
+</header>
