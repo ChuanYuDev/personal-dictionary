@@ -43,4 +43,8 @@ export class UpdateEntryComponent implements OnInit{
         console.log("Update entry: ", entryCreateDto);
     }
     
+    delete()
+    {
+        console.log("Delete entry:", this.id());
+    }
 }

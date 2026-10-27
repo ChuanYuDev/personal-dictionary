@@ -7,6 +7,23 @@
 
     @if (entryDetailsDto()) {
         <app-entry-form [entryDetailsDto]="entryDetailsDto()" (postForm)="saveChanges($event)"></app-entry-form>
+        
+        <hr>
+        
+        <div class="page-title">
+            Delete Entry
+        </div>
+        
+        Permanently delete this entry
+        
+        <div class="button-container">
+            <div class="row">
+                <div class="col-6">
+                    <button type="button" class="button" (click)="delete()">Delete</button>
+                </div>
+            </div>
+        </div>
+        
     } @else {
         Loading...
     }
