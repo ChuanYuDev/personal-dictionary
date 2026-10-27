@@ -1,1 +1,70 @@
-<p>entry-form works!</p>
+<form [formGroup]="formGroup" (submit)="saveChanges()">
+    <div class="form-field">
+        <label for="term">Term</label>
+        <input id="term" [formControl]="formGroup.controls.term">
+        <div class="form-error">
+            {{ getErrorMessagesForTerm() }}
+        </div>
+    </div>
+    
+    <div class="form-field">
+        <label for="categoryId">Category</label>
+        <select id="categoryId" [formControl]="formGroup.controls.categoryId">
+            @for (categoryDto of categoryDtos; track $index) {
+                <option [ngValue]="categoryDto.id">{{ categoryDto.name }}</option>
+            }
+        </select>
+    </div>
+
+    @if (formGroup.controls.categoryId.value === 1) {
+        <div class="form-field">
+            <label for="partOfSpeech">Part of Speech</label>
+            <select id="partOfSpeech" [formControl]="formGroup.controls.partOfSpeech">
+                <option [ngValue]="null">——Please choose an option——</option>
+
+                @for (partOfSpeech of partOfSpeeches; track $index) {
+                    <option [ngValue]="partOfSpeech">{{ partOfSpeech }}</option>
+                }
+            </select>
+        </div>
+    }
+    
+    <div class="form-field">
+        <label for="pronunciation">Pronunciation</label>
+        <input id="pronunciation" [formControl]="formGroup.controls.pronunciation">
+    </div>
+
+    <div class="form-field">
+        <label for="meaning">Meaning</label>
+        <textarea
+            id="meaning"
+            cdkTextareaAutosize
+            cdkAutosizeMinRows="5"
+            [formControl]="formGroup.controls.meaning"
+        >
+        </textarea>
+    </div>
+
+    <div class="form-field">
+        <label for="notes">Notes</label>
+        <textarea
+            id="notes"
+            cdkTextareaAutosize
+            cdkAutosizeMinRows="5"
+            [formControl]="formGroup.controls.notes"
+        >
+        </textarea>
+    </div>
+    
+    <div class="button-container">
+        <div class="row">
+            <div class="col-6">
+                <a routerLink="/" class="button unstyled-link">Cancel</a>
+            </div>
+
+            <div class="col-6">
+                <button class="button" type="submit" [disabled]="formGroup.invalid">Save</button>
+            </div>
+        </div>
+    </div>
+</form>

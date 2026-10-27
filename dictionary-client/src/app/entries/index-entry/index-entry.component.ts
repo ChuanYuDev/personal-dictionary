@@ -22,10 +22,7 @@ export class IndexEntryComponent implements OnInit {
             partOfSpeech: "string",
             meaning: "meaning",
             isFavorite: true,
-            category: {
-                id: 1,
-                name: "word"
-            },
+            categoryName: "Word"
         },
         {
             id: 2,
@@ -34,10 +31,7 @@ export class IndexEntryComponent implements OnInit {
             partOfSpeech: "string",
             meaning: "meaning",
             isFavorite: true,
-            category: {
-                id: 1,
-                name: "word"
-            },
+            categoryName: "Word"
         },
         {
             id: 3,
@@ -46,10 +40,7 @@ export class IndexEntryComponent implements OnInit {
             partOfSpeech: "string",
             meaning: "meaningmeaningmeaningmeaningmeaningmeaningmeaningmeaningmeaningmeaningmeaning",
             isFavorite: false,
-            category: {
-                id: 1,
-                name: "word"
-            },
+            categoryName: "Word"
         },
         {
             id: 4,
@@ -57,10 +48,7 @@ export class IndexEntryComponent implements OnInit {
             // pronunciation: "string",
             meaning: "meaning",
             isFavorite: true,
-            category: {
-                id: 2,
-                name: "phrase"
-            },
+            categoryName: "Word"
         },
         {
             id: 5,
@@ -68,10 +56,7 @@ export class IndexEntryComponent implements OnInit {
             // pronunciation: "string",
             meaning: "meaning",
             isFavorite: true,
-            category: {
-                id: 2,
-                name: "phrase"
-            },
+            categoryName: "Phrase"
         },
         {
             id: 6,
@@ -79,10 +64,7 @@ export class IndexEntryComponent implements OnInit {
             // pronunciation: "string",
             meaning: "meaning",
             isFavorite: true,
-            category: {
-                id: 2,
-                name: "phrase"
-            },
+            categoryName: "Phrase"
 
         },
         {
@@ -91,10 +73,7 @@ export class IndexEntryComponent implements OnInit {
             // pronunciation: "string",
             meaning: "meaning",
             isFavorite: true,
-            category: {
-                id: 2,
-                name: "phrase"
-            },
+            categoryName: "Phrase"
 
         },
         {
@@ -103,11 +82,7 @@ export class IndexEntryComponent implements OnInit {
             // pronunciation: "string",
             meaning: "meaning",
             isFavorite: true,
-            category: {
-                id: 2,
-                name: "phrase"
-            },
-
+            categoryName: "Phrase"
         },
         {
             id: 9,
@@ -115,10 +90,7 @@ export class IndexEntryComponent implements OnInit {
             // pronunciation: "string",
             meaning: "meaning",
             isFavorite: true,
-            category: {
-                id: 2,
-                name: "phrase"
-            },
+            categoryName: "Phrase"
 
         },
         {
@@ -128,10 +100,7 @@ export class IndexEntryComponent implements OnInit {
             partOfSpeech: "string",
             meaning: "meaning",
             isFavorite: true,
-            category: {
-                id: 1,
-                name: "word"
-            },
+            categoryName: "word"
         },
         {
             id: 2,
@@ -140,10 +109,7 @@ export class IndexEntryComponent implements OnInit {
             partOfSpeech: "string",
             meaning: "meaning",
             isFavorite: true,
-            category: {
-                id: 1,
-                name: "word"
-            },
+            categoryName: "word"
         },
         {
             id: 3,
@@ -152,10 +118,7 @@ export class IndexEntryComponent implements OnInit {
             partOfSpeech: "string",
             meaning: "meaningmeaningmeaningmeaningmeaningmeaningmeaningmeaningmeaningmeaningmeaning",
             isFavorite: false,
-            category: {
-                id: 1,
-                name: "word"
-            },
+            categoryName: "word"
         },
         {
             id: 4,
@@ -163,10 +126,7 @@ export class IndexEntryComponent implements OnInit {
             // pronunciation: "string",
             meaning: "meaning",
             isFavorite: true,
-            category: {
-                id: 2,
-                name: "phrase"
-            },
+            categoryName: "Phrase"
 
         },
         {
@@ -175,10 +135,7 @@ export class IndexEntryComponent implements OnInit {
             // pronunciation: "string",
             meaning: "meaning",
             isFavorite: true,
-            category: {
-                id: 2,
-                name: "phrase"
-            },
+            categoryName: "Phrase"
 
         },
         {
@@ -187,10 +144,7 @@ export class IndexEntryComponent implements OnInit {
             // pronunciation: "string",
             meaning: "meaning",
             isFavorite: true,
-            category: {
-                id: 2,
-                name: "phrase"
-            },
+            categoryName: "Phrase"
 
         },
         {
@@ -199,10 +153,7 @@ export class IndexEntryComponent implements OnInit {
             // pronunciation: "string",
             meaning: "meaning",
             isFavorite: true,
-            category: {
-                id: 2,
-                name: "phrase"
-            },
+            categoryName: "Phrase"
 
         },
         {
@@ -211,10 +162,7 @@ export class IndexEntryComponent implements OnInit {
             // pronunciation: "string",
             meaning: "meaning",
             isFavorite: true,
-            category: {
-                id: 2,
-                name: "phrase"
-            },
+            categoryName: "Phrase"
 
         },
         {
@@ -223,10 +171,7 @@ export class IndexEntryComponent implements OnInit {
             // pronunciation: "string",
             meaning: "meaning",
             isFavorite: true,
-            category: {
-                id: 2,
-                name: "phrase"
-            },
+            categoryName: "Phrase"
 
         },
     ];

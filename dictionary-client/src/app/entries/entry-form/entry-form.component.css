@@ -1,0 +1,47 @@
+.form-field {
+    margin-bottom: 1rem;
+}
+
+.form-field > input,
+.form-field > select,
+.form-field > textarea {
+    display: block;
+    width: 100%;
+    padding: 2px;
+    border: 1px solid black;
+    border-radius: 5px;
+}
+
+.form-field > input,
+.form-field > select {
+    height: 30px;
+}
+
+.form-field > select
+{
+    text-align: center;
+}
+
+.form-field > textarea
+{
+    overflow-y: hidden;
+}
+
+.form-error {
+    color: red;
+}
+
+.button-container {
+    margin-top: 2rem;    
+}
+
+button {
+    background-color: #007FFF;
+    color: white;
+}
+
+button:disabled {
+    border: 1px solid #999999;
+    background-color: #cccccc;
+    color: #666666;
+}

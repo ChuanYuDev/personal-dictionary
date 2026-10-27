@@ -14,5 +14,5 @@ public class EntrySummaryDto
     
     public bool IsFavorite { get; set; }
 
-    public CategoryDto Category { get; set; } = null!;
+    public required string CategoryName { get; set; }
 }

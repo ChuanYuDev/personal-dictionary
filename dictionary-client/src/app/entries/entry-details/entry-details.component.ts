@@ -5,6 +5,7 @@ import {EntryDetailsDto, EntrySummaryDto} from "../entry.models";
 import {FavoriteComponent} from "../../shared/components/favorite/favorite.component";
 import {DatePipe} from "@angular/common";
 import {PageHeaderComponent} from "../../shared/components/page-header/page-header.component";
+import {toSignal} from "@angular/core/rxjs-interop";
 
 @Component({
     selector: 'app-entry-details',
@@ -27,10 +28,9 @@ export class EntryDetailsComponent implements OnInit {
             // meaning: "meaning",
             // notes: "string",
             isFavorite: true,
-            category: {
-                id: 1,
-                name: "word"
-            },
+            categoryId: 1,
+            categoryName: "word",
+
             modifiedAt: new Date("2026-10-19T20:08:00.770028"),
             createdAt: new Date("2026-10-19T10:08:00.770028")
         };

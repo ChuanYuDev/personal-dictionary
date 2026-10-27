@@ -360,9 +360,6 @@
         └── ...
     ```
 
-- `DictionaryService` creates stream
-    - Stream lifetime belongs to filesystem implementation detail, move creation stream to `DictionaryDbManager`?? (TO DO)
-
 - Extract `dbId` from Http header using middleware
     - Design an interface with `get` method only and an implementation to which we write the actual value
 
@@ -404,7 +401,7 @@
 
 - `DictionaryService`
 
-- `DownloadDictionaryComponent` (TO DO)
+- `DownloadDictionaryComponent`
     - If an error occurs, extract the error and display it
     - Get the filename from `DictionaryState()`
 
@@ -527,6 +524,17 @@
 - Set its value when `ngOnInit` is executed
 - Two-way binding with `isFavorite` in `FavoriteComponent` 
 - When save changes, update `EntryCreateDto.isFavorite` with `isFavorite`
+
+### `EntrySummaryDto` `EntryDetailsDto` `Category` property
+- Because `EntryCreationDto` has `CategoryId` property, the frontend form group must have `categoryId` field
+    - In order to update entries, `EntryDetailsDto` has got to have `CategoryId` property to patch the form
+
+- `EntrySummaryDto` has
+    - `CategoryName` (for entry card component checking)
+
+- `EntryDetailsDto` has
+    - `CategoryId` (for form patch)
+    - `CategoryName` (for entry details component checking)
 
 ## TTL (time to live) cleanup (TO DO)
 ### TTL

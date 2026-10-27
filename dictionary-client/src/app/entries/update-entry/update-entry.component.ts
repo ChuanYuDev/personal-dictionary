@@ -8,7 +8,7 @@ import {PageHeaderComponent} from "../../shared/components/page-header/page-head
 
 @Component({
     selector: 'app-update-entry',
-    imports: [EntryFormComponent, RouterLink, MatIconModule, FavoriteComponent, PageHeaderComponent],
+    imports: [EntryFormComponent, MatIconModule, FavoriteComponent, PageHeaderComponent],
     templateUrl: './update-entry.component.html',
     styleUrl: './update-entry.component.css'
 })
@@ -26,10 +26,8 @@ export class UpdateEntryComponent implements OnInit{
             // meaning: "meaning",
             // notes: "string",
             isFavorite: true,
-            category: {
-                id: 1,
-                name: "word"
-            },
+            categoryId: 1,
+            categoryName: "word",
             modifiedAt: new Date("2026-10-19T20:08:00.770028"),
             createdAt: new Date("2026-10-19T10:08:00.770028")
         };

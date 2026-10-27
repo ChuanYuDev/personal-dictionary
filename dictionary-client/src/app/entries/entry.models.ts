@@ -1,4 +1,4 @@
-import {CategoryDto} from "../categories/categories.models";
+import {CategoryDto} from "../categories/category.models";
 
 export interface EntryCreateDto {
     term: string;
@@ -17,11 +17,12 @@ export interface EntrySummaryDto {
     partOfSpeech?: string;
     meaning?: string;
     isFavorite: boolean;
-    category: CategoryDto;
+    categoryName: string;
 }
 
 export interface EntryDetailsDto extends EntrySummaryDto {
     notes?: string;
     modifiedAt: Date;
     createdAt: Date;
+    categoryId: number;
 }
