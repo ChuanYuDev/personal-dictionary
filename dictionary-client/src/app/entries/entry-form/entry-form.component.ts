@@ -1,7 +1,7 @@
-import {Component, computed, inject, OnInit, output, signal} from '@angular/core';
+import {Component, computed, inject, input, OnInit, output, signal} from '@angular/core';
 import {FormBuilder, FormControl, ReactiveFormsModule, Validators} from "@angular/forms";
 import {RouterLink} from "@angular/router";
-import {EntryCreateDto} from "../entry.models";
+import {EntryCreateDto, EntryDetailsDto} from "../entry.models";
 import {MatFormFieldModule} from "@angular/material/form-field";
 import {MatInputModule} from "@angular/material/input";
 import {CategoryDto} from "../../categories/category.models";
@@ -48,6 +48,8 @@ export class EntryFormComponent implements OnInit{
         const selectedCategoryDto = this.categoryDtos().find((categoryDto) => categoryDto.id === this.selectedCategoryId());
         return selectedCategoryDto?.name === "Word";
     });
+    
+    readonly entryDetailsDto = input<EntryDetailsDto | null>(null);
 
     ngOnInit(): void {
         this.categoryDtos.set([{
@@ -57,6 +59,10 @@ export class EntryFormComponent implements OnInit{
             id: 2,
             name: "Phase"
         }]);
+        
+        const entryDetailsDtoObject = this.entryDetailsDto();
+        
+        if (entryDetailsDtoObject) this.formGroup.patchValue(entryDetailsDtoObject);
     }
     
     getErrorMessagesForTerm(): string {

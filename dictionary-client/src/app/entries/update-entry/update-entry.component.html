@@ -6,7 +6,7 @@
     </app-page-header>
 
     @if (entryDetailsDto()) {
-        <app-entry-form></app-entry-form>
+        <app-entry-form [entryDetailsDto]="entryDetailsDto()" (postForm)="saveChanges($event)"></app-entry-form>
     } @else {
         Loading...
     }

@@ -17,6 +17,6 @@ export class CreateEntryComponent {
     {
         entryCreateDto.isFavorite = this.isFavorite();
         // Http request
-        console.log(entryCreateDto);
+        console.log("Create entry: ", entryCreateDto);
     }
 }
