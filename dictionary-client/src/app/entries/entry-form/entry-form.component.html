@@ -1,4 +1,4 @@
-<form [formGroup]="formGroup" (submit)="saveChanges()">
+<form [formGroup]="formGroup" (submit)="onSubmit()">
     <div class="form-field">
         <label for="term">Term</label>
         <input id="term" [formControl]="formGroup.controls.term">
@@ -10,13 +10,13 @@
     <div class="form-field">
         <label for="categoryId">Category</label>
         <select id="categoryId" [formControl]="formGroup.controls.categoryId">
-            @for (categoryDto of categoryDtos; track $index) {
+            @for (categoryDto of categoryDtos(); track $index) {
                 <option [ngValue]="categoryDto.id">{{ categoryDto.name }}</option>
             }
         </select>
     </div>
 
-    @if (formGroup.controls.categoryId.value === 1) {
+    @if (showPartOfSpeech()) {
         <div class="form-field">
             <label for="partOfSpeech">Part of Speech</label>
             <select id="partOfSpeech" [formControl]="formGroup.controls.partOfSpeech">

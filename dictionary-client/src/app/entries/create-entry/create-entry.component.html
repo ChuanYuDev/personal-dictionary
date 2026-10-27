@@ -3,5 +3,5 @@
         <app-favorite [(isFavorite)]="isFavorite"></app-favorite>
     </app-page-header>
     
-    <app-entry-form></app-entry-form>
+    <app-entry-form (postForm)="saveChanges($event)"></app-entry-form>
 </div>

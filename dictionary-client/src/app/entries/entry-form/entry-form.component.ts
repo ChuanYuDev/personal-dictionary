@@ -1,4 +1,4 @@
-import {Component, inject, OnInit, output} from '@angular/core';
+import {Component, computed, inject, OnInit, output, signal} from '@angular/core';
 import {FormBuilder, FormControl, ReactiveFormsModule, Validators} from "@angular/forms";
 import {RouterLink} from "@angular/router";
 import {EntryCreateDto} from "../entry.models";
@@ -6,6 +6,7 @@ import {MatFormFieldModule} from "@angular/material/form-field";
 import {MatInputModule} from "@angular/material/input";
 import {CategoryDto} from "../../categories/category.models";
 import {TextFieldModule} from "@angular/cdk/text-field";
+import {toSignal} from "@angular/core/rxjs-interop";
 
 @Component({
     selector: 'app-entry-form',
@@ -26,7 +27,7 @@ export class EntryFormComponent implements OnInit{
         notes: new FormControl<string | null>(null)
     });
     
-    categoryDtos: CategoryDto[] = [];
+    readonly categoryDtos = signal<CategoryDto[]>([]);
     readonly partOfSpeeches: string[] = [
         "Noun",
         "Verb",
@@ -38,15 +39,24 @@ export class EntryFormComponent implements OnInit{
         "Interjection",
         "Determiner" 
     ];
+    
+    readonly selectedCategoryId = toSignal(this.formGroup.controls.categoryId.valueChanges, {
+        initialValue: this.formGroup.controls.categoryId.value
+    });
+    
+    readonly showPartOfSpeech = computed(() => {
+        const selectedCategoryDto = this.categoryDtos().find((categoryDto) => categoryDto.id === this.selectedCategoryId());
+        return selectedCategoryDto?.name === "Word";
+    });
 
     ngOnInit(): void {
-        this.categoryDtos = [{
+        this.categoryDtos.set([{
             id: 1,
             name: "Word"
         }, {
             id: 2,
             name: "Phase"
-        }];
+        }]);
     }
     
     getErrorMessagesForTerm(): string {
@@ -57,9 +67,8 @@ export class EntryFormComponent implements OnInit{
         return "";
     }
     
-    saveChanges() {
+    onSubmit() {
         const entryCreationDto = this.formGroup.value as EntryCreateDto;
-        console.log(entryCreationDto);
         this.postForm.emit(entryCreationDto);
     }
 }

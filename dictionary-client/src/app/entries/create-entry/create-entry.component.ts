@@ -2,6 +2,7 @@ import {Component, signal} from '@angular/core';
 import {PageHeaderComponent} from "../../shared/components/page-header/page-header.component";
 import {FavoriteComponent} from "../../shared/components/favorite/favorite.component";
 import {EntryFormComponent} from "../entry-form/entry-form.component";
+import {EntryCreateDto} from "../entry.models";
 
 @Component({
     selector: 'app-create-entry',
@@ -11,4 +12,11 @@ import {EntryFormComponent} from "../entry-form/entry-form.component";
 })
 export class CreateEntryComponent {
     isFavorite = signal<boolean>(false);
+    
+    saveChanges(entryCreateDto: EntryCreateDto)
+    {
+        entryCreateDto.isFavorite = this.isFavorite();
+        // Http request
+        console.log(entryCreateDto);
+    }
 }
