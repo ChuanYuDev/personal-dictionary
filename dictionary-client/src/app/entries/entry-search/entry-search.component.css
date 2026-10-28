@@ -1,0 +1,13 @@
+.favorite-container {
+    border: 1px solid black;
+    border-radius: 5px;
+    width: 30px;
+    height: 30px;
+}
+app-favorite {
+    font-size: 24px;
+}
+
+.text-right {
+    text-align: right;
+}

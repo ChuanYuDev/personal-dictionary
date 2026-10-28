@@ -1,4 +1,5 @@
 import {CategoryDto} from "../categories/category.models";
+import {PaginationDto} from "../shared/models/pagination.models";
 
 export interface EntryCreateDto {
     term: string;
@@ -25,4 +26,10 @@ export interface EntryDetailsDto extends EntrySummaryDto {
     modifiedAt: Date;
     createdAt: Date;
     categoryId: number;
+}
+
+export interface EntryFilterDto extends PaginationDto {
+    term?: string;
+    categoryId?: number;
+    isFavorite: boolean;
 }

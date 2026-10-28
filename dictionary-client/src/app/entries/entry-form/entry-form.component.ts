@@ -19,8 +19,11 @@ export class EntryFormComponent implements OnInit{
     readonly postForm = output<EntryCreateDto>();
     
     readonly formGroup = this.formBuilder.group({
-        term: new FormControl<string>("", {validators: [Validators.required]}),
-        categoryId: new FormControl<number>(1),
+        term: new FormControl<string>("", {
+            nonNullable: true,
+            validators: [Validators.required]
+        }),
+        categoryId: new FormControl<number>(1, { nonNullable: true }),
         partOfSpeech: new FormControl<string | null>(null),
         pronunciation: new FormControl<string | null>(null),
         meaning: new FormControl<string | null>(null),

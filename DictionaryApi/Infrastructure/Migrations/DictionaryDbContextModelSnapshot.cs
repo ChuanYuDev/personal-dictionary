@@ -36,12 +36,12 @@ namespace Infrastructure.Migrations
                         new
                         {
                             Id = 1,
-                            Name = "word"
+                            Name = "Word"
                         },
                         new
                         {
                             Id = 2,
-                            Name = "phrase"
+                            Name = "Phrase"
                         });
                 });
 

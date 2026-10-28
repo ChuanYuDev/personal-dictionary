@@ -1,1 +1,33 @@
-<p>entry-search works!</p>
+<form [formGroup]="formGroup">
+    <div class="form-field">
+        <input
+            [formControl]="formGroup.controls.term"
+            aria-label="term"
+            placeholder="Term"
+        >
+    </div>
+    
+    <div class="row">
+        <div class="col-4">
+            <div class="form-field">
+                <select [formControl]="formGroup.controls.categoryId" aria-label="Category">
+                    <option [ngValue]="null">All</option>
+
+                    @for (categoryDto of categoryDtos(); track $index) {
+                        <option [ngValue]="categoryDto.id"> {{ categoryDto.name }} </option>
+                    }
+                </select>
+            </div>
+        </div>
+        
+        <div class="col-4">
+            <div class="favorite-container flex-center">
+                <app-favorite [(isFavorite)]="isFavorite"></app-favorite>
+            </div>
+        </div>
+        
+        <div class="col-4 text-right">
+            {{ totalCount() }} {{totalCount() > 1? "Entries": "Entry" }}
+        </div>
+    </div>
+</form>

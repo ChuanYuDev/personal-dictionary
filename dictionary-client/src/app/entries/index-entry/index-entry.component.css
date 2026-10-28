@@ -12,8 +12,8 @@
 
 .right-bottom-float {
     position: absolute;   
-    right: 1rem;
-    bottom: 1rem;
+    right: 0;
+    bottom: 0;
 }
 
 mat-icon {

@@ -47,7 +47,7 @@ public class EntryRepository: IEntryRepository
 
         if (entryFilterDto.IsFavorite) entries = entries.Where(e => e.IsFavorite);
 
-        if (entryFilterDto.CategoryId != 0) entries = entries.Where(e => e.CategoryId == entryFilterDto.CategoryId);
+        if (entryFilterDto.CategoryId is not null) entries = entries.Where(e => e.CategoryId == entryFilterDto.CategoryId);
 
         var entryDtos = await entries
             .Paginate(entryFilterDto)
