@@ -3,6 +3,9 @@ import {FormBuilder, FormControl, ReactiveFormsModule} from "@angular/forms";
 import {CategoryDto} from "../../categories/category.models";
 import {debounceTime} from "rxjs";
 import {FavoriteComponent} from "../../shared/components/favorite/favorite.component";
+import {EntryFilterDto} from "../entry.models";
+import {ActivatedRoute} from "@angular/router";
+import {Location} from "@angular/common";
 
 @Component({
     selector: 'app-entry-search',
@@ -24,6 +27,9 @@ export class EntrySearchComponent implements OnInit{
     
     totalCount = signal<number>(0);
     
+    private readonly activatedRoute = inject(ActivatedRoute);
+    private readonly location = inject(Location);
+    
     constructor() {
         effect(() => {
             this.formGroup.controls.isFavorite.setValue(this.isFavorite());
@@ -41,9 +47,40 @@ export class EntrySearchComponent implements OnInit{
         this.formGroup.valueChanges
             .pipe(debounceTime(300))
             .subscribe(value => {
-            console.log(value);
-        });
+                this.writeParametersInUrl(value as EntryFilterDto);
+                console.log(value);
+            });
         
         this.totalCount.set(0);
+        this.readValuesFromUrl();
+    }
+    
+    private readValuesFromUrl() {
+        this.activatedRoute.queryParams.subscribe(params => {
+            const value: any = {};
+            
+            const term = params["term"];
+            if (term) value.term = term;
+            
+            const categoryId = params["categoryId"];
+            if (categoryId) value.categoryId = Number(categoryId);
+            
+            const isFavorite = params["isFavorite"];
+            if (isFavorite) this.isFavorite.set(Boolean(isFavorite));
+            
+            this.formGroup.patchValue(value);
+        });
+    }
+    
+    private writeParametersInUrl(entryFilterDto: EntryFilterDto) {
+        const queryStrings: string[] = [];
+        
+        if (entryFilterDto.term) queryStrings.push(`term=${encodeURIComponent(entryFilterDto.term)}`);
+        
+        if (entryFilterDto.categoryId) queryStrings.push(`categoryId=${entryFilterDto.categoryId}`);
+        
+        if (entryFilterDto.isFavorite) queryStrings.push(`isFavorite=${entryFilterDto.isFavorite}`);
+        
+        this.location.replaceState("", queryStrings.join('&'));
     }
 }
