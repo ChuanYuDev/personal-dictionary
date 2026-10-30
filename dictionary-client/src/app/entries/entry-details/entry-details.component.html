@@ -6,59 +6,59 @@
         }
     </app-page-header>
 
-    @if (entryDetailsDto(); as entryDto) {
+    @if (entryDetailsDto(); as entryDetailsDtoObject) {
 
         <div class="entry-term">
-            {{ entryDto.term }}
+            {{ entryDetailsDtoObject.term }}
         </div>
 
-        @if ((entryDto.categoryName === "Word") && entryDto.partOfSpeech) {
+        @if ((entryDetailsDtoObject.categoryName === "Word") && entryDetailsDtoObject.partOfSpeech) {
             <div class="entry-field">
                 Part of Speech
             </div>
 
             <div class="entry-detail">
-                {{ entryDto.partOfSpeech }} &middot;
+                {{ entryDetailsDtoObject.partOfSpeech }} &middot;
             </div>
         }
 
-        @if (entryDto.pronunciation) {
+        @if (entryDetailsDtoObject.pronunciation) {
             <div class="entry-field">
                 Pronunciation
             </div>
 
             <div class="entry-detail">
-                {{ entryDto.pronunciation }}
+                {{ entryDetailsDtoObject.pronunciation }}
             </div>
         }
 
-        @if (entryDto.meaning) {
+        @if (entryDetailsDtoObject.meaning) {
             <div class="entry-field">
                 Meaning
             </div>
 
             <div class="entry-detail">
-                {{ entryDto.meaning }}
+                {{ entryDetailsDtoObject.meaning }}
             </div>
         }
 
-        @if (entryDto.notes) {
+        @if (entryDetailsDtoObject.notes) {
             <div class="entry-field">
                 Notes
             </div>
 
             <div class="entry-detail">
-                {{ entryDto.notes }}
+                {{ entryDetailsDtoObject.notes }}
             </div>
         }
         
         <div class="entry-time">
             <div>
-                <span class="entry-field"> Last Modified: </span>  {{entryDto.modifiedAt | date: "yyyy-MM-dd HH:mm:ss"}}
+                <span class="entry-field"> Last Modified: </span>  {{entryDetailsDtoObject.modifiedAt | date: "yyyy-MM-dd HH:mm:ss"}}
             </div>
             
             <div>
-                <span class="entry-field"> Created: </span> {{entryDto.createdAt | date: "yyyy-MM-dd HH:mm:ss"}}
+                <span class="entry-field"> Created: </span> {{entryDetailsDtoObject.createdAt | date: "yyyy-MM-dd HH:mm:ss"}}
             </div>
         </div>
         

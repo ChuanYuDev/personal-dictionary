@@ -1,4 +1,4 @@
-import {Component, ElementRef, output, viewChild} from '@angular/core';
+import {Component, ElementRef, input, output, viewChild} from '@angular/core';
 
 @Component({
     selector: 'app-dialog',
@@ -7,7 +7,12 @@ import {Component, ElementRef, output, viewChild} from '@angular/core';
     styleUrl: './dialog.component.css'
 })
 export class DialogComponent {
+    readonly title = input.required<string>();
+    readonly content = input<string>();
+    readonly confirmButtonText = input.required<string>();
+    readonly confirmButtonStyle = input.required<string>();
     readonly confirmed = output<void>();
+    
     private dialog = viewChild.required<ElementRef<HTMLDialogElement>>("dialog")
     
     showModal() {
@@ -18,4 +23,7 @@ export class DialogComponent {
         this.dialog().nativeElement.close();
     }
     
+    confirm() {
+        this.confirmed.emit();
+    }
 }

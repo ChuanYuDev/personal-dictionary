@@ -1,8 +1,32 @@
-<dialog #dialog>
-    <p>Delete Entry?</p>
+<div class="container">
+    <dialog #dialog>
+        <h2 class="page-title">{{ title() }}</h2>
 
-    <p>This action cannot be undone.</p>
+            <div class="content-container">
+                @if (content(); as contentString) {
+                    {{ contentString }}
+                }
+                
+                <ng-content></ng-content>
+            </div>
 
-    <button type="button" class="button" (click)="dialog.close()">Cancel</button>
-    <button type="button">Delete</button>
-</dialog>
+        <div class="button-container">
+            <div class="row">
+                <div class="col-6">
+                    <button type="button" class="button" (click)="dialog.close()">Cancel</button>
+                </div>
+
+                <div class="col-6">
+                    <button
+                        type="button"
+                        class="button"
+                        [class]="confirmButtonStyle()"
+                        (click)="confirm()"
+                    >
+                        {{ confirmButtonText() }}
+                    </button>
+                </div>
+            </div>
+        </div>
+    </dialog>
+</div>

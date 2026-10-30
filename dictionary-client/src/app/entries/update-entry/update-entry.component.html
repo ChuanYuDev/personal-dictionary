@@ -14,7 +14,9 @@
             Delete Entry
         </div>
         
-        Permanently delete this entry
+        <div class="content-container">
+            Permanently delete this entry
+        </div>
         
         <div class="button-container">
             <div class="row">
@@ -32,4 +34,13 @@
     
 </div>
 
-<app-dialog #deleteDialog></app-dialog>
+<app-dialog
+    #deleteDialog
+    title="Delete Entry"
+    content="This action cannot be undone."
+    confirmButtonText="Delete"
+    confirmButtonStyle="danger"
+    (confirmed)="delete()"
+>
+</app-dialog>
+
