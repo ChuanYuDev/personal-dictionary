@@ -41,7 +41,7 @@ export class EntrySearchComponent implements OnInit{
             name: "Word"
         }, {
             id: 2,
-            name: "Phase"
+            name: "Phrase"
         }]);
         
         this.formGroup.valueChanges
@@ -66,7 +66,7 @@ export class EntrySearchComponent implements OnInit{
             if (categoryId) value.categoryId = Number(categoryId);
             
             const isFavorite = params["isFavorite"];
-            if (isFavorite) this.isFavorite.set(Boolean(isFavorite));
+            if (isFavorite) this.isFavorite.set(isFavorite === "true");
             
             this.formGroup.patchValue(value);
         });

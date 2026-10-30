@@ -46,6 +46,17 @@ body {
     text-align: center;
 }
 
+button {
+    background-color: #007FFF;
+    color: white;
+}
+
+button:disabled {
+    border: 1px solid #999999;
+    background-color: #cccccc;
+    color: #666666;
+}
+
 .form-field {
     margin-bottom: 1rem;
 }

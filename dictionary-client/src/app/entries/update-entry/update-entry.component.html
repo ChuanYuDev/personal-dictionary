@@ -19,7 +19,9 @@
         <div class="button-container">
             <div class="row">
                 <div class="col-6">
-                    <button type="button" class="button" (click)="delete()">Delete</button>
+                    <button type="button" class="button" (click)="deleteDialog.showModal()">
+                        Delete
+                    </button>
                 </div>
             </div>
         </div>
@@ -27,4 +29,6 @@
     } @else {
         Loading...
     }
+    
+    <app-dialog #deleteDialog></app-dialog>
 </div>
