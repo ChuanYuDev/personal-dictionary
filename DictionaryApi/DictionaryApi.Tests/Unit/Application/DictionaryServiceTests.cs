@@ -16,9 +16,11 @@ public sealed class DictionaryServiceTests
     public DictionaryServiceTests()
     {
         _dictionaryDbManager = Substitute.For<IDictionaryDbManager>();
+
+        var dictionaryRepository = Substitute.For<IDictionaryRepository>();
         var logger = NullLogger<DictionaryService>.Instance;
         
-        _dictionaryService = new DictionaryService(_dictionaryDbManager, logger);
+        _dictionaryService = new DictionaryService(_dictionaryDbManager, dictionaryRepository, logger);
     }
     
     [Fact]

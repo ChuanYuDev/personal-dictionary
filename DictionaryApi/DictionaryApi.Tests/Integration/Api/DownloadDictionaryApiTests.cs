@@ -14,7 +14,7 @@ public sealed class DownloadDictionaryApiTests: IClassFixture<WebApplicationFact
     private readonly HttpClient _httpClient;
     private readonly HttpRequestMessage _httpRequestMessage;
     private const string RequestUri = "/api/dictionaries/download";
-    private const string DbIdHeaderKey = "X-DbId";
+    private const string DbIdHeaderKey = "db-id";
 
     public DownloadDictionaryApiTests(WebApplicationFactory<Program> webApplicationFactory)
     {

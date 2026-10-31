@@ -9,12 +9,14 @@ namespace Application.Services;
 public class DictionaryService
 {
     private readonly IDictionaryDbManager _dictionaryDbManager;
+    private readonly IDictionaryRepository _dictionaryRepository;
     private readonly ILogger<DictionaryService> _logger;
     private const string DefaultDbName = "Untitled Dictionary";
 
-    public DictionaryService(IDictionaryDbManager dictionaryDbManager, ILogger<DictionaryService> logger)
+    public DictionaryService(IDictionaryDbManager dictionaryDbManager, IDictionaryRepository dictionaryRepository, ILogger<DictionaryService> logger)
     {
         _dictionaryDbManager = dictionaryDbManager;
+        _dictionaryRepository = dictionaryRepository;
         _logger = logger;
     }
 
@@ -53,6 +55,16 @@ public class DictionaryService
         
         _logger.LogInformation("Dictionary saved. DbId: {DbId}", dbId);
 
+        return new DictionaryDto(dbId, dbName);
+    }
+
+    public async Task<DictionaryDto> UpdateNameAsync(Guid dbId, DictionaryUpdateDto dictionaryUpdateDto)
+    {
+        var name = dictionaryUpdateDto.Name;
+        var dbName = await _dictionaryRepository.UpdateNameAsync(name);
+        
+        _logger.LogInformation("Dictionary name updated. DbId: {DbId}, DbName: {DbName}", dbId, dbName);
+        
         return new DictionaryDto(dbId, dbName);
     }
 }

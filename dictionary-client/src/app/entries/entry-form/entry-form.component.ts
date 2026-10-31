@@ -71,7 +71,7 @@ export class EntryFormComponent implements OnInit{
     getErrorMessagesForTerm(): string {
         const termFormControl = this.formGroup.controls.term;
         
-        if (termFormControl.hasError("required")) return "The Term field is required"; 
+        if (termFormControl.hasError("required")) return "The Term field is required."; 
         
         return "";
     }

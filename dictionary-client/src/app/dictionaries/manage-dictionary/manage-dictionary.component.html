@@ -2,10 +2,15 @@
     
     <app-page-header [backRoute]="['/']" title="Manage Dictionary"></app-page-header>
 
-    <p>Connected dictionary:</p>
+    Connected dictionary:
 
-    <p>{{ dictionaryState()?.dbName }} </p>
-    <button type="button"> &#9998; </button>
+    <div class="name-container">
+        {{ dictionaryState()?.dbName }}
+        <button type="button" class="icon-button" (click)="renameDictionaryDialog.showModal()">
+            <mat-icon>edit</mat-icon>
+        </button>
+    </div>
+    
 
     <div class="row">
         <div class="col-12">
@@ -27,3 +32,20 @@
         </div>
     </div>
 </div>
+
+<app-dialog #renameDictionaryDialog
+    title="Rename Dictionary"
+    confirmButtonText="Save"
+    confirmButtonStyle="primary"
+    [confirmButtonDisabled]="formGroup.invalid"
+>
+    <form [formGroup]="formGroup">
+        <div class="form-field">
+            <input [formControl]="formGroup.controls.name" aria-label="name">
+            
+            <div class="form-error">
+                {{ getErrorMessagesForName() }}
+            </div>
+        </div>
+    </form>
+</app-dialog>

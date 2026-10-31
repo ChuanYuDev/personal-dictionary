@@ -2,9 +2,9 @@
     <header class="home-header">
         <h1 class="page-title">My Dictionary</h1>
         
-        @if (dictionaryState()) {
+        @if (dictionaryState(); as dictionaryStateObject) {
             <a routerLink="dictionaries/manage" class="unstyled-link flex-center">
-                {{dictionaryState()?.dbName}} 
+                {{ dictionaryStateObject.dbName }} 
                 <mat-icon>chevron_right</mat-icon>
             </a>
         }

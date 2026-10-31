@@ -1,4 +1,5 @@
 using System.Diagnostics;
+using Application.Abstractions;
 using Application.Dtos;
 using Application.Errors;
 using Application.Services;
@@ -57,5 +58,14 @@ public class DictionariesController: ControllerBase
             ),
             _ => throw new UnreachableException($"Result error code: {error.Code}")
         };
+    }
+
+    [HttpPut]
+    [ServiceFilter<ValidateDbIdActionFilter>]
+    public async Task<DictionaryDto> UpdateNameAsync([FromBody] DictionaryUpdateDto dictionaryUpdateDto)
+    {
+        var dbId = _dictionaryContext.DbId;
+        
+        return await _dictionaryService.UpdateNameAsync(dbId, dictionaryUpdateDto);
     }
 }

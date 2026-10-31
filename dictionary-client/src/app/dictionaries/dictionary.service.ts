@@ -1,7 +1,7 @@
 import {inject, Injectable, signal} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {environment} from "../../environments/environment";
-import {DictionaryDto, DictionaryState} from "./dictionary.models";
+import {DictionaryDto, DictionaryState, DictionaryUpdateDto} from "./dictionary.models";
 import {tap} from "rxjs";
 
 @Injectable({
@@ -34,6 +34,12 @@ export class DictionaryService {
     open(file: File) {
         return this.httpClient.post<DictionaryDto>(`${this.baseUrl}/open`, file).pipe(tap(
             dictionaryDto => { this.storeDictionaryState(dictionaryDto); }
+        ));
+    }
+    
+    updateName(dictionaryUpdateDto: DictionaryUpdateDto) {
+        return this.httpClient.put<DictionaryDto>(this.baseUrl, dictionaryUpdateDto).pipe(tap(
+            dictionaryDto => {this.storeDictionaryState(dictionaryDto); }
         ));
     }
     

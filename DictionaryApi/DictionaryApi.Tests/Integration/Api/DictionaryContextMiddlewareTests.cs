@@ -9,7 +9,7 @@ public sealed class DictionaryContextMiddlewareTests: IClassFixture<WebApplicati
 {
     private readonly HttpClient _httpClient;
     private readonly HttpRequestMessage _httpRequestMessage;
-    private const string DbIdHeaderKey = "X-DbId";
+    private const string DbIdHeaderKey = "db-id";
 
     public DictionaryContextMiddlewareTests(WebApplicationFactoryWithTestController<Program> factory)
     {

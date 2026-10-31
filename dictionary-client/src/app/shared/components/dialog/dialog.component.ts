@@ -11,6 +11,7 @@ export class DialogComponent {
     readonly content = input<string>();
     readonly confirmButtonText = input.required<string>();
     readonly confirmButtonStyle = input.required<string>();
+    readonly confirmButtonDisabled = input<boolean>(false);
     readonly confirmed = output<void>();
     
     private dialog = viewChild.required<ElementRef<HTMLDialogElement>>("dialog")

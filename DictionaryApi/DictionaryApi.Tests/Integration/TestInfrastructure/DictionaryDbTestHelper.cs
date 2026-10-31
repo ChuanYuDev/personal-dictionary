@@ -22,8 +22,8 @@ public static class DictionaryDbTestHelper
         var categories = await dictionaryDbContext.Categories.ToListAsync(cancellationToken: TestContext.Current.CancellationToken);
         
         Assert.Equal(2, categories.Count);
-        Assert.Equal("word", categories[0].Name);
-        Assert.Equal("phrase", categories[1].Name);
+        Assert.Equal("Word", categories[0].Name);
+        Assert.Equal("Phrase", categories[1].Name);
         
         var metadata = await dictionaryDbContext.Metadata.SingleAsync(cancellationToken: TestContext.Current.CancellationToken);
         Assert.Equal(dbName, metadata.Name);
