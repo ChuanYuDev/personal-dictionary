@@ -1,8 +1,9 @@
 import { Component, input, Input } from '@angular/core';
+import {MatIconModule} from "@angular/material/icon";
 
 @Component({
     selector: 'app-display-errors',
-    imports: [],
+    imports: [MatIconModule],
     templateUrl: './display-errors.component.html',
     styleUrl: './display-errors.component.css'
 })

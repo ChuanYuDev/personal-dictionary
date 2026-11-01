@@ -1,5 +1,11 @@
-ul {
+.error_container {
+    display: flex;
     color: red;
+    align-items: start;
+    column-gap: 10px;
+}
+
+ul {
     list-style-type: none;
     padding: 0;
     margin: 0;
