@@ -11,8 +11,7 @@ import {extractErrorMessages} from "../../shared/functions/extract-error-message
 })
 export class DownloadDictionaryComponent {
     readonly isDownloading = signal(false);
-    // readonly errors = signal<string[]>([]);
-    readonly errors = signal<string[]>(["Unable to do", "Please fix", "sdfsdf"]);
+    readonly errors = signal<string[]>([]);
     
     private readonly dictionaryService = inject(DictionaryService);
     private readonly dictionaryState = this.dictionaryService.dictionaryState;

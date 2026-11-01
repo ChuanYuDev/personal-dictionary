@@ -6,10 +6,11 @@ import {EntryCreateDto, EntryDetailsDto} from "../entry.models";
 import {FavoriteComponent} from "../../shared/components/favorite/favorite.component";
 import {PageHeaderComponent} from "../../shared/components/page-header/page-header.component";
 import {DialogComponent} from "../../shared/components/dialog/dialog.component";
+import {DeleteEntryComponent} from "../delete-entry/delete-entry.component";
 
 @Component({
     selector: 'app-update-entry',
-    imports: [EntryFormComponent, MatIconModule, FavoriteComponent, PageHeaderComponent, DialogComponent],
+    imports: [EntryFormComponent, MatIconModule, FavoriteComponent, PageHeaderComponent, DialogComponent, DeleteEntryComponent],
     templateUrl: './update-entry.component.html',
     styleUrl: './update-entry.component.css'
 })
@@ -42,10 +43,5 @@ export class UpdateEntryComponent implements OnInit{
         entryCreateDto.isFavorite = this.isFavorite();
         
         console.log("Update entry: ", entryCreateDto);
-    }
-    
-    delete()
-    {
-        console.log("Delete entry:", this.id());
     }
 }

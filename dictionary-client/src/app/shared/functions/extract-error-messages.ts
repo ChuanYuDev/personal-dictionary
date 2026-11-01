@@ -18,15 +18,17 @@ export async function extractErrorMessages(err: HttpErrorResponse): Promise<stri
             return [unexpectedErrorMessage];
         }
     }
-    
+
+    // Validation error
     if (error?.errors) {
-        // Validation error
-        // To do
-        return [];
+        const errorMessages: string[] = [];
+        
+        for (const [key, value] of Object.entries(error.errors)) errorMessages.push(`${key}: ${value}`);
+        return errorMessages;
     }
-    
+
+    // Expected failure and unexpected error
     if (error?.detail) {
-        // Expected failure and unexpected error
         return [error.detail];
     }
     

@@ -10,37 +10,8 @@
         
         <hr>
         
-        <div class="page-title">
-            Delete Entry
-        </div>
-        
-        <div class="content-container">
-            Permanently delete this entry
-        </div>
-        
-        <div class="button-container">
-            <div class="row">
-                <div class="col-6">
-                    <button type="button" class="button danger" (click)="deleteDialog.showModal()">
-                        Delete
-                    </button>
-                </div>
-            </div>
-        </div>
-        
+        <app-delete-entry [id]="id()"></app-delete-entry>
     } @else {
         Loading...
     }
-    
 </div>
-
-<app-dialog
-    #deleteDialog
-    title="Delete Entry"
-    content="This action cannot be undone."
-    confirmButtonText="Delete"
-    confirmButtonStyle="danger"
-    (confirmed)="delete()"
->
-</app-dialog>
-
