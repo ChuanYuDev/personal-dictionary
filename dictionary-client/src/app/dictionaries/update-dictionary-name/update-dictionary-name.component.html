@@ -1,0 +1,23 @@
+<button type="button" class="icon-button flex-center" (click)="dialogComponent().showModal()">
+    <mat-icon>edit</mat-icon>
+</button>
+
+<app-dialog
+    title="Rename Dictionary"
+    confirmButtonText="Save"
+    confirmButtonStyle="primary"
+    [confirmButtonDisabled]="formGroup.invalid"
+    (confirmed)="updateDictionaryName()"
+>
+    <form [formGroup]="formGroup">
+        <div class="form-field">
+            <input [formControl]="formGroup.controls.name" aria-label="name">
+
+            <div class="form-error">
+                {{ getErrorMessagesForName() }}
+            </div>
+        </div>
+    </form>
+    
+    <app-display-errors [errors]="errors()"></app-display-errors>
+</app-dialog>

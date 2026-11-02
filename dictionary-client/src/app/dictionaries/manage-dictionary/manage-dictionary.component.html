@@ -6,9 +6,7 @@
 
     <div class="name-container">
         {{ dictionaryState()?.dbName }}
-        <button type="button" class="icon-button" (click)="renameDictionaryDialog.showModal()">
-            <mat-icon>edit</mat-icon>
-        </button>
+        <app-update-dictionary-name></app-update-dictionary-name>
     </div>
     
 
@@ -32,20 +30,3 @@
         </div>
     </div>
 </div>
-
-<app-dialog #renameDictionaryDialog
-    title="Rename Dictionary"
-    confirmButtonText="Save"
-    confirmButtonStyle="primary"
-    [confirmButtonDisabled]="formGroup.invalid"
->
-    <form [formGroup]="formGroup">
-        <div class="form-field">
-            <input [formControl]="formGroup.controls.name" aria-label="name">
-            
-            <div class="form-error">
-                {{ getErrorMessagesForName() }}
-            </div>
-        </div>
-    </form>
-</app-dialog>

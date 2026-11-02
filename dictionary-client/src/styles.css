@@ -96,9 +96,9 @@ button:disabled {
 }
 
 .content-container {
-    margin-top: 1rem;
+    margin: 1rem 0;
 }
 
 .button-container {
-    margin-top: 1.5rem;
+    margin-top: 1rem;
 }
