@@ -11,6 +11,14 @@
     margin: 1rem 0;
 }
 
+.name-item {
+    width: 40%;
+}
+
+.name-item > mat-icon {
+    flex-shrink: 0;
+}
+
 .home-content {
     flex-grow: 1;
 }
