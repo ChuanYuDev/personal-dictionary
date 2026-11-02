@@ -1,4 +1,4 @@
-import {Component, inject, signal, viewChild} from '@angular/core';
+import {Component, inject, input, signal, viewChild} from '@angular/core';
 import {MatIconModule} from "@angular/material/icon";
 import {DialogComponent} from "../../shared/components/dialog/dialog.component";
 import {FormBuilder, FormControl, ReactiveFormsModule, Validators} from "@angular/forms";
@@ -18,7 +18,7 @@ export class UpdateDictionaryNameComponent {
     readonly formGroup = this.formBuilder.group({
         name: new FormControl<string>("", {
             nonNullable: true,
-            validators: [Validators.required, Validators.maxLength(60)]
+            validators: [Validators.required, Validators.maxLength(50)]
         })
     });
     
@@ -27,6 +27,13 @@ export class UpdateDictionaryNameComponent {
     readonly isUpdating = signal<boolean>(false);
     
     readonly dialogComponent = viewChild.required(DialogComponent);
+    
+    readonly dbName = input.required<string>();
+    
+    openDialog() {
+        this.formGroup.patchValue({name: this.dbName()});
+        this.dialogComponent().open();
+    }
 
     getErrorMessagesForName(): string {
         const nameFormControl = this.formGroup.controls.name;

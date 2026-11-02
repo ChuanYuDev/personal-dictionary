@@ -2,16 +2,17 @@
     
     <app-page-header [backRoute]="['/']" title="Manage Dictionary"></app-page-header>
 
-    Connected dictionary:
+    @if (dictionaryState(); as dictionaryState) {
+        Connected dictionary:
 
-    <div class="name-container">
-        
-        <div class="name-item">
-            {{ dictionaryState()?.dbName }}
+        <div class="name-container">
+
+            <div class="name-item">
+                {{ dictionaryState.dbName }}
+            </div>
+            <app-update-dictionary-name [dbName]="dictionaryState.dbName"></app-update-dictionary-name>
         </div>
-        <app-update-dictionary-name></app-update-dictionary-name>
-    </div>
-    
+    }
 
     <div class="row">
         <div class="col-12">

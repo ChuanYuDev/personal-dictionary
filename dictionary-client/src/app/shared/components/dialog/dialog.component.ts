@@ -16,7 +16,7 @@ export class DialogComponent {
     
     private dialog = viewChild.required<ElementRef<HTMLDialogElement>>("dialog")
     
-    showModal() {
+    open() {
         this.dialog().nativeElement.showModal();
     }
     
