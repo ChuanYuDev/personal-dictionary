@@ -44,7 +44,7 @@ public class EntryRepository: IEntryRepository
             entries = entries.OrderBy(e => e.Term).ThenBy(e => e.CategoryId).ThenBy(e => e.Id);
         }
 
-        if (entryFilterDto.IsFavorite) entries = entries.Where(e => e.IsFavorite);
+        if (entryFilterDto.IsFavorite == true) entries = entries.Where(e => e.IsFavorite);
 
         if (entryFilterDto.CategoryId is not null) entries = entries.Where(e => e.CategoryId == entryFilterDto.CategoryId);
 

@@ -28,8 +28,11 @@ export interface EntryDetailsDto extends EntrySummaryDto {
     categoryId: number;
 }
 
-export interface EntryFilterDto extends PaginationDto {
+export interface EntrySearchFilterDto {
     term?: string;
     categoryId?: number;
-    isFavorite: boolean;
+    isFavorite?: boolean;
+}
+
+export interface EntryFilterDto extends EntrySearchFilterDto, PaginationDto {
 }

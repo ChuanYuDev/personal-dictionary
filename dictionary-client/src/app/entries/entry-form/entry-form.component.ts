@@ -15,8 +15,10 @@ import {toSignal} from "@angular/core/rxjs-interop";
     styleUrl: './entry-form.component.css'
 })
 export class EntryFormComponent implements OnInit{
-    private readonly formBuilder = inject(FormBuilder);
+    readonly entryDetailsDto = input<EntryDetailsDto | null>(null);
     readonly postForm = output<EntryCreateDto>();
+
+    private readonly formBuilder = inject(FormBuilder);
     
     readonly formGroup = this.formBuilder.group({
         term: new FormControl<string>("", {
@@ -31,6 +33,16 @@ export class EntryFormComponent implements OnInit{
     });
     
     readonly categoryDtos = signal<CategoryDto[]>([]);
+    
+    readonly selectedCategoryId = toSignal(this.formGroup.controls.categoryId.valueChanges, {
+        initialValue: this.formGroup.controls.categoryId.value
+    });
+
+    readonly showPartOfSpeech = computed(() => {
+        const selectedCategoryDto = this.categoryDtos().find((categoryDto) => categoryDto.id === this.selectedCategoryId());
+        return selectedCategoryDto?.name === "Word";
+    });
+
     readonly partOfSpeeches: string[] = [
         "Noun",
         "Verb",
@@ -43,17 +55,6 @@ export class EntryFormComponent implements OnInit{
         "Determiner" 
     ];
     
-    readonly selectedCategoryId = toSignal(this.formGroup.controls.categoryId.valueChanges, {
-        initialValue: this.formGroup.controls.categoryId.value
-    });
-    
-    readonly showPartOfSpeech = computed(() => {
-        const selectedCategoryDto = this.categoryDtos().find((categoryDto) => categoryDto.id === this.selectedCategoryId());
-        return selectedCategoryDto?.name === "Word";
-    });
-    
-    readonly entryDetailsDto = input<EntryDetailsDto | null>(null);
-
     ngOnInit(): void {
         this.categoryDtos.set([{
             id: 1,
