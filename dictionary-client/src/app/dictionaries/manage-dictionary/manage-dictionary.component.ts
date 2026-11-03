@@ -6,14 +6,12 @@ import {DownloadDictionaryComponent} from "../download-dictionary/download-dicti
 import {OpenDictionaryComponent} from "../open-dictionary/open-dictionary.component";
 import {MatIconModule} from "@angular/material/icon";
 import {PageHeaderComponent} from "../../shared/components/page-header/page-header.component";
-import {DialogComponent} from "../../shared/components/dialog/dialog.component";
-import {FormBuilder, FormControl, ReactiveFormsModule, Validators} from "@angular/forms";
 import {UpdateDictionaryNameComponent} from "../update-dictionary-name/update-dictionary-name.component";
 
 @Component({
     selector: 'app-manage-dictionary',
     imports: [CreateDictionaryComponent, DownloadDictionaryComponent, OpenDictionaryComponent, MatIconModule,
-        PageHeaderComponent, MatIconModule, DialogComponent, ReactiveFormsModule, UpdateDictionaryNameComponent],
+        PageHeaderComponent, MatIconModule, UpdateDictionaryNameComponent],
     templateUrl: './manage-dictionary.component.html',
     styleUrl: './manage-dictionary.component.css'
 })

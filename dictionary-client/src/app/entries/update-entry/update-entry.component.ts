@@ -1,16 +1,14 @@
 import {Component, input, numberAttribute, OnInit, signal} from '@angular/core';
 import {EntryFormComponent} from "../entry-form/entry-form.component";
-import {RouterLink} from "@angular/router";
 import {MatIconModule} from "@angular/material/icon";
 import {EntryCreateDto, EntryDetailsDto} from "../entry.models";
 import {FavoriteComponent} from "../../shared/components/favorite/favorite.component";
 import {PageHeaderComponent} from "../../shared/components/page-header/page-header.component";
-import {DialogComponent} from "../../shared/components/dialog/dialog.component";
 import {DeleteEntryComponent} from "../delete-entry/delete-entry.component";
 
 @Component({
     selector: 'app-update-entry',
-    imports: [EntryFormComponent, MatIconModule, FavoriteComponent, PageHeaderComponent, DialogComponent, DeleteEntryComponent],
+    imports: [EntryFormComponent, MatIconModule, FavoriteComponent, PageHeaderComponent, DeleteEntryComponent],
     templateUrl: './update-entry.component.html',
     styleUrl: './update-entry.component.css'
 })
