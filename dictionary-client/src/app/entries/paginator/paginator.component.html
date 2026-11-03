@@ -1,15 +1,32 @@
-<div class="paginator-container">
-    <div class="row">
-        <div class="col-4">
-            Previous
-        </div>
-        
-        <div class="col-4">
-            <input>
-        </div>
-        
-        <div class="col-4">
-            Next
-        </div>
+<div class="row gx-0">
+    <div class="col-3">
+        @if (page() !== 1) {
+            <button type="button" class="button" (click)="decreasePage()">
+                Previous
+            </button>
+        }
+    </div>
+    
+    <div class="page-number-container col-7">
+        <input
+            type="number"
+            min="1"
+            [max]="pageCount()"
+            step="1"
+            aria-label="page number"
+            [formControl]="pageFormControl"
+            (change)="onChange()"
+        >
+        <span>
+            / {{pageCount()}}
+        </span>
+    </div>
+    
+    <div class="col-2">
+        @if (page() !== pageCount()) {
+            <button type="button" class="button" (click)="increasePage()">
+                Next
+            </button>
+        }
     </div>
 </div>

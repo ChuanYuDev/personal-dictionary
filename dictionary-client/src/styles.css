@@ -31,16 +31,12 @@ body {
     text-overflow: ellipsis;
 }
 
-.cdk-virtual-scroll-content-wrapper {
-    width: 100%;
-}
-
 .button {
     background-color: white;
     border: 1px solid black;
     border-radius: 8px;
     cursor: pointer;
-    padding: 8px;
+    padding: 8px 0;
     width: 100%;
     display: inline-block;
     text-align: center;

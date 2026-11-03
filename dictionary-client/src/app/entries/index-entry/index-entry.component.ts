@@ -120,7 +120,7 @@ export class IndexEntryComponent implements OnInit {
         ];
         
         this.entrySummaryDtos.set(entrySummaryDtoObjects);
-        this.totalCount.set(entrySummaryDtoObjects.length);
+        this.totalCount.set(50000);
     }
     
     handleScrollIndex(index: number) {
