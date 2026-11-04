@@ -1,5 +1,9 @@
 <div class="index-entry-container">
-    <app-entry-search-form [(entrySearchFilterDto)]="entrySearchFilterDto" [totalCount]="totalCount()"></app-entry-search-form>
+    <app-entry-search-form
+        [entrySearchFilterDto]="entrySearchFilterDto()"
+        [totalCount]="totalCount()"
+        (entrySearchFilterDtoChange)="onEntrySearchFilterDtoChange($event)"
+    ></app-entry-search-form>
 
     <div class="entries-container">
         @for (entrySummaryDto of entrySummaryDtos(); track entrySummaryDto.id) {
@@ -10,7 +14,11 @@
             </a>
         }
         
-        <app-paginator [(page)]="page" [totalCount]="totalCount()" [pageSize]="pageSize"></app-paginator>
+        <app-paginator
+            [page]="page()"
+            [pageCount]="pageCount()"
+            (pageChange)="onPageChange($event)"
+        ></app-paginator>
     </div>
     
     

@@ -1,3 +1,11 @@
+.left-item {
+    padding-right: 8px;
+}
+
+.right-item {
+    padding-left: 8px;
+}
+
 .page-number-container {
     display: flex;
     padding: 8px;
@@ -7,11 +15,6 @@
 }
 
 .page-number-container > input {
-    min-width: 0;
     text-align: right;
     flex-grow: 1;
-}
-
-.page-number-container > span {
-    flex-shrink: 0;
 }

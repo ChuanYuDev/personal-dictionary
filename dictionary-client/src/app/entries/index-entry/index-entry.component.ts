@@ -1,8 +1,8 @@
-import {Component, effect, inject, OnInit, signal} from '@angular/core';
+import {Component, computed, effect, inject, OnInit, signal} from '@angular/core';
 import {EntryCardComponent} from "../entry-card/entry-card.component";
 import {EntryFilterDto, EntrySearchFilterDto, EntrySummaryDto} from "../entry.models";
 import {EntrySearchFormComponent} from "../entry-search-form/entry-search-form.component";
-import {ActivatedRoute, RouterLink} from "@angular/router";
+import {ActivatedRoute, Params, RouterLink} from "@angular/router";
 import {MatIconModule} from "@angular/material/icon";
 import {ScrollingModule} from "@angular/cdk/scrolling";
 import {PaginatorComponent} from "../paginator/paginator.component";
@@ -16,52 +16,97 @@ import {Location} from "@angular/common";
 })
 export class IndexEntryComponent implements OnInit {
     readonly pageSize = 20;
-    entrySearchFilterDto = signal<EntrySearchFilterDto>({});
     
+    entrySearchFilterDto = signal<EntrySearchFilterDto>({});
     page = signal<number>(1);
     
     readonly entrySummaryDtos = signal<EntrySummaryDto[]>([]);
     readonly totalCount = signal<number>(0);
-    
+    readonly pageCount = computed(() => Math.max(1, Math.ceil(this.totalCount() / this.pageSize)));
+
     private readonly activatedRoute = inject(ActivatedRoute);
     private readonly location = inject(Location);
     
-    constructor() {
-        effect(() => {
-            const entryFilterDtoObject: EntryFilterDto = {
-                ...this.entrySearchFilterDto(),
-                page: this.page(),  
-                recordsPerPage: this.pageSize
-            };
-            
-            this.writeParametersInUrl(entryFilterDtoObject);
-            
-            this.filterEntries(entryFilterDtoObject);
-        });
-    }
-    
     ngOnInit(): void {
-        this.readValuesFromUrl();
+        this.activatedRoute.queryParams.subscribe(params => {
+            this.readValuesFromQueryParams(params);
+            
+            this.filterEntriesWithPageChecking();
+        });
     }
     
-    private readValuesFromUrl() {
-        this.activatedRoute.queryParams.subscribe(params => {
-            const entrySearchFilterDtoObject: EntrySearchFilterDto = {};
-            
-            const term = params["term"];
-            if (term) entrySearchFilterDtoObject.term = term;
+    onEntrySearchFilterDtoChange(entrySearchFilterDtoObject: EntrySearchFilterDto) {
+        this.entrySearchFilterDto.set(entrySearchFilterDtoObject);     
+        this.page.set(1);
+        this.filterEntries();
+    }
+    
+    onPageChange(pageNum: number) {
+        this.page.set(pageNum);
+        this.filterEntries();
+    }
+    
+    private readValuesFromQueryParams(params: Params) {
+        const entrySearchFilterDtoObject: EntrySearchFilterDto = {};
 
-            const categoryId = params["categoryId"];
-            if (categoryId) entrySearchFilterDtoObject.categoryId = Number(categoryId);
+        const term = params["term"];
+        if (term) entrySearchFilterDtoObject.term = term;
 
-            const isFavorite = params["isFavorite"];
-            if (isFavorite) entrySearchFilterDtoObject.isFavorite = (isFavorite === "true");
-            
-            this.entrySearchFilterDto.set(entrySearchFilterDtoObject);
-            
-            const page = params["page"];
-            if (page) this.page.set(Number(page));
-        });
+        const categoryId = params["categoryId"];
+        if (categoryId) entrySearchFilterDtoObject.categoryId = Number(categoryId);
+
+        const isFavorite = params["isFavorite"];
+        if (isFavorite) entrySearchFilterDtoObject.isFavorite = (isFavorite === "true");
+
+        this.entrySearchFilterDto.set(entrySearchFilterDtoObject);
+
+        const pageString = params["page"];
+        
+        if (pageString && this.isPageValueValid(Number(pageString))) this.page.set(Number(pageString));
+        else this.page.set(1);
+    }
+    
+    private isPageValueValid(value: number) {
+        if (!Number.isInteger(value)) return false;
+        if (value < 1) return false;
+        return true;
+    }
+
+    private filterEntriesWithPageChecking() {
+        const entryFilterDto = this.getEntryFilterDto();
+        this.writeParametersInUrl(entryFilterDto);
+
+        // Http Request
+        this.totalCount.set(340);
+        
+        if (this.page() <= this.pageCount()) {
+            this.entrySummaryDtos.set(this.entrySummaryDtoObjects);
+            return;
+        }
+        
+        this.page.set(this.pageCount());
+        
+        this.filterEntries();
+    }
+
+    private filterEntries() {
+        const entryFilterDto = this.getEntryFilterDto();
+        this.writeParametersInUrl(entryFilterDto);
+
+        // Http Request
+        console.log(entryFilterDto);
+        
+        this.totalCount.set(340);
+
+        this.entrySummaryDtos.set(this.entrySummaryDtoObjects);
+    }
+
+    private getEntryFilterDto(): EntryFilterDto {
+         return {
+            ...this.entrySearchFilterDto(),
+            page: this.page(),  
+            recordsPerPage: this.pageSize
+        };
     }
 
     private writeParametersInUrl(entryFilterDto: EntryFilterDto) {
@@ -72,116 +117,108 @@ export class IndexEntryComponent implements OnInit {
         if (entryFilterDto.categoryId) queryStrings.push(`categoryId=${entryFilterDto.categoryId}`);
 
         if (entryFilterDto.isFavorite) queryStrings.push(`isFavorite=${entryFilterDto.isFavorite}`);
-        
+
         if (entryFilterDto.page) queryStrings.push(`page=${entryFilterDto.page}`);
 
         this.location.replaceState("", queryStrings.join('&'));
     }
-    
-    private filterEntries(entryFilterDto: EntryFilterDto) {
-        // Http Request
-        console.log(entryFilterDto);
-        
-        const entrySummaryDtoObjects: EntrySummaryDto[] = [
-            {
-                id: 1,
-                term: "string1",
-                pronunciation: "string",
-                partOfSpeech: "string",
-                meaning: "meaning",
-                isFavorite: true,
-                categoryName: "Word"
-            },
-            {
-                id: 2,
-                term: "string2",
-                pronunciation: "string",
-                partOfSpeech: "string",
-                meaning: "meaning",
-                isFavorite: true,
-                categoryName: "Word"
-            },
-            {
-                id: 3,
-                term: "apple3",
-                // pronunciation: "string",
-                partOfSpeech: "string",
-                meaning: "meaningmeaningmeaningmeaningmeaningmeaningmeaningmeaningmeaningmeaningmeaning",
-                isFavorite: false,
-                categoryName: "Word"
-            },
-            {
-                id: 4,
-                term: "string4",
-                // pronunciation: "string",
-                meaning: "meaning",
-                isFavorite: true,
-                categoryName: "Word"
-            },
-            {
-                id: 5,
-                term: "string5",
-                // pronunciation: "string",
-                meaning: "meaning",
-                isFavorite: true,
-                categoryName: "Phrase"
-            },
-            {
-                id: 6,
-                term: "string6",
-                // pronunciation: "string",
-                meaning: "meaning",
-                isFavorite: true,
-                categoryName: "Phrase"
 
-            },
-            {
-                id: 7,
-                term: "string7",
-                // pronunciation: "string",
-                meaning: "meaning",
-                isFavorite: true,
-                categoryName: "Phrase"
+    private readonly entrySummaryDtoObjects: EntrySummaryDto[] = [
+        {
+            id: 1,
+            term: "string1",
+            pronunciation: "string",
+            partOfSpeech: "string",
+            meaning: "meaning",
+            isFavorite: true,
+            categoryName: "Word"
+        },
+        {
+            id: 2,
+            term: "string2",
+            pronunciation: "string",
+            partOfSpeech: "string",
+            meaning: "meaning",
+            isFavorite: true,
+            categoryName: "Word"
+        },
+        {
+            id: 3,
+            term: "apple3",
+            // pronunciation: "string",
+            partOfSpeech: "string",
+            meaning: "meaningmeaningmeaningmeaningmeaningmeaningmeaningmeaningmeaningmeaningmeaning",
+            isFavorite: false,
+            categoryName: "Word"
+        },
+        {
+            id: 4,
+            term: "string4",
+            // pronunciation: "string",
+            meaning: "meaning",
+            isFavorite: true,
+            categoryName: "Word"
+        },
+        {
+            id: 5,
+            term: "string5",
+            // pronunciation: "string",
+            meaning: "meaning",
+            isFavorite: true,
+            categoryName: "Phrase"
+        },
+        {
+            id: 6,
+            term: "string6",
+            // pronunciation: "string",
+            meaning: "meaning",
+            isFavorite: true,
+            categoryName: "Phrase"
 
-            },
-            {
-                id: 8,
-                term: "string8",
-                // pronunciation: "string",
-                meaning: "meaning",
-                isFavorite: true,
-                categoryName: "Phrase"
-            },
-            {
-                id: 9,
-                term: "string9",
-                // pronunciation: "string",
-                meaning: "meaning",
-                isFavorite: true,
-                categoryName: "Phrase"
+        },
+        {
+            id: 7,
+            term: "string7",
+            // pronunciation: "string",
+            meaning: "meaning",
+            isFavorite: true,
+            categoryName: "Phrase"
 
-            },
-            {
-                id: 10,
-                term: "string10",
-                // pronunciation: "string",
-                meaning: "meaning",
-                isFavorite: true,
-                categoryName: "Phrase"
+        },
+        {
+            id: 8,
+            term: "string8",
+            // pronunciation: "string",
+            meaning: "meaning",
+            isFavorite: true,
+            categoryName: "Phrase"
+        },
+        {
+            id: 9,
+            term: "string9",
+            // pronunciation: "string",
+            meaning: "meaning",
+            isFavorite: true,
+            categoryName: "Phrase"
 
-            },
-            {
-                id: 11,
-                term: "string11",
-                // pronunciation: "string",
-                meaning: "meaning",
-                isFavorite: true,
-                categoryName: "Phrase"
+        },
+        {
+            id: 10,
+            term: "string10",
+            // pronunciation: "string",
+            meaning: "meaning",
+            isFavorite: true,
+            categoryName: "Phrase"
 
-            }
-        ];
+        },
+        {
+            id: 11,
+            term: "string11",
+            // pronunciation: "string",
+            meaning: "meaning",
+            isFavorite: true,
+            categoryName: "Phrase"
 
-        this.entrySummaryDtos.set(entrySummaryDtoObjects);
-        this.totalCount.set(50000);
-    }
+        }
+    ];
 }

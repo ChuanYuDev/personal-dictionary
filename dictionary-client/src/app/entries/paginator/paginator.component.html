@@ -1,13 +1,15 @@
 <div class="row gx-0">
-    <div class="col-3">
+    <div class="left-item col-2">
         @if (page() !== 1) {
             <button type="button" class="button" (click)="decreasePage()">
-                Previous
+                <div class="flex-center">
+                    <mat-icon>chevron_left</mat-icon>
+                </div>
             </button>
         }
     </div>
     
-    <div class="page-number-container col-7">
+    <div class="page-number-container col-6">
         <input
             type="number"
             min="1"
@@ -15,7 +17,6 @@
             step="1"
             aria-label="page number"
             [formControl]="pageFormControl"
-            (change)="onChange()"
         >
         <span>
             / {{pageCount()}}
@@ -23,9 +24,17 @@
     </div>
     
     <div class="col-2">
+        <button type="button" class="button" (click)="goToPage()">
+            Go
+        </button>
+    </div>
+    
+    <div class="right-item col-2">
         @if (page() !== pageCount()) {
             <button type="button" class="button" (click)="increasePage()">
-                Next
+                <div class="flex-center">
+                    <mat-icon>chevron_right</mat-icon>
+                </div>
             </button>
         }
     </div>

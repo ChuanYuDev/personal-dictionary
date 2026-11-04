@@ -536,6 +536,26 @@
     - `CategoryId` (for form patch)
     - `CategoryName` (for entry details component checking)
 
+## Search
+### Load search Url
+- Read Url
+- If `pageString` is valid, set `page`
+- Else set `page` 1
+- Http request
+- Get `totalCount`
+- Calculate `pageCount`
+- If `page` > `pageCount`, set `page` as `pageCount`
+- Http request
+
+### Search
+- Search
+- `page` set 1
+- Http request
+
+### Pagination
+- Validate `page`
+- Http request
+
 ## TTL (time to live) cleanup (TO DO)
 ### TTL
 - Get the database last accessed time, cleanup the database that is idle for 24 hours

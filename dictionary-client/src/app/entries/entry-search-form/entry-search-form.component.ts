@@ -26,11 +26,6 @@ export class EntrySearchFormComponent implements OnInit{
     readonly categoryDtos = signal<CategoryDto[]>([]);
     isFavorite = signal<boolean>(false);
     
-    constructor() {
-        effect(() => {
-            this.formGroup.controls.isFavorite.setValue(this.isFavorite());
-        });
-    }
     ngOnInit(): void {
         this.categoryDtos.set([{
             id: 1,
@@ -39,17 +34,20 @@ export class EntrySearchFormComponent implements OnInit{
             id: 2,
             name: "Phrase"
         }]);
+
+        const entrySearchFilterDtoObject = this.entrySearchFilterDto();
+
+        this.formGroup.patchValue(entrySearchFilterDtoObject);
+        if (entrySearchFilterDtoObject.isFavorite) this.isFavorite.set(entrySearchFilterDtoObject.isFavorite)
         
         this.formGroup.valueChanges
             .pipe(debounceTime(300))
             .subscribe(value => {
                 this.entrySearchFilterDto.set(value as EntrySearchFilterDto);
-                console.log(this.entrySearchFilterDto());
             });
-        
-        const entrySearchFilterDtoObject = this.entrySearchFilterDto();
-        
-        this.formGroup.patchValue(entrySearchFilterDtoObject);
-        if (entrySearchFilterDtoObject.isFavorite) this.isFavorite.set(entrySearchFilterDtoObject.isFavorite)
+    }
+    
+    onIsFavoriteChange(isFavoriteBool: boolean) {
+        this.formGroup.controls.isFavorite.setValue(isFavoriteBool);
     }
 }

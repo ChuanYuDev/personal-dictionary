@@ -22,7 +22,10 @@
         
         <div class="col-4">
             <div class="favorite-container flex-center">
-                <app-favorite [(isFavorite)]="isFavorite"></app-favorite>
+                <app-favorite
+                    [isFavorite]="isFavorite()"
+                    (isFavoriteChange)="onIsFavoriteChange($event)"
+                ></app-favorite>
             </div>
         </div>
         

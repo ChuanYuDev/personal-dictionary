@@ -1,18 +1,17 @@
 import {Component, computed, effect, input, model, OnInit} from '@angular/core';
 import {FormControl, ReactiveFormsModule} from "@angular/forms";
+import {MatIconModule} from "@angular/material/icon";
 
 @Component({
     selector: 'app-paginator',
-    imports: [ReactiveFormsModule],
+    imports: [ReactiveFormsModule, MatIconModule],
     templateUrl: './paginator.component.html',
     styleUrl: './paginator.component.css'
 })
-export class PaginatorComponent implements OnInit {
-    readonly totalCount = input.required<number>();
-    readonly pageSize = input.required<number>();
-    readonly page = model<number>(1);
+export class PaginatorComponent {
+    readonly pageCount = input.required<number>();
+    readonly page = model.required<number>();
     
-    readonly pageCount = computed(() => Math.ceil(this.totalCount() / this.pageSize() ));
     readonly pageFormControl = new FormControl<number | null>(null);
     
     constructor() {
@@ -20,19 +19,16 @@ export class PaginatorComponent implements OnInit {
             this.pageFormControl.setValue(this.page());
         });
     }
-
-    ngOnInit(): void {
-        if (!this.isValueValid(this.page())) this.page.set(1);
-    }
-    
-    onChange() {
-        const value = this.pageFormControl.value;
-        if (this.isValueValid(value)) this.page.set(value as number); 
-        else this.pageFormControl.setValue(this.page());
-    }
     
     decreasePage() {
         this.page.update(value => value - 1);
+    }
+    
+    goToPage() {
+        const value = this.pageFormControl.value;
+        
+        if (this.isValueValid(value)) this.page.set(value as number);
+        else this.pageFormControl.setValue(this.page());
     }
     
     increasePage() {
