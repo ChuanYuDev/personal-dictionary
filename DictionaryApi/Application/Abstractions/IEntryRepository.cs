@@ -5,9 +5,6 @@ namespace Application.Abstractions;
 
 public interface IEntryRepository
 {
-    // Task<int> CountAsync();
-
-    // Task<List<EntryDto>> GetAsync(PaginationDto paginationDto);
     Task<(List<EntrySummaryDto>, int count)> GetAsync(EntryFilterDto entryFilterDto);
 
     Task<EntryDetailsDto?> GetAsync(int id);

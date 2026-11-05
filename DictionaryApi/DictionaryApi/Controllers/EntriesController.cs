@@ -20,16 +20,6 @@ public class EntriesController: ControllerBase
         _entryRepository = entryRepository;
     }
 
-    // [HttpGet]
-    // [OutputCache(Tags = [CacheTag])]
-    // public async Task<List<EntryDto>> GetAsync([FromQuery] PaginationDto paginationDto)
-    // {
-    //     var totalCount = await _entryRepository.CountAsync();
-    //     HttpContext.AppendTotalCountInHeader(totalCount);
-    //
-    //     return await _entryRepository.GetAsync(paginationDto);
-    // }
-    
     [HttpGet]
     public async Task<List<EntrySummaryDto>> GetAsync([FromQuery] EntryFilterDto entryFilterDto)
     {

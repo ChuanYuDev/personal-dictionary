@@ -19,20 +19,6 @@ public class EntryRepository: IEntryRepository
         _mapper = mapper;
     }
 
-    // public async Task<int> CountAsync()
-    // {
-    //     return await _context.Entries.CountAsync();
-    // }
-    //
-    // public async Task<List<EntryDto>> GetAsync(PaginationDto paginationDto)
-    // {
-    //     return await _context.Entries
-    //         .OrderByDescending(e => e.CreatedAt)
-    //         .Paginate(paginationDto)
-    //         .ProjectTo<EntryDto>(_mapper.ConfigurationProvider)
-    //         .ToListAsync();
-    // }
-
     public async Task<(List<EntrySummaryDto>, int count)> GetAsync(EntryFilterDto entryFilterDto)
     {
         var entries = _context.Entries.AsQueryable();
