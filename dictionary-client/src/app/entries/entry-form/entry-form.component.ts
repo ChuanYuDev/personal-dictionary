@@ -7,6 +7,7 @@ import {MatInputModule} from "@angular/material/input";
 import {CategoryDto} from "../../categories/category.models";
 import {TextFieldModule} from "@angular/cdk/text-field";
 import {toSignal} from "@angular/core/rxjs-interop";
+import {removeNullProperties} from "../../shared/functions/remove-null-properties";
 
 @Component({
     selector: 'app-entry-form',
@@ -78,7 +79,8 @@ export class EntryFormComponent implements OnInit{
     }
     
     onSubmit() {
-        const entryCreationDto = this.formGroup.value as EntryCreateDto;
+        const entryCreationDto = removeNullProperties<EntryCreateDto>(this.formGroup.value);
+        
         this.postForm.emit(entryCreationDto);
     }
 }

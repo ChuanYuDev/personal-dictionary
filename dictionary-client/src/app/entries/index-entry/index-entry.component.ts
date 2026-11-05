@@ -1,4 +1,4 @@
-import {Component, computed, effect, inject, OnInit, signal} from '@angular/core';
+import {Component, computed, inject, OnInit, signal} from '@angular/core';
 import {EntryCardComponent} from "../entry-card/entry-card.component";
 import {EntryFilterDto, EntrySearchFilterDto, EntrySummaryDto} from "../entry.models";
 import {EntrySearchFormComponent} from "../entry-search-form/entry-search-form.component";
@@ -7,10 +7,14 @@ import {MatIconModule} from "@angular/material/icon";
 import {ScrollingModule} from "@angular/cdk/scrolling";
 import {PaginatorComponent} from "../paginator/paginator.component";
 import {Location} from "@angular/common";
+import {EntryService} from "../entry.service";
+import {HttpErrorResponse, HttpResponse} from "@angular/common/http";
+import {extractErrorMessages} from "../../shared/functions/extract-error-messages";
+import {DisplayErrorsComponent} from "../../shared/components/display-errors/display-errors.component";
 
 @Component({
     selector: 'app-index-entry',
-    imports: [EntryCardComponent, EntrySearchFormComponent, RouterLink, MatIconModule, ScrollingModule, PaginatorComponent],
+    imports: [EntryCardComponent, EntrySearchFormComponent, RouterLink, MatIconModule, ScrollingModule, PaginatorComponent, DisplayErrorsComponent],
     templateUrl: './index-entry.component.html',
     styleUrl: './index-entry.component.css'
 })
@@ -24,8 +28,11 @@ export class IndexEntryComponent implements OnInit {
     readonly totalCount = signal<number>(0);
     readonly pageCount = computed(() => Math.max(1, Math.ceil(this.totalCount() / this.pageSize)));
 
+    readonly errors = signal<string[]>([]);
+    
     private readonly activatedRoute = inject(ActivatedRoute);
     private readonly location = inject(Location);
+    private readonly entryService = inject(EntryService);
     
     ngOnInit(): void {
         this.activatedRoute.queryParams.subscribe(params => {
@@ -76,29 +83,42 @@ export class IndexEntryComponent implements OnInit {
         const entryFilterDto = this.getEntryFilterDto();
         this.writeParametersInUrl(entryFilterDto);
 
-        // Http Request
-        this.totalCount.set(340);
-        
-        if (this.page() <= this.pageCount()) {
-            this.entrySummaryDtos.set(this.entrySummaryDtoObjects);
-            return;
-        }
-        
-        this.page.set(this.pageCount());
-        
-        this.filterEntries();
+        this.entryService.get(entryFilterDto).subscribe({
+            next: httpResponse => {
+                const totalCountString = httpResponse.headers.get("total-count");
+                this.totalCount.set(Number(totalCountString));
+                
+                if (this.page() <= this.pageCount()) {
+                    this.entrySummaryDtos.set(httpResponse.body ?? []);
+                    return;
+                }
+                
+                this.page.set(this.pageCount());
+                this.filterEntries();
+                
+            },
+            error: async err => {
+                await this.handleError(err);
+            }
+        });
     }
 
     private filterEntries() {
         const entryFilterDto = this.getEntryFilterDto();
         this.writeParametersInUrl(entryFilterDto);
 
-        // Http Request
-        console.log(entryFilterDto);
-        
-        this.totalCount.set(340);
+        this.entryService.get(entryFilterDto).subscribe({
+            next: httpResponse => {
+                const totalCountString = httpResponse.headers.get("total-count");
+                this.totalCount.set(Number(totalCountString));
 
-        this.entrySummaryDtos.set(this.entrySummaryDtoObjects);
+                this.entrySummaryDtos.set(httpResponse.body ?? []);
+            },
+
+            error: async err => {
+                await this.handleError(err);
+            }
+        });
     }
 
     private getEntryFilterDto(): EntryFilterDto {
@@ -123,6 +143,13 @@ export class IndexEntryComponent implements OnInit {
         this.location.replaceState("", queryStrings.join('&'));
     }
 
+    private async handleError(err: HttpErrorResponse) {
+        console.error("Failed to get entries summary list", "error response: ", err);
+
+        const errorMessages = await extractErrorMessages(err);
+        this.errors.set(errorMessages);
+    }
+    
     private readonly entrySummaryDtoObjects: EntrySummaryDto[] = [
         {
             id: 1,

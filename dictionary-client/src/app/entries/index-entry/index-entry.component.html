@@ -6,23 +6,27 @@
     ></app-entry-search-form>
 
     <div class="entries-container">
-        @for (entrySummaryDto of entrySummaryDtos(); track entrySummaryDto.id) {
-            <a [routerLink]="['/entries', entrySummaryDto.id]" class="unstyled-link"
-            >
-                <app-entry-card [entrySummaryDto]="entrySummaryDto" >
-                </app-entry-card>
-            </a>
+        @if (errors().length > 0) {
+            <app-display-errors [errors]="errors()"></app-display-errors>
+        } @else {
+            @for (entrySummaryDto of entrySummaryDtos(); track entrySummaryDto.id) {
+                <a [routerLink]="['/entries', entrySummaryDto.id]" class="unstyled-link"
+                >
+                    <app-entry-card [entrySummaryDto]="entrySummaryDto" >
+                    </app-entry-card>
+                </a>
+            }
+
+            <app-paginator
+                    [page]="page()"
+                    [pageCount]="pageCount()"
+                    (pageChange)="onPageChange($event)"
+            ></app-paginator>
         }
-        
-        <app-paginator
-            [page]="page()"
-            [pageCount]="pageCount()"
-            (pageChange)="onPageChange($event)"
-        ></app-paginator>
     </div>
     
     
-    <a routerLink="/entries/create" class="unstyled-link right-bottom-float flex-center">
+    <a routerLink="/entries/create" class="unstyled-link add-item flex-center">
         <mat-icon>add_circle_outline</mat-icon>
     </a>
 </div>

@@ -1,9 +1,10 @@
-import {Component, effect, inject, input, model, OnInit, output, signal} from '@angular/core';
+import {Component, inject, input, model, OnInit, signal} from '@angular/core';
 import {FormBuilder, FormControl, ReactiveFormsModule} from "@angular/forms";
 import {CategoryDto} from "../../categories/category.models";
 import {debounceTime} from "rxjs";
 import {FavoriteComponent} from "../../shared/components/favorite/favorite.component";
-import {EntryFilterDto, EntrySearchFilterDto} from "../entry.models";
+import {EntrySearchFilterDto} from "../entry.models";
+import {removeNullProperties} from "../../shared/functions/remove-null-properties";
 
 @Component({
     selector: 'app-entry-search-form',
@@ -43,7 +44,8 @@ export class EntrySearchFormComponent implements OnInit{
         this.formGroup.valueChanges
             .pipe(debounceTime(300))
             .subscribe(value => {
-                this.entrySearchFilterDto.set(value as EntrySearchFilterDto);
+                const entrySearchFilterDtoObject = removeNullProperties<EntrySearchFilterDto>(value);
+                this.entrySearchFilterDto.set(entrySearchFilterDtoObject);
             });
     }
     
