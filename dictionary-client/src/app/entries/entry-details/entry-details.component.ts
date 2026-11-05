@@ -40,23 +40,5 @@ export class EntryDetailsComponent implements OnInit {
                 this.errors.set(errorMessages);
             }
         });
-        // const entryDetailsDtoObject: EntryDetailsDto = {
-        //     id: 2,
-        //     term: "string2",
-        //     pronunciation: "string",
-        //     partOfSpeech: "string",
-        //     // meaning: "meaning",
-        //     // notes: "string",
-        //     isFavorite: true,
-        //     categoryId: 1,
-        //     categoryName: "word",
-        //
-        //     modifiedAt: new Date("2026-10-19T20:08:00.770028"),
-        //     createdAt: new Date("2026-10-19T10:08:00.770028")
-        // };
-        //
-        // this.entryDetailsDto.set(entryDetailsDtoObject);
-        //
-        // this.isFavorite.set(entryDetailsDtoObject.isFavorite);
     }
 }

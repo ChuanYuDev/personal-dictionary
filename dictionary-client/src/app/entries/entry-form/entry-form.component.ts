@@ -17,6 +17,7 @@ import {removeNullProperties} from "../../shared/functions/remove-null-propertie
 })
 export class EntryFormComponent implements OnInit{
     readonly entryDetailsDto = input<EntryDetailsDto | null>(null);
+    readonly saveButtonDisabled = input<Boolean>(false);
     readonly postForm = output<EntryCreateDto>();
 
     private readonly formBuilder = inject(FormBuilder);

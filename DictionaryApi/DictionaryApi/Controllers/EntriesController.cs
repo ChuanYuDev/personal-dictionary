@@ -1,9 +1,7 @@
 using Application.Abstractions;
 using Application.Dtos;
-using Application.Services;
 using DictionaryApi.Extensions;
 using DictionaryApi.Filters;
-using DictionaryApi.Middleware;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OutputCaching;
 

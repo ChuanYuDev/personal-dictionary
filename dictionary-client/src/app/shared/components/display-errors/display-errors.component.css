@@ -3,6 +3,7 @@
     color: red;
     align-items: start;
     column-gap: 10px;
+    margin-bottom: 0.5rem;
 }
 
 mat-icon {

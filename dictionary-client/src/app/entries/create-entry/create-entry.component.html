@@ -3,5 +3,10 @@
         <app-favorite [(isFavorite)]="isFavorite"></app-favorite>
     </app-page-header>
     
-    <app-entry-form (postForm)="saveChanges($event)"></app-entry-form>
+    <app-entry-form
+        [saveButtonDisabled]="isCreating()"
+        (postForm)="saveChanges($event)"
+    >
+        <app-display-errors [errors]="errors()"></app-display-errors>
+    </app-entry-form>
 </div>

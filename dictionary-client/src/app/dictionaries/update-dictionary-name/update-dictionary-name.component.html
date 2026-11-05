@@ -6,7 +6,7 @@
     title="Rename Dictionary"
     confirmButtonText="Save"
     confirmButtonStyle="primary"
-    [confirmButtonDisabled]="formGroup.invalid"
+    [confirmButtonDisabled]="formGroup.invalid || isUpdating()"
     (confirmed)="updateDictionaryName()"
 >
     <form [formGroup]="formGroup">

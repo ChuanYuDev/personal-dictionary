@@ -8,18 +8,18 @@
 
 <div class="row">
     <div class="col-6">
-        <button type="button" class="button danger" (click)="deleteDialog.open()">
+        <button type="button" class="button danger" (click)="openDialog()">
             Delete
         </button>
     </div>
 </div>
 
 <app-dialog
-    #deleteDialog
     title="Delete Entry"
     content="This action cannot be undone."
     confirmButtonText="Delete"
     confirmButtonStyle="danger"
     (confirmed)="delete()"
 >
+    <app-display-errors [errors]="errors()"></app-display-errors>
 </app-dialog>

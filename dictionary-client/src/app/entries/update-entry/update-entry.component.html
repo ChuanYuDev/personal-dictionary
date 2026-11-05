@@ -5,13 +5,24 @@
         }
     </app-page-header>
 
-    @if (entryDetailsDto()) {
-        <app-entry-form [entryDetailsDto]="entryDetailsDto()" (postForm)="saveChanges($event)"></app-entry-form>
-        
-        <hr>
-        
-        <app-delete-entry [id]="id()"></app-delete-entry>
+    @if (errors().length > 0) {
+        <app-display-errors [errors]="errors()"></app-display-errors>
     } @else {
-        Loading...
+        @if (entryDetailsDto()) {
+            <app-entry-form
+                [entryDetailsDto]="entryDetailsDto()"
+                [saveButtonDisabled]="isUpdating()"
+                (postForm)="saveChanges($event)"
+            >
+                <app-display-errors [errors]="saveErrors()"></app-display-errors>
+            </app-entry-form>
+
+            <hr>
+
+            <app-delete-entry [id]="id()"></app-delete-entry>
+        } @else {
+            Loading...
+        }
     }
+
 </div>

@@ -56,13 +56,19 @@
         </textarea>
     </div>
     
+    <ng-content></ng-content>
+    
     <div class="row">
         <div class="col-6">
             <a routerLink="/" class="button unstyled-link">Cancel</a>
         </div>
 
         <div class="col-6">
-            <button class="button primary" type="submit" [disabled]="formGroup.invalid">Save</button>
+            <button
+                class="button primary"
+                type="submit"
+                [disabled]="formGroup.invalid || saveButtonDisabled()"
+            >Save</button>
         </div>
     </div>
 </form>
