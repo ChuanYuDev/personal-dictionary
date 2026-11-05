@@ -24,7 +24,7 @@ export class IndexEntryComponent implements OnInit {
     entrySearchFilterDto = signal<EntrySearchFilterDto>({});
     page = signal<number>(1);
     
-    readonly entrySummaryDtos = signal<EntrySummaryDto[]>([]);
+    readonly entrySummaryDtos = signal<EntrySummaryDto[] | null>(null);
     readonly totalCount = signal<number>(0);
     readonly pageCount = computed(() => Math.max(1, Math.ceil(this.totalCount() / this.pageSize)));
 
@@ -82,7 +82,8 @@ export class IndexEntryComponent implements OnInit {
     private filterEntriesWithPageChecking() {
         const entryFilterDto = this.getEntryFilterDto();
         this.writeParametersInUrl(entryFilterDto);
-
+        this.entrySummaryDtos.set(null);
+        
         this.entryService.get(entryFilterDto).subscribe({
             next: httpResponse => {
                 const totalCountString = httpResponse.headers.get("total-count");
@@ -106,6 +107,7 @@ export class IndexEntryComponent implements OnInit {
     private filterEntries() {
         const entryFilterDto = this.getEntryFilterDto();
         this.writeParametersInUrl(entryFilterDto);
+        this.entrySummaryDtos.set(null);
 
         this.entryService.get(entryFilterDto).subscribe({
             next: httpResponse => {

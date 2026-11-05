@@ -13,14 +13,11 @@ namespace DictionaryApi.Controllers;
 public class EntriesController: ControllerBase
 {
     private readonly IEntryRepository _entryRepository;
-    private readonly IOutputCacheStore _outputCacheStore;
     private const string GetByIdName = "GetEntryById";
-    private const string CacheTag = "Entries";
     
-    public EntriesController(IEntryRepository entryRepository, IOutputCacheStore outputCacheStore)
+    public EntriesController(IEntryRepository entryRepository)
     {
         _entryRepository = entryRepository;
-        _outputCacheStore = outputCacheStore;
     }
 
     // [HttpGet]
@@ -34,7 +31,6 @@ public class EntriesController: ControllerBase
     // }
     
     [HttpGet]
-    [OutputCache(Tags = [CacheTag])]
     public async Task<List<EntrySummaryDto>> GetAsync([FromQuery] EntryFilterDto entryFilterDto)
     {
         var (entryDtos, count) = await _entryRepository.GetAsync(entryFilterDto);
@@ -44,7 +40,6 @@ public class EntriesController: ControllerBase
     }
 
     [HttpGet("{id:int}", Name = GetByIdName)]
-    [OutputCache(Tags = [CacheTag])]
     public async Task<ActionResult<EntryDetailsDto>> GetAsync(int id)
     {
         var entryDto = await _entryRepository.GetAsync(id);
@@ -58,7 +53,6 @@ public class EntriesController: ControllerBase
     public async Task<CreatedAtRouteResult> CreateAsync([FromBody] EntryCreationDto entryCreationDto)
     {
         var entryDto = await _entryRepository.CreateAsync(entryCreationDto);
-        await _outputCacheStore.EvictByTagAsync(CacheTag, CancellationToken.None);
         return CreatedAtRoute(GetByIdName, new { id = entryDto.Id }, entryDto);
     }
 
@@ -69,7 +63,6 @@ public class EntriesController: ControllerBase
 
         if (!updated) return EntryNotFoundProblem(id);
         
-        await _outputCacheStore.EvictByTagAsync(CacheTag, CancellationToken.None);
         return NoContent();
     }
     
@@ -80,7 +73,6 @@ public class EntriesController: ControllerBase
 
         if (!deleted) return EntryNotFoundProblem(id);
         
-        await _outputCacheStore.EvictByTagAsync(CacheTag, CancellationToken.None);
         return NoContent();
     }
 
