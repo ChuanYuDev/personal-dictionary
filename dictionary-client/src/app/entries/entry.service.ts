@@ -1,7 +1,7 @@
 import {inject, Injectable} from '@angular/core';
 import {HttpClient, HttpParams} from "@angular/common/http";
 import {environment} from "../../environments/environment";
-import {EntryFilterDto, EntrySummaryDto} from "./entry.models";
+import {EntryCreateDto, EntryDetailsDto, EntryFilterDto, EntrySummaryDto} from "./entry.models";
 
 @Injectable({
     providedIn: 'root'
@@ -18,6 +18,14 @@ export class EntryService {
            params: queryParams,
            observe: "response" 
         });
+    }
+    
+    getById(id: number) {
+        return this.httpClient.get<EntryDetailsDto>(`${this.baseUrl}/${id}`);
+    }
+    
+    update(id: number, entryCreationDto: EntryCreateDto) {
+        return this.httpClient.put(`${this.baseUrl}/${id}`, entryCreationDto);
     }
     
     private buildQueryParams(entryFilterDto: EntryFilterDto): HttpParams {

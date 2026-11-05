@@ -1,4 +1,4 @@
-import {Component, computed, input, numberAttribute, OnInit, signal} from '@angular/core';
+import {Component, computed, inject, input, numberAttribute, OnInit, signal} from '@angular/core';
 import {RouterLink} from "@angular/router";
 import {MatIconModule} from "@angular/material/icon";
 import {EntryDetailsDto, EntrySummaryDto} from "../entry.models";
@@ -6,10 +6,13 @@ import {FavoriteComponent} from "../../shared/components/favorite/favorite.compo
 import {DatePipe} from "@angular/common";
 import {PageHeaderComponent} from "../../shared/components/page-header/page-header.component";
 import {toSignal} from "@angular/core/rxjs-interop";
+import {EntryService} from "../entry.service";
+import {extractErrorMessages} from "../../shared/functions/extract-error-messages";
+import {DisplayErrorsComponent} from "../../shared/components/display-errors/display-errors.component";
 
 @Component({
     selector: 'app-entry-details',
-    imports: [RouterLink, MatIconModule, FavoriteComponent, DatePipe, PageHeaderComponent],
+    imports: [RouterLink, MatIconModule, FavoriteComponent, DatePipe, PageHeaderComponent, DisplayErrorsComponent],
     templateUrl: './entry-details.component.html',
     styleUrl: './entry-details.component.css'
 })
@@ -19,24 +22,41 @@ export class EntryDetailsComponent implements OnInit {
     readonly entryDetailsDto = signal<EntryDetailsDto | null>(null);
     readonly isFavorite = signal<boolean>(false);
     
+    readonly errors = signal<string[]>([]);
+    
+    private readonly entryService = inject(EntryService);
+    
     ngOnInit(): void {
-        const entryDetailsDtoObject: EntryDetailsDto = {
-            id: 2,
-            term: "string2",
-            pronunciation: "string",
-            partOfSpeech: "string",
-            // meaning: "meaning",
-            // notes: "string",
-            isFavorite: true,
-            categoryId: 1,
-            categoryName: "word",
+        this.entryService.getById(this.id()).subscribe({
+            next: entryDetailsDtoObject => {
+                this.entryDetailsDto.set(entryDetailsDtoObject);
 
-            modifiedAt: new Date("2026-10-19T20:08:00.770028"),
-            createdAt: new Date("2026-10-19T10:08:00.770028")
-        };
-        
-        this.entryDetailsDto.set(entryDetailsDtoObject);
-        
-        this.isFavorite.set(entryDetailsDtoObject.isFavorite);
+                this.isFavorite.set(entryDetailsDtoObject.isFavorite);
+            },
+            error: async err => {
+                console.error("Failed to get entry details", "error response: ", err);
+
+                const errorMessages = await extractErrorMessages(err);
+                this.errors.set(errorMessages);
+            }
+        });
+        // const entryDetailsDtoObject: EntryDetailsDto = {
+        //     id: 2,
+        //     term: "string2",
+        //     pronunciation: "string",
+        //     partOfSpeech: "string",
+        //     // meaning: "meaning",
+        //     // notes: "string",
+        //     isFavorite: true,
+        //     categoryId: 1,
+        //     categoryName: "word",
+        //
+        //     modifiedAt: new Date("2026-10-19T20:08:00.770028"),
+        //     createdAt: new Date("2026-10-19T10:08:00.770028")
+        // };
+        //
+        // this.entryDetailsDto.set(entryDetailsDtoObject);
+        //
+        // this.isFavorite.set(entryDetailsDtoObject.isFavorite);
     }
 }

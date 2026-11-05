@@ -5,75 +5,80 @@
             <app-favorite [isFavorite]="isFavorite()" [readonlyMode]="true"></app-favorite>
         }
     </app-page-header>
-
-    @if (entryDetailsDto(); as entryDetailsDtoObject) {
-
-        <div class="entry-term">
-            {{ entryDetailsDtoObject.term }}
-        </div>
-
-        @if ((entryDetailsDtoObject.categoryName === "Word") && entryDetailsDtoObject.partOfSpeech) {
-            <div class="entry-field">
-                Part of Speech
-            </div>
-
-            <div class="entry-detail">
-                {{ entryDetailsDtoObject.partOfSpeech }} &middot;
-            </div>
-        }
-
-        @if (entryDetailsDtoObject.pronunciation) {
-            <div class="entry-field">
-                Pronunciation
-            </div>
-
-            <div class="entry-detail">
-                {{ entryDetailsDtoObject.pronunciation }}
-            </div>
-        }
-
-        @if (entryDetailsDtoObject.meaning) {
-            <div class="entry-field">
-                Meaning
-            </div>
-
-            <div class="entry-detail">
-                {{ entryDetailsDtoObject.meaning }}
-            </div>
-        }
-
-        @if (entryDetailsDtoObject.notes) {
-            <div class="entry-field">
-                Notes
-            </div>
-
-            <div class="entry-detail">
-                {{ entryDetailsDtoObject.notes }}
-            </div>
-        }
-        
-        <div class="entry-time">
-            <div>
-                <span class="entry-field"> Last Modified: </span>  {{entryDetailsDtoObject.modifiedAt | date: "yyyy-MM-dd HH:mm:ss"}}
-            </div>
-            
-            <div>
-                <span class="entry-field"> Created: </span> {{entryDetailsDtoObject.createdAt | date: "yyyy-MM-dd HH:mm:ss"}}
-            </div>
-        </div>
-        
-        <div class="row">
-            <div class="col-12">
-                <a
-                        class="unstyled-link button"
-                        [routerLink]="['/entries/update', id()]"
-                >
-                    Edit
-                </a>
-            </div>
-        </div>
-        
+    
+    @if (errors().length > 0) {
+        <app-display-errors [errors]="errors()"></app-display-errors>
     } @else {
-        Loading...
+        @if (entryDetailsDto(); as entryDetailsDtoObject) {
+
+            <div class="entry-term">
+                {{ entryDetailsDtoObject.term }}
+            </div>
+
+            @if ((entryDetailsDtoObject.categoryName === "Word") && entryDetailsDtoObject.partOfSpeech) {
+                <div class="entry-field">
+                    Part of Speech
+                </div>
+
+                <div class="entry-detail">
+                    {{ entryDetailsDtoObject.partOfSpeech }} &middot;
+                </div>
+            }
+
+            @if (entryDetailsDtoObject.pronunciation) {
+                <div class="entry-field">
+                    Pronunciation
+                </div>
+
+                <div class="entry-detail">
+                    {{ entryDetailsDtoObject.pronunciation }}
+                </div>
+            }
+
+            @if (entryDetailsDtoObject.meaning) {
+                <div class="entry-field">
+                    Meaning
+                </div>
+
+                <div class="entry-detail">
+                    {{ entryDetailsDtoObject.meaning }}
+                </div>
+            }
+
+            @if (entryDetailsDtoObject.notes) {
+                <div class="entry-field">
+                    Notes
+                </div>
+
+                <div class="entry-detail">
+                    {{ entryDetailsDtoObject.notes }}
+                </div>
+            }
+
+            <div class="entry-time">
+                <div>
+                    <span class="entry-field"> Last Modified: </span>  {{entryDetailsDtoObject.modifiedAt | date: "yyyy-MM-dd HH:mm:ss"}}
+                </div>
+
+                <div>
+                    <span class="entry-field"> Created: </span> {{entryDetailsDtoObject.createdAt | date: "yyyy-MM-dd HH:mm:ss"}}
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-12">
+                    <a
+                            class="unstyled-link button"
+                            [routerLink]="['/entries/update', id()]"
+                    >
+                        Edit
+                    </a>
+                </div>
+            </div>
+
+        } @else {
+            Loading...
+        }
     }
+
 </div>
