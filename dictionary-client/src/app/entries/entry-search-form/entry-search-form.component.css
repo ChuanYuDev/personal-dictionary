@@ -1,9 +1,43 @@
-.favorite-container {
+.search-row-1 {
     display: flex;
-    justify-content: center;
+    column-gap: 8px;
 }
 
-.favorite-item {
+.term-container {
+    flex-grow: 1;
+}
+
+.exact-container {
+    display: flex;    
+    align-items: center;
+    column-gap: 8px;
+    height: 30px;
+}
+
+.exact-container > input {
+    width: 24px;
+    height: 24px;
+}
+
+.search-row-2 {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.actions-container {
+    display: flex;
+    column-gap: 8px;
+    width: 70%;
+    flex-shrink: 0;
+}
+
+.actions-container > .category-id-container,
+.actions-container > .button-container {
+    width: 40%;
+}
+
+.favorite-container {
     border: 1px solid black;
     border-radius: 8px;
     width: 30px;
@@ -17,8 +51,10 @@ app-favorite {
 .button {
     height: 30px;
     padding: 0;
+    font-weight: normal;
 }
 
-.text-right {
-    text-align: right;
+.count-container {
+    margin-bottom: 1rem;
+    flex-shrink: 0;
 }

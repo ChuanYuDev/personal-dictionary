@@ -8,7 +8,6 @@ import {ScrollingModule} from "@angular/cdk/scrolling";
 import {PaginatorComponent} from "../paginator/paginator.component";
 import {Location} from "@angular/common";
 import {EntryService} from "../entry.service";
-import {HttpErrorResponse, HttpResponse} from "@angular/common/http";
 import {extractErrorMessages} from "../../shared/functions/extract-error-messages";
 import {DisplayErrorsComponent} from "../../shared/components/display-errors/display-errors.component";
 import {DictionaryService} from "../../dictionaries/dictionary.service";
@@ -79,6 +78,9 @@ export class IndexEntryComponent implements OnInit {
 
         const isFavorite = params["isFavorite"];
         if (isFavorite) entrySearchFilterDtoObject.isFavorite = (isFavorite === "true");
+        
+        const exactMatch = params["exactMatch"];
+        if (exactMatch) entrySearchFilterDtoObject.exactMatch = (exactMatch === "true");
 
         this.entrySearchFilterDto.set(entrySearchFilterDtoObject);
 
@@ -90,8 +92,7 @@ export class IndexEntryComponent implements OnInit {
     
     private isPageValueValid(value: number) {
         if (!Number.isInteger(value)) return false;
-        if (value < 1) return false;
-        return true;
+        return value >= 1;
     }
     
     private filterEntries(pageChecking: boolean) {
@@ -143,6 +144,8 @@ export class IndexEntryComponent implements OnInit {
         if (entryFilterDto.categoryId) queryStrings.push(`categoryId=${entryFilterDto.categoryId}`);
 
         if (entryFilterDto.isFavorite) queryStrings.push(`isFavorite=${entryFilterDto.isFavorite}`);
+        
+        if (entryFilterDto.exactMatch) queryStrings.push(`exactMatch=${entryFilterDto.exactMatch}`);
 
         if (entryFilterDto.page) queryStrings.push(`page=${entryFilterDto.page}`);
 

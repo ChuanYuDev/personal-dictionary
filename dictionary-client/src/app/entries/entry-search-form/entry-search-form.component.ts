@@ -21,7 +21,8 @@ export class EntrySearchFormComponent implements OnInit{
     readonly formGroup = this.formBuilder.group({
         term: new FormControl<string | null>(null),
         categoryId: new FormControl<number | null>(null),
-        isFavorite: new FormControl<boolean | null>(null)
+        isFavorite: new FormControl<boolean | null>(null),
+        exactMatch: new FormControl<boolean | null>(null)
     });
     
     isFavorite = signal<boolean>(false);
@@ -59,7 +60,8 @@ export class EntrySearchFormComponent implements OnInit{
         const defaultFormValue = {
             term: null,
             categoryId: null,
-            isFavorite: null
+            isFavorite: null,
+            exactMatch: null
         };
         
         this.formGroup.patchValue(defaultFormValue);

@@ -1,16 +1,28 @@
 <form [formGroup]="formGroup">
-    <div class="form-field">
-        <input
-            id="term"
-            [formControl]="formGroup.controls.term"
-            aria-label="term"
-            placeholder="Term"
-        >
+    <div class="search-row-1">
+        <div class="form-field term-container">
+            <input
+                id="term"
+                [formControl]="formGroup.controls.term"
+                aria-label="term"
+                placeholder="Search term"
+            >
+        </div>
+        
+        <div class="form-field exact-container">
+            <input
+                id="exactMatch"
+                type="checkbox"
+                [formControl]="formGroup.controls.exactMatch"
+                aria-label="exactMatch"
+            >
+            <label for="exactMatch">Exact</label>
+        </div>
     </div>
     
-    <div class="row gx-0">
-        <div class="col-3">
-            <div class="form-field">
+    <div class="search-row-2">
+        <div class="actions-container">
+            <div class="form-field category-id-container">
                 <select id="categoryId" [formControl]="formGroup.controls.categoryId" aria-label="Category">
                     <option [ngValue]="null">All</option>
 
@@ -19,23 +31,52 @@
                     }
                 </select>
             </div>
-        </div>
-        
-        <div class="col-2 favorite-container">
-            <div class="favorite-item flex-center">
+            
+            <div class="favorite-container flex-center">
                 <app-favorite
-                    [isFavorite]="isFavorite()"
-                    (isFavoriteChange)="onIsFavoriteChange($event)"
+                        [isFavorite]="isFavorite()"
+                        (isFavoriteChange)="onIsFavoriteChange($event)"
                 ></app-favorite>
             </div>
+            
+            <div class="button-container">
+                <button type="button" class="button" (click)="clear()">Clear</button>
+            </div>
         </div>
-        
-        <div class="col-3 button-container">
-            <button type="button" class="button" (click)="clear()">Clear</button>     
-        </div>
-        
-        <div class="col-4 text-right">
+
+        <div class="count-container">
             {{ totalCount() }} {{totalCount() > 1? "Entries": "Entry" }}
         </div>
     </div>
+    
+<!--    <div class="row gx-0">-->
+<!--        <div class="col-3">-->
+<!--            <div class="form-field">-->
+<!--                <select id="categoryId" [formControl]="formGroup.controls.categoryId" aria-label="Category">-->
+<!--                    <option [ngValue]="null">All</option>-->
+
+<!--                    @for (categoryDto of categoryDtos(); track $index) {-->
+<!--                        <option [ngValue]="categoryDto.id"> {{ categoryDto.name }} </option>-->
+<!--                    }-->
+<!--                </select>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--        -->
+<!--        <div class="col-2 favorite-container">-->
+<!--            <div class="favorite-item flex-center">-->
+<!--                <app-favorite-->
+<!--                    [isFavorite]="isFavorite()"-->
+<!--                    (isFavoriteChange)="onIsFavoriteChange($event)"-->
+<!--                ></app-favorite>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--        -->
+<!--        <div class="col-3">-->
+<!--            <button type="button" class="button" (click)="clear()">Clear</button>     -->
+<!--        </div>-->
+<!--        -->
+<!--        <div class="col-4 text-right">-->
+<!--            {{ totalCount() }} {{totalCount() > 1? "Entries": "Entry" }}-->
+<!--        </div>-->
+<!--    </div>-->
 </form>

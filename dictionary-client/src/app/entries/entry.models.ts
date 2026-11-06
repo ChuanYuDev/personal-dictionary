@@ -32,6 +32,7 @@ export interface EntrySearchFilterDto {
     term?: string;
     categoryId?: number;
     isFavorite?: boolean;
+    exactMatch?: boolean;
 }
 
 export interface EntryFilterDto extends EntrySearchFilterDto, PaginationDto {
