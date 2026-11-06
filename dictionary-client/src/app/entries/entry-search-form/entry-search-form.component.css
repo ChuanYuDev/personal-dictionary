@@ -1,11 +1,22 @@
 .favorite-container {
+    display: flex;
+    justify-content: center;
+}
+
+.favorite-item {
     border: 1px solid black;
     border-radius: 8px;
     width: 30px;
     height: 30px;
 }
+
 app-favorite {
     font-size: 24px;
+}
+
+.button {
+    height: 30px;
+    padding: 0;
 }
 
 .text-right {

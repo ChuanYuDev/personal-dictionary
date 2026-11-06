@@ -24,8 +24,9 @@ export class EntrySearchFormComponent implements OnInit{
         isFavorite: new FormControl<boolean | null>(null)
     });
     
-    readonly categoryDtos = signal<CategoryDto[]>([]);
     isFavorite = signal<boolean>(false);
+    
+    readonly categoryDtos = signal<CategoryDto[]>([]);
     
     ngOnInit(): void {
         this.categoryDtos.set([{
@@ -50,6 +51,19 @@ export class EntrySearchFormComponent implements OnInit{
     }
     
     onIsFavoriteChange(isFavoriteBool: boolean) {
+        this.isFavorite.set(isFavoriteBool);
         this.formGroup.controls.isFavorite.setValue(isFavoriteBool);
     }
+    
+    clear() {
+        const defaultFormValue = {
+            term: null,
+            categoryId: null,
+            isFavorite: null
+        };
+        
+        this.formGroup.patchValue(defaultFormValue);
+        this.isFavorite.set(false);
+    }
+    
 }

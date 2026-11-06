@@ -1,16 +1,17 @@
 <form [formGroup]="formGroup">
     <div class="form-field">
         <input
+            id="term"
             [formControl]="formGroup.controls.term"
             aria-label="term"
             placeholder="Term"
         >
     </div>
     
-    <div class="row">
-        <div class="col-4">
+    <div class="row gx-0">
+        <div class="col-3">
             <div class="form-field">
-                <select [formControl]="formGroup.controls.categoryId" aria-label="Category">
+                <select id="categoryId" [formControl]="formGroup.controls.categoryId" aria-label="Category">
                     <option [ngValue]="null">All</option>
 
                     @for (categoryDto of categoryDtos(); track $index) {
@@ -20,13 +21,17 @@
             </div>
         </div>
         
-        <div class="col-4">
-            <div class="favorite-container flex-center">
+        <div class="col-2 favorite-container">
+            <div class="favorite-item flex-center">
                 <app-favorite
                     [isFavorite]="isFavorite()"
                     (isFavoriteChange)="onIsFavoriteChange($event)"
                 ></app-favorite>
             </div>
+        </div>
+        
+        <div class="col-3 button-container">
+            <button type="button" class="button" (click)="clear()">Clear</button>     
         </div>
         
         <div class="col-4 text-right">
