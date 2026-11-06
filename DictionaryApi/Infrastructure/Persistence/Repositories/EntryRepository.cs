@@ -27,7 +27,7 @@ public class EntryRepository: IEntryRepository
         else
         {
             entries = entries.Where(e => e.Term.Contains(entryFilterDto.Term));
-            entries = entries.OrderBy(e => e.Term).ThenBy(e => e.CategoryId).ThenBy(e => e.Id);
+            entries = entries.OrderBy(e => e.Term).ThenBy(e => e.CategoryId).ThenBy(e => e.PartOfSpeech).ThenBy(e => e.Id);
         }
 
         if (entryFilterDto.IsFavorite == true) entries = entries.Where(e => e.IsFavorite);

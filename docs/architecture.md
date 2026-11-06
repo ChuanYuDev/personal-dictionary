@@ -84,6 +84,16 @@
 
 - Based on current `dictionaryState`, load the corresponding page
 
+### Recover the home page query string
+- We have some search options in the home page and navigate to other page
+    - When we come back to the home page, we need to recover the search options
+
+- Save the query string in the session storage
+- When we initialize the home page
+    - If there is not query string, we get the query string stored in the session storage
+
+    - Otherwise, we remain the query string
+
 ### Disconnect Dictionary
 - Remove `localStorage`
 - Set `dictionaryState` as `null`

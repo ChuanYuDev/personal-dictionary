@@ -2,7 +2,7 @@ import {Component, computed, inject, OnInit, signal} from '@angular/core';
 import {EntryCardComponent} from "../entry-card/entry-card.component";
 import {EntryFilterDto, EntrySearchFilterDto, EntrySummaryDto} from "../entry.models";
 import {EntrySearchFormComponent} from "../entry-search-form/entry-search-form.component";
-import {ActivatedRoute, Params, RouterLink} from "@angular/router";
+import {ActivatedRoute, Params, Router, RouterLink} from "@angular/router";
 import {MatIconModule} from "@angular/material/icon";
 import {ScrollingModule} from "@angular/cdk/scrolling";
 import {PaginatorComponent} from "../paginator/paginator.component";
@@ -11,6 +11,7 @@ import {EntryService} from "../entry.service";
 import {HttpErrorResponse, HttpResponse} from "@angular/common/http";
 import {extractErrorMessages} from "../../shared/functions/extract-error-messages";
 import {DisplayErrorsComponent} from "../../shared/components/display-errors/display-errors.component";
+import {DictionaryService} from "../../dictionaries/dictionary.service";
 
 @Component({
     selector: 'app-index-entry',
@@ -33,9 +34,19 @@ export class IndexEntryComponent implements OnInit {
     private readonly activatedRoute = inject(ActivatedRoute);
     private readonly location = inject(Location);
     private readonly entryService = inject(EntryService);
+    private readonly dictionaryService = inject(DictionaryService);
+    private readonly router = inject(Router);
     
     ngOnInit(): void {
         this.activatedRoute.queryParams.subscribe(params => {
+            if (Object.keys(params).length === 0) {
+                const queryString = window.sessionStorage.getItem(this.queryStringKey);
+                
+                if (queryString) {
+                    params = this.router.parseUrl(`/?${queryString}`).queryParams;
+                }
+            }
+            
             this.readValuesFromQueryParams(params);
             
             this.filterEntriesWithPageChecking();
@@ -51,6 +62,10 @@ export class IndexEntryComponent implements OnInit {
     onPageChange(pageNum: number) {
         this.page.set(pageNum);
         this.filterEntries();
+    }
+    
+    private get queryStringKey() {
+        return `home-query-string: ${this.dictionaryService.getDbId()}`;
     }
     
     private readValuesFromQueryParams(params: Params) {
@@ -142,7 +157,10 @@ export class IndexEntryComponent implements OnInit {
 
         if (entryFilterDto.page) queryStrings.push(`page=${entryFilterDto.page}`);
 
-        this.location.replaceState("", queryStrings.join('&'));
+        const queryString = queryStrings.join('&');
+        this.location.replaceState("/", queryString);
+        
+        window.sessionStorage.setItem(this.queryStringKey, queryString);
     }
 
     private async handleError(err: HttpErrorResponse) {
