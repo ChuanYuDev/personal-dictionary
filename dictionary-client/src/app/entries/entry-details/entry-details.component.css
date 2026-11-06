@@ -14,6 +14,7 @@ app-favorite {
 
 .entry-detail {
     margin-bottom: 1rem;
+    white-space: preserve-breaks wrap;
 }
 
 .entry-time {
