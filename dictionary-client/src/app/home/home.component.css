@@ -12,7 +12,10 @@
 }
 
 .name-item {
+    display: flex;
     width: 40%;
+    justify-content: right;
+    align-items: center;
 }
 
 .name-item > mat-icon {
