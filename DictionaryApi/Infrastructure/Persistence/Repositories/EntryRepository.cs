@@ -23,10 +23,12 @@ public class EntryRepository: IEntryRepository
     {
         var entries = _context.Entries.AsQueryable();
 
-        if (string.IsNullOrEmpty(entryFilterDto.Term)) entries = entries.OrderByDescending(e => e.ModifiedAt);
+        var term = entryFilterDto.Term;
+
+        if (string.IsNullOrEmpty(term)) entries = entries.OrderByDescending(e => e.ModifiedAt);
         else
         {
-            entries = entries.Where(e => e.Term.Contains(entryFilterDto.Term));
+            entries = entryFilterDto.ExactMatch == true ? entries.Where(e => e.Term == term) : entries.Where(e => e.Term.Contains(term));
             entries = entries.OrderBy(e => e.Term).ThenBy(e => e.CategoryId).ThenBy(e => e.PartOfSpeech).ThenBy(e => e.Id);
         }
 
