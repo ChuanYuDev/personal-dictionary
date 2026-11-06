@@ -16,13 +16,10 @@ export class DeleteEntryComponent {
     
     readonly isDeleting = signal<boolean>(false);
     readonly errors = signal<string[]>([]);
+    readonly dialogComponent = viewChild.required(DialogComponent);
     
     private readonly router = inject(Router);
     private readonly entryService = inject(EntryService);
-    
-    readonly dialogComponent = viewChild.required(DialogComponent);
-
-    readonly dbName = input.required<string>();
 
     openDialog() {
         this.dialogComponent().open();

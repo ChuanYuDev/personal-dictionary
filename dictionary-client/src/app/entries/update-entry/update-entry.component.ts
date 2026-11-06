@@ -1,4 +1,4 @@
-import {Component, inject, input, numberAttribute, OnInit, signal} from '@angular/core';
+import {Component, computed, inject, input, numberAttribute, OnInit, signal} from '@angular/core';
 import {EntryFormComponent} from "../entry-form/entry-form.component";
 import {MatIconModule} from "@angular/material/icon";
 import {EntryCreateDto, EntryDetailsDto} from "../entry.models";
@@ -18,11 +18,13 @@ import {Router} from "@angular/router";
 })
 export class UpdateEntryComponent implements OnInit{
     readonly id = input.required({transform: numberAttribute});
+    
     readonly entryDetailsDto = signal<EntryDetailsDto | null>(null);
     isFavorite = signal<boolean>(false);
     readonly isUpdating = signal<boolean>(false);
     readonly errors = signal<string[]>([]);
     readonly saveErrors = signal<string[]>([]);
+    readonly backRoute = computed(() => ['/entries', this.id()]);
 
     private readonly router = inject(Router);
     private readonly entryService = inject(EntryService);

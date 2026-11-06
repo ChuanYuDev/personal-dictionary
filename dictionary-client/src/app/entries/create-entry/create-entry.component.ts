@@ -19,6 +19,7 @@ export class CreateEntryComponent {
     
     readonly isCreating = signal<boolean>(false);
     readonly errors = signal<string[]>([]);
+    readonly backRoute: any[] = ["/"]; 
 
     private readonly router = inject(Router);
     private readonly entryService = inject(EntryService);

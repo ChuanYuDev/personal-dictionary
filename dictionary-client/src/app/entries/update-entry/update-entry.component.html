@@ -1,5 +1,5 @@
 <div class="container">
-    <app-page-header [backRoute]="['/entries', id()]" title="Edit Entry">
+    <app-page-header [backRoute]="backRoute()" title="Edit Entry">
         @if (entryDetailsDto()) {
             <app-favorite [(isFavorite)]="isFavorite"></app-favorite>
         }
@@ -12,6 +12,7 @@
             <app-entry-form
                 [entryDetailsDto]="entryDetailsDto()"
                 [saveButtonDisabled]="isUpdating()"
+                [cancelRoute]="backRoute()"
                 (postForm)="saveChanges($event)"
             >
                 <app-display-errors [errors]="saveErrors()"></app-display-errors>

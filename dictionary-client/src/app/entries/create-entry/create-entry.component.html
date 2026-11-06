@@ -1,10 +1,11 @@
 <div class="container">
-    <app-page-header [backRoute]="['/']" title="Create Entry">
+    <app-page-header [backRoute]="backRoute" title="Create Entry">
         <app-favorite [(isFavorite)]="isFavorite"></app-favorite>
     </app-page-header>
     
     <app-entry-form
         [saveButtonDisabled]="isCreating()"
+        [cancelRoute]="backRoute"
         (postForm)="saveChanges($event)"
     >
         <app-display-errors [errors]="errors()"></app-display-errors>
