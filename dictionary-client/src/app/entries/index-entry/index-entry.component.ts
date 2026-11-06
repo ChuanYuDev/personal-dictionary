@@ -49,19 +49,19 @@ export class IndexEntryComponent implements OnInit {
             
             this.readValuesFromQueryParams(params);
             
-            this.filterEntriesWithPageChecking();
+            this.filterEntries(true);
         });
     }
     
     onEntrySearchFilterDtoChange(entrySearchFilterDtoObject: EntrySearchFilterDto) {
         this.entrySearchFilterDto.set(entrySearchFilterDtoObject);     
         this.page.set(1);
-        this.filterEntries();
+        this.filterEntries(false);
     }
     
     onPageChange(pageNum: number) {
         this.page.set(pageNum);
-        this.filterEntries();
+        this.filterEntries(false);
     }
     
     private get queryStringKey() {
@@ -93,47 +93,36 @@ export class IndexEntryComponent implements OnInit {
         if (value < 1) return false;
         return true;
     }
-
-    private filterEntriesWithPageChecking() {
+    
+    private filterEntries(pageChecking: boolean) {
         const entryFilterDto = this.getEntryFilterDto();
-        this.writeParametersInUrl(entryFilterDto);
+        this.writeQueryStringsInUrl(entryFilterDto);
         this.entrySummaryDtos.set(null);
-        
+
         this.entryService.get(entryFilterDto).subscribe({
             next: httpResponse => {
                 const totalCountString = httpResponse.headers.get("total-count");
                 this.totalCount.set(Number(totalCountString));
                 
+                if (!pageChecking) {
+                    this.entrySummaryDtos.set(httpResponse.body ?? []);
+                    return;
+                }
+
                 if (this.page() <= this.pageCount()) {
                     this.entrySummaryDtos.set(httpResponse.body ?? []);
                     return;
                 }
-                
+
                 this.page.set(this.pageCount());
-                this.filterEntries();
-                
+                this.filterEntries(false);
+
             },
             error: async err => {
-                await this.handleError(err);
-            }
-        });
-    }
+                console.error("Failed to get entries summary list", "error response: ", err);
 
-    private filterEntries() {
-        const entryFilterDto = this.getEntryFilterDto();
-        this.writeParametersInUrl(entryFilterDto);
-        this.entrySummaryDtos.set(null);
-
-        this.entryService.get(entryFilterDto).subscribe({
-            next: httpResponse => {
-                const totalCountString = httpResponse.headers.get("total-count");
-                this.totalCount.set(Number(totalCountString));
-
-                this.entrySummaryDtos.set(httpResponse.body ?? []);
-            },
-
-            error: async err => {
-                await this.handleError(err);
+                const errorMessages = await extractErrorMessages(err);
+                this.errors.set(errorMessages);
             }
         });
     }
@@ -146,7 +135,7 @@ export class IndexEntryComponent implements OnInit {
         };
     }
 
-    private writeParametersInUrl(entryFilterDto: EntryFilterDto) {
+    private writeQueryStringsInUrl(entryFilterDto: EntryFilterDto) {
         const queryStrings: string[] = [];
 
         if (entryFilterDto.term) queryStrings.push(`term=${encodeURIComponent(entryFilterDto.term)}`);
@@ -161,12 +150,5 @@ export class IndexEntryComponent implements OnInit {
         this.location.replaceState("/", queryString);
         
         window.sessionStorage.setItem(this.queryStringKey, queryString);
-    }
-
-    private async handleError(err: HttpErrorResponse) {
-        console.error("Failed to get entries summary list", "error response: ", err);
-
-        const errorMessages = await extractErrorMessages(err);
-        this.errors.set(errorMessages);
     }
 }
