@@ -23,14 +23,15 @@ public class EntryRepository: IEntryRepository
     {
         var entries = _context.Entries.AsQueryable();
 
-        var term = entryFilterDto.Term;
-
-        if (string.IsNullOrEmpty(term)) entries = entries.OrderByDescending(e => e.ModifiedAt);
-        else
-        {
-            entries = entryFilterDto.ExactMatch == true ? entries.Where(e => e.Term == term) : entries.Where(e => e.Term.Contains(term));
-            entries = entries.OrderBy(e => e.Term).ThenBy(e => e.CategoryId).ThenBy(e => e.PartOfSpeech).ThenBy(e => e.Id);
-        }
+        var term = entryFilterDto.Term ?? "";
+        
+        entries = entryFilterDto.ExactMatch == true
+            ? entries.Where(e => e.Term == term)
+            : entries.Where(e => e.Term.Contains(term));
+        
+        entries = term == "" && entryFilterDto.ExactMatch != true
+            ? entries.OrderByDescending(e => e.ModifiedAt)
+            : entries.OrderBy(e => e.Term).ThenBy(e => e.CategoryId).ThenBy(e => e.PartOfSpeech).ThenBy(e => e.Id);
 
         if (entryFilterDto.IsFavorite == true) entries = entries.Where(e => e.IsFavorite);
 

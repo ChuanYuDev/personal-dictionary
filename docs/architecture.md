@@ -82,6 +82,9 @@
 - If `dictionaryState` is not `null`, ask the backend whether the corresponding working database based on `dbId` still exists (TO DO)
     - If the database doesn't exist (status = 404), clear the stale `dbId` and `dbName` from `localStorage` and reset the `dictionaryState`
 
+    - **Because we have dictionary not found error in the home page entries list and other places, there might be no need to have this feature**
+
+
 - Based on current `dictionaryState`, load the corresponding page
 
 ### Recover the home page query string
@@ -103,6 +106,21 @@
 - The connection string depends on `DbId`
 
 - Extract `dbId` from Http header when handling requests related to entries (TO DO)
+
+### Search conditions
+- Conditions
+    - `Term`, `ExactMatch`
+    - Modified time order: `ModifiedAt` in descending order
+    - Term order: order by `Term`, `CategoryId`, `PartOfSpeech`, `Id`
+
+- `Term` search rules
+    - If `Term` is `null`, `Term = ""`
+    - If `ExactMatch == true`, search entries with `Term` exactly equal to `Term`
+    - Else, search entries with `Term` which contains `Term`
+
+- Order rules
+    - If `Term == "" && ExactMath != true`, sort by modified time order
+    - Else, Sort them in Term order
 
 ### Error handling -- Backend
 - Unexpected exception: Use a global exception handler to log and use `/api/error` to send `ProblemDetails` response

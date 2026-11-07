@@ -96,11 +96,12 @@ export class IndexEntryComponent implements OnInit {
     }
     
     private filterEntries(pageChecking: boolean) {
-        const entryFilterDto = this.getEntryFilterDto();
-        this.writeQueryStringsInUrl(entryFilterDto);
+        const entryFilterDtoObject = this.getEntryFilterDto();
+        this.writeQueryStringsInUrl(entryFilterDtoObject);
+        
         this.entrySummaryDtos.set(null);
 
-        this.entryService.get(entryFilterDto).subscribe({
+        this.entryService.get(entryFilterDtoObject).subscribe({
             next: httpResponse => {
                 const totalCountString = httpResponse.headers.get("total-count");
                 this.totalCount.set(Number(totalCountString));
