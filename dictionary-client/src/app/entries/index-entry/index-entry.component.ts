@@ -11,6 +11,7 @@ import {EntryService} from "../entry.service";
 import {extractErrorMessages} from "../../shared/functions/extract-error-messages";
 import {DisplayErrorsComponent} from "../../shared/components/display-errors/display-errors.component";
 import {DictionaryService} from "../../dictionaries/dictionary.service";
+import {version} from "../../../../package.json"
 
 @Component({
     selector: 'app-index-entry',
@@ -29,6 +30,8 @@ export class IndexEntryComponent implements OnInit {
     readonly pageCount = computed(() => Math.max(1, Math.ceil(this.totalCount() / this.pageSize)));
 
     readonly errors = signal<string[]>([]);
+    
+    readonly version = signal<string>(version);
     
     private readonly activatedRoute = inject(ActivatedRoute);
     private readonly location = inject(Location);

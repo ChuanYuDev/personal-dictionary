@@ -19,14 +19,18 @@
                 }
 
                 <app-paginator
-                        [page]="page()"
-                        [pageCount]="pageCount()"
-                        (pageChange)="onPageChange($event)"
+                    [page]="page()"
+                    [pageCount]="pageCount()"
+                    (pageChange)="onPageChange($event)"
                 ></app-paginator>
             } @else {
                 Loading...
             }
         }
+        
+        <div class="version-container">
+            Version: {{version()}}
+        </div>
     </div>
     
     <a routerLink="/entries/create" class="unstyled-link add-item flex-center">

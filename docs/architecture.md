@@ -38,7 +38,7 @@
 
 - The error is shown under each input (TO DO)
 
-### Edit Entry
+### Update Entry
 - Add a light top border to the delete section (`border-top`) (TO DO)
 
 - Delete modal dialog (TO DO)

@@ -8,7 +8,12 @@
 .entries-container {
     flex-grow: 1;
     overflow-y: auto;
-    padding-bottom: 80px;
+    padding-bottom: 40px;
+}
+
+.version-container {
+    margin-top: 1rem;
+    height: 24px;
 }
 
 .add-item {

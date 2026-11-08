@@ -11,8 +11,8 @@ export const routes: Routes = [
     {path: "dictionaries/manage", component: ManageDictionaryComponent},
 
     {path: "entries/create", component: CreateEntryComponent},
-    {path: "entries/update/:id", component: UpdateEntryComponent},
     {path: "entries/:id", component: EntryDetailsComponent},
+    {path: "entries/update/:id", component: UpdateEntryComponent},
     
     {path: "**", redirectTo: ""}
 ];
