@@ -9,8 +9,8 @@
         @if (errors().length > 0) {
             <app-display-errors [errors]="errors()"></app-display-errors>
         } @else {
-            @if (entrySummaryDtos()) {
-                @for (entrySummaryDto of entrySummaryDtos(); track entrySummaryDto.id) {
+            @if (entrySummaryDtos(); as entrySummaryDtosArray) {
+                @for (entrySummaryDto of entrySummaryDtosArray; track entrySummaryDto.id) {
                     <a [routerLink]="['/entries', entrySummaryDto.id]" class="unstyled-link"
                     >
                         <app-entry-card [entrySummaryDto]="entrySummaryDto" >
@@ -28,7 +28,6 @@
             }
         }
     </div>
-    
     
     <a routerLink="/entries/create" class="unstyled-link add-item flex-center">
         <mat-icon>add_circle_outline</mat-icon>

@@ -132,6 +132,7 @@ export class IndexEntryComponent implements OnInit {
     private getEntryFilterDto(): EntryFilterDto {
          return {
             ...this.entrySearchFilterDto(),
+            paginate: true,
             page: this.page(),  
             recordsPerPage: this.pageSize
         };

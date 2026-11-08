@@ -48,35 +48,4 @@
             {{ totalCount() }} {{totalCount() > 1? "Entries": "Entry" }}
         </div>
     </div>
-    
-<!--    <div class="row gx-0">-->
-<!--        <div class="col-3">-->
-<!--            <div class="form-field">-->
-<!--                <select id="categoryId" [formControl]="formGroup.controls.categoryId" aria-label="Category">-->
-<!--                    <option [ngValue]="null">All</option>-->
-
-<!--                    @for (categoryDto of categoryDtos(); track $index) {-->
-<!--                        <option [ngValue]="categoryDto.id"> {{ categoryDto.name }} </option>-->
-<!--                    }-->
-<!--                </select>-->
-<!--            </div>-->
-<!--        </div>-->
-<!--        -->
-<!--        <div class="col-2 favorite-container">-->
-<!--            <div class="favorite-item flex-center">-->
-<!--                <app-favorite-->
-<!--                    [isFavorite]="isFavorite()"-->
-<!--                    (isFavoriteChange)="onIsFavoriteChange($event)"-->
-<!--                ></app-favorite>-->
-<!--            </div>-->
-<!--        </div>-->
-<!--        -->
-<!--        <div class="col-3">-->
-<!--            <button type="button" class="button" (click)="clear()">Clear</button>     -->
-<!--        </div>-->
-<!--        -->
-<!--        <div class="col-4 text-right">-->
-<!--            {{ totalCount() }} {{totalCount() > 1? "Entries": "Entry" }}-->
-<!--        </div>-->
-<!--    </div>-->
 </form>

@@ -6,6 +6,17 @@
             {{ getErrorMessagesForTerm() }}
         </div>
     </div>
+
+    @if (entrySummaryDtos(); as entrySummaryDtosArray) {
+        @if (entrySummaryDtosArray.length > 0) {
+            <div class="field-label">
+                Existing Entries
+            </div>
+            @for (entrySummaryDto of entrySummaryDtosArray; track entrySummaryDto.id) {
+                <app-entry-card [entrySummaryDto]="entrySummaryDto"></app-entry-card>
+            }
+        }
+    }
     
     <div class="form-field">
         <label for="categoryId">Category</label>

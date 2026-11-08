@@ -36,15 +36,16 @@ public class EntryRepository: IEntryRepository
         if (entryFilterDto.IsFavorite == true) entries = entries.Where(e => e.IsFavorite);
 
         if (entryFilterDto.CategoryId is not null) entries = entries.Where(e => e.CategoryId == entryFilterDto.CategoryId);
-
-        var entryDtos = await entries
-            .Paginate(entryFilterDto)
-            .ProjectTo<EntrySummaryDto>(_mapper.ConfigurationProvider)
-            .ToListAsync();
         
         var count = await entries.CountAsync();
 
-        return (entryDtos, count);
+        if (entryFilterDto.Paginate) entries = entries.Paginate(entryFilterDto);
+        
+        var entrySummaryDtos = await entries
+            .ProjectTo<EntrySummaryDto>(_mapper.ConfigurationProvider)
+            .ToListAsync();
+
+        return (entrySummaryDtos, count);
     }
 
     public async Task<EntryDetailsDto?> GetAsync(int id)

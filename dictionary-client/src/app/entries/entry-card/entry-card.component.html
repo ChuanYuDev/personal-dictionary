@@ -1,7 +1,9 @@
 <div class="card-container">
     <div class="card-header">
         <div>
-            {{ entrySummaryDto().term }}
+            <span class="term-container">
+                {{ entrySummaryDto().term }}
+            </span>
             
             @if (entrySummaryDto().pronunciation; as pronunciation) {
                 {{ pronunciation }}        

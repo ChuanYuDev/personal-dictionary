@@ -2,6 +2,7 @@ namespace Application.Dtos;
 
 public class PaginationDto
 {
+    public bool Paginate { get; set; } = true;
     public int Page { get; set; } = 1;
 
     private int _recordsPerPage = 10;
