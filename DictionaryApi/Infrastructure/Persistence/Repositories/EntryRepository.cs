@@ -24,19 +24,22 @@ public class EntryRepository: IEntryRepository
         var entries = _context.Entries.AsQueryable();
 
         var term = entryFilterDto.Term ?? "";
-        
-        entries = entryFilterDto.ExactMatch == true
+
+        var exactMatch = entryFilterDto.ExactMatch;
+        entries = exactMatch == true
             ? entries.Where(e => e.Term == term)
             : entries.Where(e => e.Term.Contains(term));
         
-        entries = term == "" && entryFilterDto.ExactMatch != true
+        var isFavorite = entryFilterDto.IsFavorite;
+        if (isFavorite == true) entries = entries.Where(e => e.IsFavorite);
+
+        var categoryId = entryFilterDto.CategoryId;
+        if (categoryId is not null) entries = entries.Where(e => e.CategoryId == categoryId);
+        
+        entries = (term == "") && (exactMatch != true) && (isFavorite != true) && (categoryId is null)
             ? entries.OrderByDescending(e => e.ModifiedAt)
             : entries.OrderBy(e => e.Term).ThenBy(e => e.CategoryId).ThenBy(e => e.PartOfSpeech).ThenBy(e => e.Id);
 
-        if (entryFilterDto.IsFavorite == true) entries = entries.Where(e => e.IsFavorite);
-
-        if (entryFilterDto.CategoryId is not null) entries = entries.Where(e => e.CategoryId == entryFilterDto.CategoryId);
-        
         var count = await entries.CountAsync();
 
         if (entryFilterDto.Paginate) entries = entries.Paginate(entryFilterDto);

@@ -113,13 +113,13 @@
     - Modified time order: `ModifiedAt` in descending order
     - Term order: order by `Term`, `CategoryId`, `PartOfSpeech`, `Id`
 
-- `Term` search rules
+- `Term` Search rules
     - If `Term` is `null`, `Term = ""`
     - If `ExactMatch == true`, search entries with `Term` exactly equal to `Term`
     - Else, search entries with `Term` which contains `Term`
 
 - Order rules
-    - If `Term == "" && ExactMath != true`, sort by modified time order
+    - If `Term == "" && ExactMath != true && IsFavorite != true && Category is null`, sort by modified time order
     - Else, Sort them in Term order
 
 ### Error handling -- Backend
