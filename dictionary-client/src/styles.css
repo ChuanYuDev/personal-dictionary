@@ -49,6 +49,10 @@ button:disabled {
     color: #666666;
 }
 
+.font-weight-medium {
+    font-weight: 500;
+}
+
 .primary {
     background-color: #007FFF;
     color: white;

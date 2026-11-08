@@ -3,7 +3,9 @@
     <app-page-header [backRoute]="['/']" title="Manage Dictionary"></app-page-header>
 
     @if (dictionaryState(); as dictionaryState) {
-        Connected dictionary:
+        <div class="font-weight-medium">
+            Connected dictionary:
+        </div>
 
         <div class="name-container">
 
