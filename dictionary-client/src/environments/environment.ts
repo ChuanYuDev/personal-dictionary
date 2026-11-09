@@ -1,3 +1,3 @@
 export const environment = {
-    apiUrl: ".../api"
+    apiUrl: "https://personaldictionarywebapp-cdbngqbnb5ceapde.westus3-01.azurewebsites.net/api"
 };

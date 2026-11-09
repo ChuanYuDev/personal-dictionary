@@ -7,14 +7,15 @@
 	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=20149470_002Dab15_002D4dc9_002D9ee8_002D18b305464f4e/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="All tests from Solution #2" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;
   &lt;Solution /&gt;
 &lt;/SessionState&gt;</s:String>
-	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=641d6c19_002D00c0_002D44c4_002D8e90_002Dcd57976d0f66/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="Download_ShouldReturn400BadRequest_WhenDbIdIsMissing #2" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=58c56b00_002Df81e_002D48fd_002Da74f_002Dc8e84271fcf4/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="Continuous Testing" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;
+  &lt;Solution /&gt;
+&lt;/SessionState&gt;</s:String>
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=641d6c19_002D00c0_002D44c4_002D8e90_002Dcd57976d0f66/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="Download_ShouldReturn400BadRequest_WhenDbIdIsMissing #2" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;
   &lt;Project Location="/Users/chuanyu/Library/CloudStorage/Dropbox/Code/ChuanYuDev/personal-dictionary/DictionaryAPI/DictionaryApi.Tests" Presentation="&amp;lt;DictionaryApi.Tests&amp;gt;" /&gt;
 &lt;/SessionState&gt;</s:String>
 	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=b7415fdd_002D9a92_002D4f0e_002Dbc78_002D5ebb41d405d4/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="All tests from Solution" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;
   &lt;Solution /&gt;
 &lt;/SessionState&gt;</s:String>
-	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=c07fd5f0_002Dd474_002D401a_002Dbc85_002D2cf8be385132/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="Download_ShouldReturn400BadRequest_WhenDbIdIsMissing" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;
-  &lt;TestAncestor&gt;
-    &lt;TestId&gt;xUnit::F1739CA9-BA60-47D6-BDBC-D6FD7DF6BA9A::net10.0::DictionaryApi.Tests.Integration.Api.DownloadDictionaryApiTests.Download_ShouldReturn400BadRequest_WhenDbIdIsMissing&lt;/TestId&gt;
-  &lt;/TestAncestor&gt;
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=c07fd5f0_002Dd474_002D401a_002Dbc85_002D2cf8be385132/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="Download_ShouldReturn400BadRequest_WhenDbIdIsMissing" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;
+  &lt;Project Location="/Users/chuanyu/Library/CloudStorage/Dropbox/Code/ChuanYuDev/personal-dictionary/DictionaryAPI/DictionaryApi.Tests" Presentation="&amp;lt;DictionaryApi.Tests&amp;gt;" /&gt;
 &lt;/SessionState&gt;</s:String></wpf:ResourceDictionary>
