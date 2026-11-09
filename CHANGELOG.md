@@ -6,3 +6,8 @@
 - Create, open, and download dictionaries as SQLite files.
 - Create, update, and delete dictionary entries.
 - Search entries with optional exact matching and filter by category or favorite status.
+
+## 0.1.1 - 2026-11-09
+
+### Fixed
+- Fix the dictionary cannot be downloaded error.
