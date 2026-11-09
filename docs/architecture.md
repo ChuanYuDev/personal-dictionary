@@ -659,6 +659,14 @@
 - Add WAL-specific test when downloading a dictionary?
 - `DictionaryDbManager` test, add a new entry into the database during `CreateBackup` and `SaveAsync` arrange stage?
 
+## Major bugs
+### Cannot download dictionary when deployed to Azure
+- https://github.com/ChuanYuDev/personal-dictionary/issues/69
+
+- Because SQLite connections are now pooled since Microsoft.Data.Sqlite 6.0, even we dispose `SqliteConnection`, there are still file handles connecting to the database
+
+- Fix: turn off SQLite connection pooling with `Pooling=False` in connection strings
+
 ## To do
 ### To do
 - 后端优先测这些：
