@@ -42,8 +42,8 @@ public class DictionaryDbManager: IDictionaryDbManager
         
         var destinationPath = GetBackupPath(dbId);
 
-        using var sourceConnection = new SqliteConnection($"Data Source={sourcePath}");
-        using var destinationConnection = new SqliteConnection($"Data Source={destinationPath};Pooling=False");
+        using var sourceConnection = CreateSqliteConnection(sourcePath);
+        using var destinationConnection = CreateSqliteConnection(destinationPath);
         
         sourceConnection.Open();
         destinationConnection.Open();
@@ -105,5 +105,10 @@ public class DictionaryDbManager: IDictionaryDbManager
         var options = new DbContextOptionsBuilder<DictionaryDbContext>().UseSqlite($"Data Source={dbPath}").Options;
 
         return new DictionaryDbContext(options);
+    }
+    
+    private static SqliteConnection CreateSqliteConnection(string dbPath)
+    {
+        return new SqliteConnection($"Data Source={dbPath}");
     }
 }

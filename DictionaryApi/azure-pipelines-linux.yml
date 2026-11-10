@@ -3,14 +3,12 @@
 # Add steps that publish symbols, save build artifacts, deploy, and more:
 # https://docs.microsoft.com/azure/devops/pipelines/apps/aspnet/build-aspnet-4
 
-trigger:
-- main
+trigger: none
 
 pool:
   vmImage: 'ubuntu-latest'
 
 variables:
-  solution: '**/*.sln'
   buildConfiguration: 'Release'
 
 stages:
@@ -26,3 +24,39 @@ stages:
         command: 'test'
         projects: 'DictionaryApi.Tests/DictionaryApi.Tests.csproj'
         arguments: '--configuration $(buildConfiguration)'
+        publishTestResults: false
+    
+    - task: DotNetCoreCLI@2
+      inputs:
+        command: 'publish'
+        publishWebProjects: false
+        projects: 'DictionaryApi/DictionaryApi.csproj'
+        arguments: '--output $(Build.ArtifactStagingDirectory) --configuration $(buildConfiguration)'
+    
+    - task: PublishPipelineArtifact@1
+      inputs:
+        targetPath: '$(Build.ArtifactStagingDirectory)'
+        artifact: 'PersonalDictionaryArtifact'
+        publishLocation: 'pipeline'
+
+- stage: Deploy
+  displayName: 'Deploy stage'
+  jobs:
+  - job: DeployJob
+    displayName: 'Deploy job'
+    steps:
+    - task: DownloadPipelineArtifact@2
+      inputs:
+        buildType: 'current'
+        artifactName: 'PersonalDictionaryArtifact'
+        targetPath: '$(Pipeline.Workspace)'
+
+    - task: AzureRmWebAppDeployment@5
+      inputs:
+        ConnectionType: 'AzureRM'
+        azureSubscription: 'Azure subscription 1(2c372c6f-9351-43db-9aeb-c642e87e28d0)'
+        appType: 'webAppLinux'
+        WebAppName: 'PersonalDictionaryWebAppLinux'
+        packageForLinux: '$(Pipeline.Workspace)/**/*.zip'
+        RuntimeStack: 'DOTNETCORE|10.0'
+        DeploymentTypeLinux: 'oneDeploy'

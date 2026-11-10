@@ -669,15 +669,24 @@
 
 - Fix: turn off SQLite connection pooling with `Pooling=False` in connection strings
 
+- This problem is also because the operating system is Windows, when there are connections, the access is denied
+
+- Fix: considering the price and the above problem, we migrate our App services from Windows to Linux
+    - Downloading function works as expected when using original codes
+
 ### VSTest error
 - Refer to https://github.com/ChuanYuDev/personal-dictionary/issues/71
 
 - We use `pool.vmImage: windows-latest` and check `initialize job > Runner Image`, the image is `windows-2025-vs2026` 
 
-- `VSTest@2` searches up to Visual Studo 2022 (17.x)
+- `VSTest@2` searches up to Visual Studio 2022 (17.x)
     - The range [17.0, 18.0) excludes Visual Studio 2026 (18.x)
 
 - Fix: Use `VSTest@3`
+
+- However, even we use Visual Studio 2026, the same problems occur, the access by process is denied
+
+- Fix: Use Linux instead of Windows
 
 ## To do
 ### To do
