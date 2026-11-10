@@ -1,0 +1,28 @@
+# ASP.NET
+# Build and test ASP.NET projects.
+# Add steps that publish symbols, save build artifacts, deploy, and more:
+# https://docs.microsoft.com/azure/devops/pipelines/apps/aspnet/build-aspnet-4
+
+trigger:
+- main
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+variables:
+  solution: '**/*.sln'
+  buildConfiguration: 'Release'
+
+stages:
+- stage: Build
+  displayName: 'Build stage'
+  jobs:
+  - job: TestAndPublishJob
+    displayName: 'Test and publish job'
+    steps:
+
+    - task: DotNetCoreCLI@2
+      inputs:
+        command: 'test'
+        projects: 'DictionaryApi.Tests/DictionaryApi.Tests.csproj'
+        arguments: '--configuration $(buildConfiguration)'

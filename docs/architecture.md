@@ -663,9 +663,21 @@
 ### Cannot download dictionary when deployed to Azure
 - https://github.com/ChuanYuDev/personal-dictionary/issues/69
 
+- Refer to https://github.com/dotnet/efcore/issues/26369?utm_source=chatgpt.com
+
 - Because SQLite connections are now pooled since Microsoft.Data.Sqlite 6.0, even we dispose `SqliteConnection`, there are still file handles connecting to the database
 
 - Fix: turn off SQLite connection pooling with `Pooling=False` in connection strings
+
+### VSTest error
+- Refer to https://github.com/ChuanYuDev/personal-dictionary/issues/71
+
+- We use `pool.vmImage: windows-latest` and check `initialize job > Runner Image`, the image is `windows-2025-vs2026` 
+
+- `VSTest@2` searches up to Visual Studo 2022 (17.x)
+    - The range [17.0, 18.0) excludes Visual Studio 2026 (18.x)
+
+- Fix: Use `VSTest@3`
 
 ## To do
 ### To do
