@@ -11,3 +11,8 @@
 
 ### Fixed
 - Fix the dictionary cannot be downloaded error.
+
+## 0.1.2 - 2026-11-10
+### Changed
+- Migrated backend hosting from Windows to Linux on Azure App Service.
+- Updated Azure DevOps pipeline for Linux deployment.
