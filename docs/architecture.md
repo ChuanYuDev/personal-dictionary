@@ -679,6 +679,8 @@
 
 - We use `pool.vmImage: windows-latest` and check `initialize job > Runner Image`, the image is `windows-2025-vs2026` 
 
+    ![](../images/vstest_error.png)
+
 - `VSTest@2` searches up to Visual Studio 2022 (17.x)
     - The range [17.0, 18.0) excludes Visual Studio 2026 (18.x)
 

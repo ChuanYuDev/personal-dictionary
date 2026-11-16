@@ -3,7 +3,6 @@ using Application.Dtos;
 using DictionaryApi.Extensions;
 using DictionaryApi.Filters;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.OutputCaching;
 
 namespace DictionaryApi.Controllers;
 
