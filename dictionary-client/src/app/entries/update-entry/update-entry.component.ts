@@ -22,7 +22,7 @@ export class UpdateEntryComponent implements OnInit{
     readonly entryDetailsDto = signal<EntryDetailsDto | null>(null);
     isFavorite = signal<boolean>(false);
     readonly isUpdating = signal<boolean>(false);
-    readonly errors = signal<string[]>([]);
+    readonly entryErrors = signal<string[]>([]);
     readonly saveErrors = signal<string[]>([]);
     readonly backRoute = computed(() => ['/entries', this.id()]);
 
@@ -40,7 +40,7 @@ export class UpdateEntryComponent implements OnInit{
                 console.error("Failed to get entry details", "error response: ", err);
 
                 const errorMessages = await extractErrorMessages(err);
-                this.errors.set(errorMessages);
+                this.entryErrors.set(errorMessages);
             }
         });
     }
@@ -49,7 +49,7 @@ export class UpdateEntryComponent implements OnInit{
         entryCreateDto.isFavorite = this.isFavorite();
         
         this.isUpdating.set(true);
-        this.errors.set([]);
+        this.saveErrors.set([]);
         
         this.entryService.update(this.id(), entryCreateDto).subscribe({
             next: () => {

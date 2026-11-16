@@ -102,7 +102,9 @@ export class IndexEntryComponent implements OnInit {
         const entryFilterDtoObject = this.getEntryFilterDto();
         this.writeQueryStringsInUrl(entryFilterDtoObject);
         
+        this.totalCount.set(0);
         this.entrySummaryDtos.set(null);
+        this.errors.set([]);
 
         this.entryService.get(entryFilterDtoObject).subscribe({
             next: httpResponse => {

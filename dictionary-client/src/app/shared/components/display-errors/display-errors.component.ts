@@ -8,5 +8,6 @@ import {MatIconModule} from "@angular/material/icon";
     styleUrl: './display-errors.component.css'
 })
 export class DisplayErrorsComponent {
+    title = input<string>();
     errors = input.required<string[]>();
 }

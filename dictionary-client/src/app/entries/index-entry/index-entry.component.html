@@ -7,7 +7,11 @@
 
     <div class="entries-container">
         @if (errors().length > 0) {
-            <app-display-errors [errors]="errors()"></app-display-errors>
+            <app-display-errors
+                title="Unable to load entries"
+                [errors]="errors()"
+            >
+            </app-display-errors>
         } @else {
             @if (entrySummaryDtos(); as entrySummaryDtosArray) {
                 @for (entrySummaryDto of entrySummaryDtosArray; track entrySummaryDto.id) {

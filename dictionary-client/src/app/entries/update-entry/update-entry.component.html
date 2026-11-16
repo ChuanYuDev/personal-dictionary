@@ -5,8 +5,8 @@
         }
     </app-page-header>
 
-    @if (errors().length > 0) {
-        <app-display-errors [errors]="errors()"></app-display-errors>
+    @if (entryErrors().length > 0) {
+        <app-display-errors [errors]="entryErrors()"></app-display-errors>
     } @else {
         @if (entryDetailsDto()) {
             <app-entry-form

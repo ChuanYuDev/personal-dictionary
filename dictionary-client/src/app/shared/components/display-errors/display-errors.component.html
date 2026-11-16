@@ -2,10 +2,18 @@
     <div class="error_container">
         <mat-icon>error_outline</mat-icon>
         
-        <ul>
-            @for (error of errors(); track $index) {
-                <li>{{ error }}</li>
+        <div>
+            @if (title(); as titleString) {
+                <div class="font-weight-medium">
+                    {{ titleString }}
+                </div>
             }
-        </ul>
+            
+            <ul>
+                @for (error of errors(); track $index) {
+                    <li>{{ error }}</li>
+                }
+            </ul>
+        </div>
     </div>
 }
