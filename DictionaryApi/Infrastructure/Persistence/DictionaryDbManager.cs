@@ -53,7 +53,7 @@ public class DictionaryDbManager: IDictionaryDbManager
         return destinationPath;
     }
 
-    public async Task<string?> SaveAsync(Guid dbId, Stream sourceStream)
+    public async Task<bool> SaveAsync(Guid dbId, Stream sourceStream)
     {
         var destinationPath = GetDbPath(dbId);
 
@@ -66,15 +66,15 @@ public class DictionaryDbManager: IDictionaryDbManager
         {
             await using var dictionaryDbContext = CreateDbContext(destinationPath);
             await dictionaryDbContext.Database.MigrateAsync();
-            var metadata = await dictionaryDbContext.Metadata.SingleAsync();
-            return metadata.Name;
+            await dictionaryDbContext.Metadata.SingleAsync();
+            return true;
         }
         catch (Exception ex) when (ex is SqliteException or InvalidOperationException)
         {
             File.Delete(destinationPath);
             File.Delete($"{destinationPath}-shm");
             File.Delete($"{destinationPath}-wal");
-            return null;
+            return false;
         }
     }
     

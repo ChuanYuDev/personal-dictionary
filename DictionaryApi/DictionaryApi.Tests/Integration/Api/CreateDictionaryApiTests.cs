@@ -47,7 +47,6 @@ public sealed class CreateDictionaryApiTests: IClassFixture<WebApplicationFactor
             var dbId = dictionaryDto.DbId;
             
             Assert.NotEqual(Guid.Empty, dbId);
-            Assert.Equal(defaultDbName, dictionaryDto.DbName);
 
             dictionaryPath = DictionaryDbManager.GetDbPath(dbId);
             Assert.True(File.Exists(dictionaryPath));
@@ -70,7 +69,7 @@ public sealed class CreateDictionaryApiTests: IClassFixture<WebApplicationFactor
         {
             builder.ConfigureTestServices(services =>
             {
-                services.AddTransient<IDictionaryDbManager>(provider => dictionaryDbManager);
+                services.AddTransient<IDictionaryDbManager>(_ => dictionaryDbManager);
             });
         });
 

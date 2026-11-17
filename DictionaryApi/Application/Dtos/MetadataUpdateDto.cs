@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Application.Dtos;
 
-public class DictionaryUpdateDto
+public class MetadataUpdateDto
 {
     [Required]
     [StringLength(maximumLength: 50)]

@@ -102,10 +102,10 @@ public sealed class DictionaryDbManagerTests
             await using var stream = File.OpenRead(backupPath);
 
             // Act
-            var saveName = await _dictionaryDbManager.SaveAsync(saveDbId, stream);
+            var saved = await _dictionaryDbManager.SaveAsync(saveDbId, stream);
         
             // Assert
-            Assert.Equal(dbName, saveName);
+            Assert.True(saved);
 
             savePath = DictionaryDbManager.GetDbPath(saveDbId);
             Assert.True(File.Exists(savePath));
@@ -128,10 +128,10 @@ public sealed class DictionaryDbManagerTests
         var stream = new MemoryStream(bytes);
         
         // Act
-        var saveName = await _dictionaryDbManager.SaveAsync(saveDbId, stream);
+        var saved = await _dictionaryDbManager.SaveAsync(saveDbId, stream);
         
         // Assert
-        Assert.Null(saveName);
+        Assert.False(saved);
         
         var savePath = DictionaryDbManager.GetDbPath(saveDbId);
         Assert.False(File.Exists(savePath));

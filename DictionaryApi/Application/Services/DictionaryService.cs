@@ -9,14 +9,12 @@ namespace Application.Services;
 public class DictionaryService
 {
     private readonly IDictionaryDbManager _dictionaryDbManager;
-    private readonly IDictionaryRepository _dictionaryRepository;
     private readonly ILogger<DictionaryService> _logger;
     private const string DefaultDbName = "Untitled Dictionary";
 
-    public DictionaryService(IDictionaryDbManager dictionaryDbManager, IDictionaryRepository dictionaryRepository, ILogger<DictionaryService> logger)
+    public DictionaryService(IDictionaryDbManager dictionaryDbManager, ILogger<DictionaryService> logger)
     {
         _dictionaryDbManager = dictionaryDbManager;
-        _dictionaryRepository = dictionaryRepository;
         _logger = logger;
     }
 
@@ -28,7 +26,7 @@ public class DictionaryService
         
         _logger.LogInformation("Dictionary created. DbId: {DbId}", dbId);
 
-        return new DictionaryDto(dbId, DefaultDbName);
+        return new DictionaryDto(dbId);
     }
 
     public Stream CreateBackupStream(Guid dbId)
@@ -49,22 +47,12 @@ public class DictionaryService
     public async Task<Result<DictionaryDto>> SaveAsync(Stream dbStream)
     {
         var dbId = Guid.NewGuid();
-        var dbName = await _dictionaryDbManager.SaveAsync(dbId, dbStream);
+        var saved = await _dictionaryDbManager.SaveAsync(dbId, dbStream);
 
-        if (dbName is null) return DictionaryErrors.Invalid;
+        if (!saved) return DictionaryErrors.Invalid;
         
         _logger.LogInformation("Dictionary saved. DbId: {DbId}", dbId);
 
-        return new DictionaryDto(dbId, dbName);
-    }
-
-    public async Task<DictionaryDto> UpdateNameAsync(Guid dbId, DictionaryUpdateDto dictionaryUpdateDto)
-    {
-        var name = dictionaryUpdateDto.Name;
-        var dbName = await _dictionaryRepository.UpdateNameAsync(name);
-        
-        _logger.LogInformation("Dictionary name updated. DbId: {DbId}, DbName: {DbName}", dbId, dbName);
-        
-        return new DictionaryDto(dbId, dbName);
+        return new DictionaryDto(dbId);
     }
 }

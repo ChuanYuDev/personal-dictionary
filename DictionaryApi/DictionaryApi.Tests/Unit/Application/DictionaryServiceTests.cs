@@ -17,14 +17,13 @@ public sealed class DictionaryServiceTests
     {
         _dictionaryDbManager = Substitute.For<IDictionaryDbManager>();
 
-        var dictionaryRepository = Substitute.For<IDictionaryRepository>();
         var logger = NullLogger<DictionaryService>.Instance;
         
-        _dictionaryService = new DictionaryService(_dictionaryDbManager, dictionaryRepository, logger);
+        _dictionaryService = new DictionaryService(_dictionaryDbManager, logger);
     }
     
     [Fact]
-    public async Task CreateAsync_ShouldReturnDbIdAndDefaultName()
+    public async Task CreateAsync_ShouldReturnDbId()
     {
         // Arrange
         const string defaultName = "Untitled Dictionary";
@@ -35,7 +34,6 @@ public sealed class DictionaryServiceTests
         // Assert
         await _dictionaryDbManager.Received(1).CreateAsync(dictionaryDto.DbId, defaultName);
         Assert.NotEqual(Guid.Empty, dictionaryDto.DbId);
-        Assert.Equal(defaultName, dictionaryDto.DbName);
     }
 
     [Fact]
@@ -67,12 +65,11 @@ public sealed class DictionaryServiceTests
     }
 
     [Fact]
-    public async Task SaveAsync_ShouldReturnDbIdAndDbName()
+    public async Task SaveAsync_ShouldReturnDbId()
     {
         var stream = new MemoryStream();
-        const string dbName = "Test Dictionary Name";
 
-        _dictionaryDbManager.SaveAsync(Arg.Any<Guid>(), stream).Returns(dbName);
+        _dictionaryDbManager.SaveAsync(Arg.Any<Guid>(), stream).Returns(true);
 
         var result = await _dictionaryService.SaveAsync(stream);
 
@@ -82,7 +79,6 @@ public sealed class DictionaryServiceTests
         await _dictionaryDbManager.Received(1).SaveAsync(dictionaryDto.DbId, stream);
 
         Assert.NotEqual(Guid.Empty, dictionaryDto.DbId);
-        Assert.Equal(dbName, dictionaryDto.DbName);
     }
     
     [Fact]
@@ -90,7 +86,7 @@ public sealed class DictionaryServiceTests
     {
         var stream = new MemoryStream();
         
-        _dictionaryDbManager.SaveAsync(Arg.Any<Guid>(), stream).Returns((string?) null);
+        _dictionaryDbManager.SaveAsync(Arg.Any<Guid>(), stream).Returns(false);
 
         var result = await _dictionaryService.SaveAsync(stream);
         

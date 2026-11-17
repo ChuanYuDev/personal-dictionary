@@ -62,7 +62,6 @@ public sealed class OpenDictionaryApiTests: IClassFixture<WebApplicationFactory<
             var saveId = dictionaryDto.DbId;
             
             Assert.NotEqual(Guid.Empty, saveId);
-            Assert.Equal(dbName, dictionaryDto.DbName);
 
             savePath = DictionaryDbManager.GetDbPath(saveId);
             Assert.True(File.Exists(savePath));

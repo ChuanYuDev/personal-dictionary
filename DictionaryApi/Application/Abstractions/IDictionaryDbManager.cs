@@ -8,5 +8,5 @@ public interface IDictionaryDbManager
     
     string CreateBackup(Guid dbId);
 
-    Task<string?> SaveAsync(Guid dbId, Stream sourceStream);
+    Task<bool> SaveAsync(Guid dbId, Stream sourceStream);
 }
