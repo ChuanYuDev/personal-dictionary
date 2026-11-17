@@ -2,23 +2,50 @@
     
     <app-page-header [backRoute]="['/']" title="Manage Dictionary"></app-page-header>
 
-    @if (dictionaryState(); as dictionaryState) {
-        <div class="font-weight-medium">
-            Connected dictionary:
-        </div>
+    @if (nameErrors().length > 0) {
+        <app-display-errors
+            title="Unable to load dictionary info."
+            [errors]="nameErrors()"
+        >
+        </app-display-errors>
+    } @else {
+        <div class="name-section">
+            @if (name(); as name) {
+                <div class="font-weight-medium">
+                    Dictionary name
+                </div>
 
-        <div class="name-container">
+                <div class="name-row">
 
-            <div class="name-item">
-                {{ dictionaryState.dbName }}
-            </div>
-            <app-update-dictionary-name [dbName]="dictionaryState.dbName"></app-update-dictionary-name>
+                    <div class="name-value">
+                        {{ name }}
+                    </div>
+
+                    <app-update-dictionary-name
+                        [name]="name"
+                        (updated)="loadMetadata()"
+                    ></app-update-dictionary-name>
+                </div>
+            } @else {
+                Loading...
+            }
+            
         </div>
     }
+    
+    <div class="id-container">
+        <div class="font-weight-medium">
+            Dictionary Id
+        </div>
+
+        <div>
+            {{ dictionaryState()?.dbId }}
+        </div>
+    </div>
 
     <div class="row">
         <div class="col-12">
-            <app-download-dictionary></app-download-dictionary>
+            <app-download-dictionary [name]="name()"></app-download-dictionary>
         </div>
 
         <div class="col-12">

@@ -1,4 +1,4 @@
-import {Component, inject, signal} from '@angular/core';
+import {Component, inject, input, signal} from '@angular/core';
 import {DisplayErrorsComponent} from "../../shared/components/display-errors/display-errors.component";
 import {DictionaryService} from "../dictionary.service";
 import {extractErrorMessages} from "../../shared/functions/extract-error-messages";
@@ -10,11 +10,11 @@ import {extractErrorMessages} from "../../shared/functions/extract-error-message
     styleUrl: './download-dictionary.component.css'
 })
 export class DownloadDictionaryComponent {
+    readonly name = input.required<string>();
     readonly isDownloading = signal(false);
     readonly errors = signal<string[]>([]);
     
     private readonly dictionaryService = inject(DictionaryService);
-    private readonly dictionaryState = this.dictionaryService.dictionaryState;
     
     downloadDictionary(): void {
         this.isDownloading.set(true);
@@ -25,7 +25,7 @@ export class DownloadDictionaryComponent {
                 const url = URL.createObjectURL(value);
                 
                 const anchor = document.createElement("a")
-                anchor.download = `${this.dictionaryState()?.dbName}.db`
+                anchor.download = `${this.name()}.db`
                 anchor.href = url;
                 anchor.click();
                 

@@ -183,7 +183,6 @@
 
 ### Constants
 - `dbId` key in the window local storage: `db-id`
-- `dbName` key in the window local storage: `db-name`
 - `dbId` key in the request header: `db-id`
 - Total count key in the response header: `total-count`
 

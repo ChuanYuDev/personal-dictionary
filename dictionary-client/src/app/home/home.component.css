@@ -11,14 +11,14 @@
     padding: 1rem 0;
 }
 
-.name-item {
+.name-value {
     display: flex;
     width: 40%;
     justify-content: right;
     align-items: center;
 }
 
-.name-item > mat-icon {
+.name-value > mat-icon {
     flex-shrink: 0;
 }
 

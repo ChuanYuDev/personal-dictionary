@@ -10,10 +10,11 @@ import {extractErrorMessages} from "../../shared/functions/extract-error-message
     styleUrl: './create-dictionary.component.css'
 })
 export class CreateDictionaryComponent {
+    readonly created = output<void>();
+    
     readonly isCreating = signal(false);
     readonly errors = signal<string[]>([]);
     private readonly dictionaryService = inject(DictionaryService);
-    readonly created = output<void>();
 
     createDictionary(): void {
         this.isCreating.set(true);

@@ -7,6 +7,7 @@ namespace DictionaryApi.Controllers;
 
 [Route("api/metadata")]
 [ApiController]
+[ServiceFilter<ValidateDbIdActionFilter>]
 public class MetadataController: ControllerBase
 {
     private readonly IMetadataRepository _metadataRepository;
@@ -23,7 +24,6 @@ public class MetadataController: ControllerBase
     }
     
     [HttpPut]
-    [ServiceFilter<ValidateDbIdActionFilter>]
     public async Task<IActionResult> UpdateNameAsync([FromBody] MetadataUpdateDto metadataUpdateDto)
     {
         await _metadataRepository.UpdateNameAsync(metadataUpdateDto);

@@ -1,7 +1,7 @@
 import {inject, Injectable, signal} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {environment} from "../../environments/environment";
-import {DictionaryDto, DictionaryState, DictionaryUpdateDto} from "./dictionary.models";
+import {DictionaryDto, DictionaryState} from "./dictionary.models";
 import {tap} from "rxjs";
 
 @Injectable({
@@ -12,7 +12,6 @@ export class DictionaryService {
     private baseUrl = `${environment.apiUrl}/dictionaries`;
     
     private readonly dbIdKey = "db-id";
-    private readonly dbNameKey = "db-name";
     
     private readonly _dictionaryState = signal<DictionaryState | null>(null);
     readonly dictionaryState = this._dictionaryState.asReadonly();
@@ -37,27 +36,18 @@ export class DictionaryService {
         ));
     }
     
-    updateName(dictionaryUpdateDto: DictionaryUpdateDto) {
-        return this.httpClient.put<DictionaryDto>(this.baseUrl, dictionaryUpdateDto).pipe(tap(
-            dictionaryDto => {this.storeDictionaryState(dictionaryDto); }
-        ));
-    }
-    
     disconnect(): void {
         window.localStorage.removeItem(this.dbIdKey);
-        window.localStorage.removeItem(this.dbNameKey);
         
         this._dictionaryState.set(null);
     }
     
     restoreDictionaryState(): void {
         const dbId = window.localStorage.getItem(this.dbIdKey);
-        const dbName = window.localStorage.getItem(this.dbNameKey);
         
-        if (dbId && dbName) {
+        if (dbId) {
             this._dictionaryState.set({
                 dbId: dbId,
-                dbName: dbName
             });          
         }
     }
@@ -68,11 +58,9 @@ export class DictionaryService {
     
     private storeDictionaryState(dictionaryDto: DictionaryDto): void {
         window.localStorage.setItem(this.dbIdKey, dictionaryDto.dbId);
-        window.localStorage.setItem(this.dbNameKey, dictionaryDto.dbName);
         
         this._dictionaryState.set({
             dbId: dictionaryDto.dbId,
-            dbName: dictionaryDto.dbName
         });
     }
 }

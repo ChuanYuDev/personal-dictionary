@@ -1,11 +1,11 @@
-import {Component, inject, input, signal, viewChild} from '@angular/core';
+import {Component, inject, input, output, signal, viewChild} from '@angular/core';
 import {MatIconModule} from "@angular/material/icon";
 import {DialogComponent} from "../../shared/components/dialog/dialog.component";
 import {FormBuilder, FormControl, ReactiveFormsModule, Validators} from "@angular/forms";
-import {DictionaryService} from "../dictionary.service";
-import {DictionaryUpdateDto} from "../dictionary.models";
 import {extractErrorMessages} from "../../shared/functions/extract-error-messages";
 import {DisplayErrorsComponent} from "../../shared/components/display-errors/display-errors.component";
+import {MetadataService} from "../metadata.service";
+import {MetadataUpdateDto} from "../metadata.models";
 
 @Component({
     selector: 'app-update-dictionary-name',
@@ -14,24 +14,26 @@ import {DisplayErrorsComponent} from "../../shared/components/display-errors/dis
     styleUrl: './update-dictionary-name.component.css'
 })
 export class UpdateDictionaryNameComponent {
+    readonly name = input.required<string>();
+    readonly updated = output<void>();
+
+    readonly errors = signal<string[]>([]);
+    readonly isUpdating = signal<boolean>(false);
+    readonly dialogComponent = viewChild.required(DialogComponent);
+
+    private readonly metadataService = inject(MetadataService);
+
     private readonly formBuilder = inject(FormBuilder);
+    
     readonly formGroup = this.formBuilder.group({
         name: new FormControl<string>("", {
             nonNullable: true,
             validators: [Validators.required, Validators.maxLength(50)]
         })
     });
-    
-    private readonly dictionaryService = inject(DictionaryService);
-    readonly errors = signal<string[]>([]);
-    readonly isUpdating = signal<boolean>(false);
-    
-    readonly dialogComponent = viewChild.required(DialogComponent);
-    
-    readonly dbName = input.required<string>();
-    
+
     openDialog() {
-        this.formGroup.patchValue({name: this.dbName()});
+        this.formGroup.patchValue({name: this.name()});
         this.dialogComponent().open();
     }
 
@@ -52,10 +54,11 @@ export class UpdateDictionaryNameComponent {
         this.isUpdating.set(true);
         this.errors.set([]);
         
-        const dictionaryUpdateDto = this.formGroup.value as DictionaryUpdateDto;
-        this.dictionaryService.updateName(dictionaryUpdateDto).subscribe({
+        const dictionaryUpdateDto = this.formGroup.value as MetadataUpdateDto;
+        this.metadataService.updateName(dictionaryUpdateDto).subscribe({
             next: () => {
                 this.isUpdating.set(false);
+                this.updated.emit();
                 this.dialogComponent().close();
             },
             

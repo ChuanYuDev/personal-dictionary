@@ -49,7 +49,6 @@ describe("DictionaryService", () => {
 
             const dictionaryDto: DictionaryDto = {
                 dbId: "test dbId",
-                dbName: "test dbName"
             };
 
             testRequest.flush(dictionaryDto);
@@ -57,12 +56,10 @@ describe("DictionaryService", () => {
             expect(await createPromise).toEqual(dictionaryDto);
             expect(dictionaryService.dictionaryState()).toEqual({
                 dbId: dictionaryDto.dbId,
-                dbName: dictionaryDto.dbName
             });
             
-            expect(window.localStorage.setItem).toHaveBeenCalledTimes(2);
+            expect(window.localStorage.setItem).toHaveBeenCalledTimes(1);
             expect(window.localStorage.setItem).toHaveBeenCalledWith("db-id", dictionaryDto.dbId);
-            expect(window.localStorage.setItem).toHaveBeenCalledWith("db-name", dictionaryDto.dbName);
         });
 
         it('should not update the dictionary state when the creation fails', () => {
@@ -128,7 +125,6 @@ describe("DictionaryService", () => {
 
             const dictionaryDto: DictionaryDto = {
                 dbId: "test dbId",
-                dbName: "test dbName"
             };
 
             testRequest.flush(dictionaryDto);
@@ -136,12 +132,10 @@ describe("DictionaryService", () => {
             expect(await openPromise).toEqual(dictionaryDto);
             expect(dictionaryService.dictionaryState()).toEqual({
                 dbId: dictionaryDto.dbId,
-                dbName: dictionaryDto.dbName
             });
 
-            expect(window.localStorage.setItem).toHaveBeenCalledTimes(2);
+            expect(window.localStorage.setItem).toHaveBeenCalledTimes(1);
             expect(window.localStorage.setItem).toHaveBeenCalledWith("db-id", dictionaryDto.dbId);
-            expect(window.localStorage.setItem).toHaveBeenCalledWith("db-name", dictionaryDto.dbName);
         });
 
         it('should not update the dictionary state when the open fails', () => {
