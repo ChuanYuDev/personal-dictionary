@@ -17,7 +17,8 @@ public class DictionaryDbContext: DbContext
 
         modelBuilder.Entity<Category>().HasData(
             new Category {Id = 1, Name = "Word"},
-            new Category {Id = 2, Name = "Phrase"}
+            new Category {Id = 2, Name = "Phrase"},
+            new Category {Id = 3, Name = "Sentence"}
         );
     }
 }

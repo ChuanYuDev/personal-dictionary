@@ -42,6 +42,11 @@ namespace Infrastructure.Migrations
                         {
                             Id = 2,
                             Name = "Phrase"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Name = "Sentence"
                         });
                 });
 

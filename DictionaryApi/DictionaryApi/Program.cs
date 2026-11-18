@@ -32,6 +32,7 @@ builder.Services.AddCors(options =>
 
 builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
 
+builder.Services.AddTransient<ICategoryRepository, CategoryRepository>();
 builder.Services.AddTransient<IDictionaryDbManager, DictionaryDbManager>();
 builder.Services.AddTransient<IEntryRepository, EntryRepository>();
 builder.Services.AddTransient<IMetadataRepository, MetadataRepository>();
