@@ -27,6 +27,13 @@ public class DictionariesController: ControllerBase
         return await _dictionaryService.CreateAsync();
     }
 
+    [HttpGet("connect")]
+    [ServiceFilter<ValidateDbIdActionFilter>]
+    public IActionResult Connect()
+    {
+        return NoContent();
+    }
+
     [HttpGet("download")]
     [ServiceFilter<ValidateDbIdActionFilter>]
     public IActionResult Download()
