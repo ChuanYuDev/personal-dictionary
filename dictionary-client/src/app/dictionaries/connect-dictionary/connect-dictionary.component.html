@@ -1,0 +1,31 @@
+<button
+    type="button"
+    class="button"
+    (click)="openDialog()"
+>
+    Connect Dictionary
+</button>
+
+<app-dialog
+    title="Connect Dictionary"
+    confirmButtonText="Connect"
+    confirmButtonStyle="primary"
+    [confirmButtonDisabled]="formGroup.invalid || isConnecting()"
+    (confirmed)="connect()"
+>
+    <form [formGroup]="formGroup">
+        <div class="form-field">
+            <input
+                [formControl]="formGroup.controls.dbId"
+                placeholder="Dictionary ID"
+                aria-label="dictionary ID"
+            >
+            
+            <div class="form-error">
+                {{ getErrorMessagesForDbId() }}
+            </div>
+        </div>
+    </form>
+    
+    <app-display-errors [errors]="errors()"></app-display-errors>
+</app-dialog>

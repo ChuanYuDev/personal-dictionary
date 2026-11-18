@@ -12,6 +12,7 @@ export class DictionaryService {
     private baseUrl = `${environment.apiUrl}/dictionaries`;
     
     private readonly dbIdKey = "db-id";
+    private readonly dbIdHeaderKey = "db-id";
     
     private readonly _dictionaryState = signal<DictionaryState | null>(null);
     readonly dictionaryState = this._dictionaryState.asReadonly();
@@ -33,6 +34,12 @@ export class DictionaryService {
     open(file: File) {
         return this.httpClient.post<DictionaryDto>(`${this.baseUrl}/open`, file).pipe(tap(
             dictionaryDto => { this.storeDictionaryState(dictionaryDto); }
+        ));
+    }
+    
+    connect(dbId: string) {
+        return this.httpClient.get(`${this.baseUrl}/connect`, {headers: {[this.dbIdHeaderKey]: dbId}}).pipe(tap(
+            () => { this.storeDictionaryState({dbId: dbId}); }
         ));
     }
     

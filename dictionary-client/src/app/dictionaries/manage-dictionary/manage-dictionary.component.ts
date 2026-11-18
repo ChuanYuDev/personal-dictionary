@@ -9,11 +9,12 @@ import {PageHeaderComponent} from "../../shared/components/page-header/page-head
 import {UpdateDictionaryNameComponent} from "../update-dictionary-name/update-dictionary-name.component";
 import {MetadataService} from "../metadata.service";
 import {DisplayErrorsComponent} from "../../shared/components/display-errors/display-errors.component";
+import {ConnectDictionaryComponent} from "../connect-dictionary/connect-dictionary.component";
 
 @Component({
     selector: 'app-manage-dictionary',
     imports: [CreateDictionaryComponent, DownloadDictionaryComponent, OpenDictionaryComponent, MatIconModule,
-        PageHeaderComponent, MatIconModule, UpdateDictionaryNameComponent, DisplayErrorsComponent],
+        PageHeaderComponent, MatIconModule, UpdateDictionaryNameComponent, DisplayErrorsComponent, ConnectDictionaryComponent],
     templateUrl: './manage-dictionary.component.html',
     styleUrl: './manage-dictionary.component.css'
 })

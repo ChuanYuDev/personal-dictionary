@@ -7,10 +7,11 @@ import {MatIconModule} from "@angular/material/icon";
 import {IndexEntryComponent} from "../entries/index-entry/index-entry.component";
 import {MetadataService} from "../dictionaries/metadata.service";
 import {DisplayErrorsComponent} from "../shared/components/display-errors/display-errors.component";
+import {ConnectDictionaryComponent} from "../dictionaries/connect-dictionary/connect-dictionary.component";
 
 @Component({
     selector: 'app-home',
-    imports: [RouterLink, CreateDictionaryComponent, OpenDictionaryComponent, MatIconModule, IndexEntryComponent, DisplayErrorsComponent],
+    imports: [RouterLink, CreateDictionaryComponent, OpenDictionaryComponent, MatIconModule, IndexEntryComponent, DisplayErrorsComponent, ConnectDictionaryComponent],
     templateUrl: './home.component.html',
     styleUrl: './home.component.css'
 })

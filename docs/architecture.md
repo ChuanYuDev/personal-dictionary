@@ -104,6 +104,12 @@
 - `DictionaryState` is not `null`
 - Load metadata
 
+### Connect dictionary
+- If there is `db-id` header, interceptor does nothing
+- Add input `dbId` to header and send request to `connect` endpoint
+- If there is not error, store dictionary state
+- Otherwise, display errors in the dialog
+
 ### Disconnect Dictionary
 - Remove `localStorage`
 - Set `dictionaryState` as `null`

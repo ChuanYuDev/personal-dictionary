@@ -3,6 +3,9 @@ import {inject} from "@angular/core";
 import {DictionaryService} from "../dictionaries/dictionary.service";
 
 export const dbIdInterceptor: HttpInterceptorFn = (req, next) => {
+    const dbIdKey = "db-id";
+    
+    if (req.headers.has(dbIdKey)) return next(req);
     
     const dictionaryService = inject(DictionaryService);
     const dbId = dictionaryService.getDbId();
@@ -10,7 +13,7 @@ export const dbIdInterceptor: HttpInterceptorFn = (req, next) => {
     if (dbId) {
         req = req.clone({
             setHeaders: {
-                "db-id": dbId
+                [dbIdKey]: dbId
             }
         });
     }

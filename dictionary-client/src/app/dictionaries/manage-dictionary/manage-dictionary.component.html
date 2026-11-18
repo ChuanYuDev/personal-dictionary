@@ -57,6 +57,10 @@
         </div>
         
         <div class="col-12">
+            <app-connect-dictionary (connected)="navigateToHome()"></app-connect-dictionary>
+        </div>
+        
+        <div class="col-12">
             <button type="button" class="button" (click)="disconnectDictionary()">
                 Disconnect Dictionary
             </button>
