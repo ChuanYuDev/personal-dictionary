@@ -23,7 +23,11 @@ export async function extractErrorMessages(err: HttpErrorResponse): Promise<stri
     if (error?.errors) {
         const errorMessages: string[] = [];
         
-        for (const [key, value] of Object.entries(error.errors)) errorMessages.push(`${key}: ${value}`);
+        for (const [field, errors] of Object.entries(error.errors)) {
+            for (const error of errors as string[]) {
+                errorMessages.push(`${field}: ${error}`);
+            }
+        }
         return errorMessages;
     }
 

@@ -55,7 +55,11 @@ describe("extractErrorMessages", () => {
         
         const result = await extractErrorMessages(httpErrorResponse);
 
-        expect(result).toEqual([]);
+        expect(result).toEqual([
+            "name: This field is required",
+            "name: The first letter should be uppercase",
+            "email: invalid email"
+        ]);
     });
 
     it('should return the expected failure and unexpected error message when detail property exists', async () => {

@@ -22,7 +22,7 @@ export class MetadataService {
     }
     
     loadMetadata(
-        name: WritableSignal<string>,
+        name: WritableSignal<string | null>,
         nameErrors: WritableSignal<string[]>
     ) {
         this.get().subscribe({

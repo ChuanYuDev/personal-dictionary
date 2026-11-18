@@ -1,15 +1,22 @@
 <div class="container home-container">
-    <header class="home-header">
-        <h1 class="page-title">My Dictionary</h1>
-        
-        @if (dictionaryState(); as dictionaryStateObject) {
-            <a routerLink="dictionaries/manage" class="unstyled-link name-item">
+    <header>
+        <div class="home-header">
+            <h1 class="page-title">My Dictionary</h1>
+
+            @if (dictionaryState()) {
+                <a routerLink="dictionaries/manage" class="unstyled-link name-value">
                 <span class="text-nowrap ">
-<!--                    {{ dictionaryStateObject.dbName }} -->
+                    {{ name() }}
                 </span>
-                <mat-icon>chevron_right</mat-icon>
-            </a>
-        }
+                    <mat-icon>chevron_right</mat-icon>
+                </a>
+            }
+        </div>
+        
+        <app-display-errors
+            title="Unable to load dictionary info."
+            [errors]="nameErrors()"
+        ></app-display-errors>
     </header>
 
     <div class="home-content">

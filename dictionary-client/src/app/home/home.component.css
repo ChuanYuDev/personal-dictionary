@@ -26,3 +26,7 @@
     min-height: 0;
     flex-grow: 1;
 }
+
+.row > .col-12 {
+    margin-bottom: 1rem;
+}

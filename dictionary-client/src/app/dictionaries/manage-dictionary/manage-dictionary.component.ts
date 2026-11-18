@@ -8,7 +8,6 @@ import {MatIconModule} from "@angular/material/icon";
 import {PageHeaderComponent} from "../../shared/components/page-header/page-header.component";
 import {UpdateDictionaryNameComponent} from "../update-dictionary-name/update-dictionary-name.component";
 import {MetadataService} from "../metadata.service";
-import {extractErrorMessages} from "../../shared/functions/extract-error-messages";
 import {DisplayErrorsComponent} from "../../shared/components/display-errors/display-errors.component";
 
 @Component({
@@ -19,7 +18,7 @@ import {DisplayErrorsComponent} from "../../shared/components/display-errors/dis
     styleUrl: './manage-dictionary.component.css'
 })
 export class ManageDictionaryComponent implements OnInit {
-    readonly name = signal<string>("Name not available");
+    readonly name = signal<string | null>(null);
     readonly nameErrors = signal<string[]>([]);
         
     private readonly dictionaryService = inject(DictionaryService);

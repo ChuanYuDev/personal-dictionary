@@ -97,6 +97,13 @@
 
     - Otherwise, we remain the query string
 
+### Home page
+- No `dbId`
+- `DictionaryState` is `null`
+- Open / Create / Connect
+- `DictionaryState` is not `null`
+- Load metadata
+
 ### Disconnect Dictionary
 - Remove `localStorage`
 - Set `dictionaryState` as `null`

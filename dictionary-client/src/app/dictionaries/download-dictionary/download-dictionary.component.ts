@@ -10,7 +10,10 @@ import {extractErrorMessages} from "../../shared/functions/extract-error-message
     styleUrl: './download-dictionary.component.css'
 })
 export class DownloadDictionaryComponent {
-    readonly name = input.required<string>();
+    readonly name = input.required<string, string | null>({
+        transform: value => value ?? "Name not available"
+    });
+    
     readonly isDownloading = signal(false);
     readonly errors = signal<string[]>([]);
     
