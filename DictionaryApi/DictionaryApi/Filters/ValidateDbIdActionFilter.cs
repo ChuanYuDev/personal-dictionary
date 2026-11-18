@@ -18,9 +18,9 @@ public class ValidateDbIdActionFilter: IActionFilter
     
     public void OnActionExecuting(ActionExecutingContext context)
     {
-        var dbId = _dictionaryContext.DbId;
+        var dbIdStatus = _dictionaryContext.DbIdStatus;
 
-        if (dbId == Guid.Empty)
+        if (dbIdStatus == DbIdStatus.Missing)
         {
             context.Result = new ObjectResult(new ProblemDetails
             {
@@ -30,7 +30,20 @@ public class ValidateDbIdActionFilter: IActionFilter
             });
             return;
         }
+        
+        if (dbIdStatus == DbIdStatus.Invalid)
+        {
+            context.Result = new ObjectResult(new ProblemDetails
+            {
+                Status = StatusCodes.Status400BadRequest,
+                Title = "Dictionary ID invalid",
+                Detail = "The dictionary ID is not in a invalid GUID format. Please check the ID and try again."
+            });
+            return;
+        }
 
+        var dbId = _dictionaryContext.DbId;
+        
         if (_dictionaryDbManager.DictionaryExists(dbId)) return;
         
         context.Result = new ObjectResult(new ProblemDetails

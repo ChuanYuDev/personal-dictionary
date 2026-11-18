@@ -12,8 +12,13 @@ public class DictionaryContextMiddleware
 
     public async Task InvokeAsync(HttpContext context, DictionaryContext dictionaryContext)
     {
-        if (context.Request.Headers.TryGetValue(DbIdHeaderKey, out var value) &&
-            Guid.TryParse(value, out var dbId)) dictionaryContext.DbId = dbId;
+        if (!context.Request.Headers.TryGetValue(DbIdHeaderKey, out var value)) dictionaryContext.DbIdStatus = DbIdStatus.Missing;
+        else if (!Guid.TryParse(value, out var dbId)) dictionaryContext.DbIdStatus = DbIdStatus.Invalid;
+        else
+        {
+            dictionaryContext.DbId = dbId;
+            dictionaryContext.DbIdStatus = DbIdStatus.Valid;
+        }
         
         await _next(context);
     }
