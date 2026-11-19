@@ -33,6 +33,27 @@
 
 - The error is shown under each input (TO DO)
 
+### Entry form
+- Term
+    - Only `Sentence` to change `input` to `textarea`
+
+- Category
+    - `Word`
+    - `Phrase`
+    - `Sentence`
+
+- Part of speech
+    - Only `Word`
+
+- Pronunciation
+    - `Word`
+    - `Phrase`
+
+- Meaning
+- Notes
+Design Sentence category UI
+Remove pronunciation
+
 ### Entry details
 - Use middle dot `&middot` (TO DO)
 

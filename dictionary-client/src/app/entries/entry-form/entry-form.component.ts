@@ -48,9 +48,9 @@ export class EntryFormComponent implements OnInit{
         initialValue: this.formGroup.controls.categoryId.value
     });
 
-    readonly showPartOfSpeech = computed(() => {
+    readonly selectedCategoryName = computed(() => {
         const selectedCategoryDto = this.categoryDtos().find((categoryDto) => categoryDto.id === this.selectedCategoryId());
-        return selectedCategoryDto?.name === "Word";
+        return selectedCategoryDto?.name;
     });
 
     readonly partOfSpeeches: string[] = [

@@ -9,7 +9,19 @@
     <form [formGroup]="formGroup" (submit)="onSubmit()">
         <div class="form-field">
             <label for="term">Term</label>
-            <input id="term" [formControl]="formGroup.controls.term">
+
+            @if (selectedCategoryName() === "Sentence") {
+                <textarea
+                    id="term"
+                    cdkTextareaAutosize
+                    cdkAutosizeMinRows="5"
+                    [formControl]="formGroup.controls.term"
+                >
+                </textarea>
+            } @else {
+                <input id="term" [formControl]="formGroup.controls.term">
+            }
+            
             <div class="form-error">
                 {{ getErrorMessagesForTerm() }}
             </div>
@@ -46,7 +58,7 @@
             </select>
         </div>
 
-        @if (showPartOfSpeech()) {
+        @if (selectedCategoryName() === "Word") {
             <div class="form-field">
                 <label for="partOfSpeech">Part of Speech</label>
                 <select id="partOfSpeech" [formControl]="formGroup.controls.partOfSpeech">
@@ -59,10 +71,12 @@
             </div>
         }
 
-        <div class="form-field">
-            <label for="pronunciation">Pronunciation</label>
-            <input id="pronunciation" [formControl]="formGroup.controls.pronunciation">
-        </div>
+        @if (selectedCategoryName() === "Word" || selectedCategoryName() === "Phrase") {
+            <div class="form-field">
+                <label for="pronunciation">Pronunciation</label>
+                <input id="pronunciation" [formControl]="formGroup.controls.pronunciation">
+            </div>
+        }
 
         <div class="form-field">
             <label for="meaning">Meaning</label>
@@ -72,7 +86,7 @@
                 cdkAutosizeMinRows="5"
                 [formControl]="formGroup.controls.meaning"
             >
-        </textarea>
+            </textarea>
         </div>
 
         <div class="form-field">
@@ -83,7 +97,7 @@
                 cdkAutosizeMinRows="5"
                 [formControl]="formGroup.controls.notes"
             >
-        </textarea>
+            </textarea>
         </div>
 
         <ng-content></ng-content>
