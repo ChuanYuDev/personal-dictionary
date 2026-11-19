@@ -12,10 +12,12 @@ import {debounceTime} from "rxjs";
 import {EntryService} from "../entry.service";
 import {extractErrorMessages} from "../../shared/functions/extract-error-messages";
 import {EntryCardComponent} from "../entry-card/entry-card.component";
+import {CategoryService} from "../../categories/category.service";
+import {DisplayErrorsComponent} from "../../shared/components/display-errors/display-errors.component";
 
 @Component({
     selector: 'app-entry-form',
-    imports: [ReactiveFormsModule, RouterLink, MatFormFieldModule, MatInputModule, TextFieldModule, EntryCardComponent],
+    imports: [ReactiveFormsModule, RouterLink, MatFormFieldModule, MatInputModule, TextFieldModule, EntryCardComponent, DisplayErrorsComponent],
     templateUrl: './entry-form.component.html',
     styleUrl: './entry-form.component.css'
 })
@@ -40,6 +42,7 @@ export class EntryFormComponent implements OnInit{
     });
     
     readonly categoryDtos = signal<CategoryDto[]>([]);
+    readonly categoryErrors = signal<string[]>([]);
     
     readonly selectedCategoryId = toSignal(this.formGroup.controls.categoryId.valueChanges, {
         initialValue: this.formGroup.controls.categoryId.value
@@ -62,18 +65,25 @@ export class EntryFormComponent implements OnInit{
         "Determiner" 
     ];
     
-    private readonly entryService = inject(EntryService);
     readonly entrySummaryDtos = signal<EntrySummaryDto[] | null>(null);
-    readonly errors = signal<string[]>([]);
+    readonly entryErrors = signal<string[]>([]);
+    
+    private readonly entryService = inject(EntryService);
+    private readonly categoryService = inject(CategoryService);
     
     ngOnInit(): void {
-        this.categoryDtos.set([{
-            id: 1,
-            name: "Word"
-        }, {
-            id: 2,
-            name: "Phase"
-        }]);
+        this.categoryService.get().subscribe({
+            next: categoryDtos => {
+                this.categoryDtos.set(categoryDtos);
+            },
+
+            error: async err => {
+                console.error("Failed to get category list", "error response: ", err);
+
+                const errorMessages = await extractErrorMessages(err);
+                this.categoryErrors.set(errorMessages);
+            }
+        });
         
         const entryDetailsDtoObject = this.entryDetailsDto();
         
@@ -105,7 +115,7 @@ export class EntryFormComponent implements OnInit{
                 console.error("Failed to get existing entries list", "error response: ", err);
 
                 const errorMessages = await extractErrorMessages(err);
-                this.errors.set(errorMessages);
+                this.entryErrors.set(errorMessages);
             }
         });
     }

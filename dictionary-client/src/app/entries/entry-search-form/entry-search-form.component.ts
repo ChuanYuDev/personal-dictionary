@@ -15,6 +15,9 @@ import {removeNullProperties} from "../../shared/functions/remove-null-propertie
 export class EntrySearchFormComponent implements OnInit{
     readonly totalCount = input.required<number>();
     readonly entrySearchFilterDto = model.required<EntrySearchFilterDto>();
+
+    isFavorite = signal<boolean>(false);
+    readonly categoryDtos = signal<CategoryDto[]>([]);
     
     private formBuilder = inject(FormBuilder);
     
@@ -24,10 +27,6 @@ export class EntrySearchFormComponent implements OnInit{
         isFavorite: new FormControl<boolean | null>(null),
         exactMatch: new FormControl<boolean | null>(null)
     });
-    
-    isFavorite = signal<boolean>(false);
-    
-    readonly categoryDtos = signal<CategoryDto[]>([]);
     
     ngOnInit(): void {
         this.categoryDtos.set([{

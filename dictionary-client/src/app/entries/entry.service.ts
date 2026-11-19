@@ -7,8 +7,8 @@ import {EntryCreateDto, EntryDetailsDto, EntryFilterDto, EntrySummaryDto} from "
     providedIn: 'root'
 })
 export class EntryService {
-    private httpClient = inject(HttpClient);
-    private baseUrl = `${environment.apiUrl}/entries`
+    private readonly httpClient = inject(HttpClient);
+    private readonly baseUrl = `${environment.apiUrl}/entries`
     constructor() { }
     
     get(entryFilterDto: EntryFilterDto) {

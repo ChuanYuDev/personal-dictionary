@@ -1,85 +1,106 @@
-<form [formGroup]="formGroup" (submit)="onSubmit()">
-    <div class="form-field">
-        <label for="term">Term</label>
-        <input id="term" [formControl]="formGroup.controls.term">
-        <div class="form-error">
-            {{ getErrorMessagesForTerm() }}
-        </div>
-    </div>
-
-    @if (entrySummaryDtos(); as entrySummaryDtosArray) {
-        @if (entrySummaryDtosArray.length > 0) {
-            <div class="field-label">
-                Existing Entries
-            </div>
-            @for (entrySummaryDto of entrySummaryDtosArray; track entrySummaryDto.id) {
-                <app-entry-card [entrySummaryDto]="entrySummaryDto"></app-entry-card>
-            }
-        }
-    }
-    
-    <div class="form-field">
-        <label for="categoryId">Category</label>
-        <select id="categoryId" [formControl]="formGroup.controls.categoryId">
-            @for (categoryDto of categoryDtos(); track $index) {
-                <option [ngValue]="categoryDto.id">{{ categoryDto.name }}</option>
-            }
-        </select>
-    </div>
-
-    @if (showPartOfSpeech()) {
+@if (categoryErrors().length > 0) {
+    <app-display-errors
+        title="Unable to load categories."
+        [errors]="categoryErrors()"
+    ></app-display-errors>
+} @else if (categoryDtos().length === 0) {
+    Loading...
+} @else {
+    <form [formGroup]="formGroup" (submit)="onSubmit()">
         <div class="form-field">
-            <label for="partOfSpeech">Part of Speech</label>
-            <select id="partOfSpeech" [formControl]="formGroup.controls.partOfSpeech">
-                <option [ngValue]="null">——Please choose an option——</option>
+            <label for="term">Term</label>
+            <input id="term" [formControl]="formGroup.controls.term">
+            <div class="form-error">
+                {{ getErrorMessagesForTerm() }}
+            </div>
 
-                @for (partOfSpeech of partOfSpeeches; track $index) {
-                    <option [ngValue]="partOfSpeech">{{ partOfSpeech }}</option>
+            @if (entryErrors().length > 0) {
+                <app-display-errors
+                    title="Unable to load existing entries."
+                    [errors]="entryErrors()"
+                ></app-display-errors>
+            } @else {
+                @if (entrySummaryDtos(); as entrySummaryDtosArray) {
+                    @if (entrySummaryDtosArray.length > 0) {
+                        <div class="font-weight-medium">
+                            Existing Entries
+                        </div>
+                        @for (entrySummaryDto of entrySummaryDtosArray; track entrySummaryDto.id) {
+                            <app-entry-card [entrySummaryDto]="entrySummaryDto"></app-entry-card>
+                        }
+                    } @else {
+                        <div class="hint-text">
+                            This word isn't in your dictionary yet.
+                        </div>
+                    }
+                }
+            }
+        </div>
+
+        <div class="form-field">
+            <label for="categoryId">Category</label>
+            <select id="categoryId" [formControl]="formGroup.controls.categoryId">
+                @for (categoryDto of categoryDtos(); track $index) {
+                    <option [ngValue]="categoryDto.id">{{ categoryDto.name }}</option>
                 }
             </select>
         </div>
-    }
-    
-    <div class="form-field">
-        <label for="pronunciation">Pronunciation</label>
-        <input id="pronunciation" [formControl]="formGroup.controls.pronunciation">
-    </div>
 
-    <div class="form-field">
-        <label for="meaning">Meaning</label>
-        <textarea
-            id="meaning"
-            cdkTextareaAutosize
-            cdkAutosizeMinRows="5"
-            [formControl]="formGroup.controls.meaning"
-        >
-        </textarea>
-    </div>
+        @if (showPartOfSpeech()) {
+            <div class="form-field">
+                <label for="partOfSpeech">Part of Speech</label>
+                <select id="partOfSpeech" [formControl]="formGroup.controls.partOfSpeech">
+                    <option [ngValue]="null">——Please choose an option——</option>
 
-    <div class="form-field">
-        <label for="notes">Notes</label>
-        <textarea
-            id="notes"
-            cdkTextareaAutosize
-            cdkAutosizeMinRows="5"
-            [formControl]="formGroup.controls.notes"
-        >
-        </textarea>
-    </div>
-    
-    <ng-content></ng-content>
-    
-    <div class="row button-container">
-        <div class="col-6">
-            <a [routerLink]="cancelRoute()" class="button unstyled-link">Cancel</a>
+                    @for (partOfSpeech of partOfSpeeches; track $index) {
+                        <option [ngValue]="partOfSpeech">{{ partOfSpeech }}</option>
+                    }
+                </select>
+            </div>
+        }
+
+        <div class="form-field">
+            <label for="pronunciation">Pronunciation</label>
+            <input id="pronunciation" [formControl]="formGroup.controls.pronunciation">
         </div>
 
-        <div class="col-6">
-            <button
-                class="button primary"
-                type="submit"
-                [disabled]="formGroup.invalid || saveButtonDisabled()"
-            >Save</button>
+        <div class="form-field">
+            <label for="meaning">Meaning</label>
+            <textarea
+                    id="meaning"
+                    cdkTextareaAutosize
+                    cdkAutosizeMinRows="5"
+                    [formControl]="formGroup.controls.meaning"
+            >
+        </textarea>
         </div>
-    </div>
-</form>
+
+        <div class="form-field">
+            <label for="notes">Notes</label>
+            <textarea
+                    id="notes"
+                    cdkTextareaAutosize
+                    cdkAutosizeMinRows="5"
+                    [formControl]="formGroup.controls.notes"
+            >
+        </textarea>
+        </div>
+
+        <ng-content></ng-content>
+
+        <div class="row button-container">
+            <div class="col-6">
+                <a [routerLink]="cancelRoute()" class="button unstyled-link">Cancel</a>
+            </div>
+
+            <div class="col-6">
+                <button
+                        class="button primary"
+                        type="submit"
+                        [disabled]="formGroup.invalid || saveButtonDisabled()"
+                >Save</button>
+            </div>
+        </div>
+    </form>
+    
+}

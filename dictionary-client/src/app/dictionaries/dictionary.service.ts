@@ -8,8 +8,8 @@ import {tap} from "rxjs";
     providedIn: 'root'
 })
 export class DictionaryService {
-    private httpClient = inject(HttpClient);
-    private baseUrl = `${environment.apiUrl}/dictionaries`;
+    private readonly httpClient = inject(HttpClient);
+    private readonly baseUrl = `${environment.apiUrl}/dictionaries`;
     
     private readonly dbIdKey = "db-id";
     private readonly dbIdHeaderKey = "db-id";
