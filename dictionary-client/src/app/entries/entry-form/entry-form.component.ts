@@ -72,18 +72,7 @@ export class EntryFormComponent implements OnInit{
     private readonly categoryService = inject(CategoryService);
     
     ngOnInit(): void {
-        this.categoryService.get().subscribe({
-            next: categoryDtos => {
-                this.categoryDtos.set(categoryDtos);
-            },
-
-            error: async err => {
-                console.error("Failed to get category list", "error response: ", err);
-
-                const errorMessages = await extractErrorMessages(err);
-                this.categoryErrors.set(errorMessages);
-            }
-        });
+        this.categoryService.loadCategories(this.categoryDtos, this.categoryErrors);
         
         const entryDetailsDtoObject = this.entryDetailsDto();
         

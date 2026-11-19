@@ -1,51 +1,60 @@
-<form [formGroup]="formGroup">
-    <div class="search-row-1">
-        <div class="form-field term-container">
-            <input
-                id="term"
-                [formControl]="formGroup.controls.term"
-                aria-label="term"
-                placeholder="Search term"
-            >
+@if (categoryErrors().length > 0) {
+    <app-display-errors
+            title="Unable to load categories."
+            [errors]="categoryErrors()"
+    ></app-display-errors>
+} @else if (categoryDtos().length === 0) {
+    Loading...
+} @else {
+    <form [formGroup]="formGroup">
+        <div class="search-row-1">
+            <div class="form-field term-container">
+                <input
+                    id="term"
+                    [formControl]="formGroup.controls.term"
+                    aria-label="term"
+                    placeholder="Search term"
+                >
+            </div>
+            
+            <div class="form-field exact-container">
+                <input
+                    id="exactMatch"
+                    type="checkbox"
+                    [formControl]="formGroup.controls.exactMatch"
+                    aria-label="exactMatch"
+                >
+                <label for="exactMatch">Exact</label>
+            </div>
         </div>
         
-        <div class="form-field exact-container">
-            <input
-                id="exactMatch"
-                type="checkbox"
-                [formControl]="formGroup.controls.exactMatch"
-                aria-label="exactMatch"
-            >
-            <label for="exactMatch">Exact</label>
-        </div>
-    </div>
-    
-    <div class="search-row-2">
-        <div class="actions-container">
-            <div class="form-field category-id-container">
-                <select id="categoryId" [formControl]="formGroup.controls.categoryId" aria-label="Category">
-                    <option [ngValue]="null">All</option>
+        <div class="search-row-2">
+            <div class="actions-container">
+                <div class="form-field category-id-container">
+                    <select id="categoryId" [formControl]="formGroup.controls.categoryId" aria-label="Category">
+                        <option [ngValue]="null">All</option>
 
-                    @for (categoryDto of categoryDtos(); track $index) {
-                        <option [ngValue]="categoryDto.id"> {{ categoryDto.name }} </option>
-                    }
-                </select>
-            </div>
-            
-            <div class="favorite-container flex-center">
-                <app-favorite
+                        @for (categoryDto of categoryDtos(); track $index) {
+                            <option [ngValue]="categoryDto.id"> {{ categoryDto.name }} </option>
+                        }
+                    </select>
+                </div>
+                
+                <div class="favorite-container flex-center">
+                    <app-favorite
                         [isFavorite]="isFavorite()"
                         (isFavoriteChange)="onIsFavoriteChange($event)"
-                ></app-favorite>
+                    ></app-favorite>
+                </div>
+                
+                <div class="button-container">
+                    <button type="button" class="button" (click)="clear()">Clear</button>
+                </div>
             </div>
-            
-            <div class="button-container">
-                <button type="button" class="button" (click)="clear()">Clear</button>
-            </div>
-        </div>
 
-        <div class="count-container">
-            {{ totalCount() }} {{totalCount() > 1? "Entries": "Entry" }}
+            <div class="count-container">
+                {{ totalCount() }} {{totalCount() > 1? "Entries": "Entry" }}
+            </div>
         </div>
-    </div>
-</form>
+    </form>
+} 

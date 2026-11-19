@@ -5,10 +5,12 @@ import {debounceTime} from "rxjs";
 import {FavoriteComponent} from "../../shared/components/favorite/favorite.component";
 import {EntrySearchFilterDto} from "../entry.models";
 import {removeNullProperties} from "../../shared/functions/remove-null-properties";
+import {DisplayErrorsComponent} from "../../shared/components/display-errors/display-errors.component";
+import {CategoryService} from "../../categories/category.service";
 
 @Component({
     selector: 'app-entry-search-form',
-    imports: [ReactiveFormsModule, FavoriteComponent],
+    imports: [ReactiveFormsModule, FavoriteComponent, DisplayErrorsComponent],
     templateUrl: './entry-search-form.component.html',
     styleUrl: './entry-search-form.component.css'
 })
@@ -18,8 +20,9 @@ export class EntrySearchFormComponent implements OnInit{
 
     isFavorite = signal<boolean>(false);
     readonly categoryDtos = signal<CategoryDto[]>([]);
+    readonly categoryErrors = signal<string[]>([]);
     
-    private formBuilder = inject(FormBuilder);
+    private readonly formBuilder = inject(FormBuilder);
     
     readonly formGroup = this.formBuilder.group({
         term: new FormControl<string | null>(null),
@@ -28,14 +31,10 @@ export class EntrySearchFormComponent implements OnInit{
         exactMatch: new FormControl<boolean | null>(null)
     });
     
+    private readonly categoryService = inject(CategoryService);
+    
     ngOnInit(): void {
-        this.categoryDtos.set([{
-            id: 1,
-            name: "Word"
-        }, {
-            id: 2,
-            name: "Phrase"
-        }]);
+        this.categoryService.loadCategories(this.categoryDtos, this.categoryErrors);
 
         const entrySearchFilterDtoObject = this.entrySearchFilterDto();
 

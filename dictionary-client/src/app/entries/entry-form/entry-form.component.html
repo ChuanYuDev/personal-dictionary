@@ -67,10 +67,10 @@
         <div class="form-field">
             <label for="meaning">Meaning</label>
             <textarea
-                    id="meaning"
-                    cdkTextareaAutosize
-                    cdkAutosizeMinRows="5"
-                    [formControl]="formGroup.controls.meaning"
+                id="meaning"
+                cdkTextareaAutosize
+                cdkAutosizeMinRows="5"
+                [formControl]="formGroup.controls.meaning"
             >
         </textarea>
         </div>
@@ -78,10 +78,10 @@
         <div class="form-field">
             <label for="notes">Notes</label>
             <textarea
-                    id="notes"
-                    cdkTextareaAutosize
-                    cdkAutosizeMinRows="5"
-                    [formControl]="formGroup.controls.notes"
+                id="notes"
+                cdkTextareaAutosize
+                cdkAutosizeMinRows="5"
+                [formControl]="formGroup.controls.notes"
             >
         </textarea>
         </div>
@@ -95,9 +95,9 @@
 
             <div class="col-6">
                 <button
-                        class="button primary"
-                        type="submit"
-                        [disabled]="formGroup.invalid || saveButtonDisabled()"
+                    class="button primary"
+                    type="submit"
+                    [disabled]="formGroup.invalid || saveButtonDisabled()"
                 >Save</button>
             </div>
         </div>
