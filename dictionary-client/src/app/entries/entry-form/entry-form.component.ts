@@ -97,7 +97,15 @@ export class EntryFormComponent implements OnInit{
         
         this.entryService.get(entryFilterDto).subscribe({
             next: httpResponse => {
-                this.entrySummaryDtos.set(httpResponse.body ?? []);
+                const entrySummaryDtosArray = httpResponse.body ?? [];
+
+                const entryDetailsDtoObject = this.entryDetailsDto();
+                
+                if (entryDetailsDtoObject) {
+                    const entryIndex = entrySummaryDtosArray.findIndex(e => e.id === entryDetailsDtoObject.id);
+                    entrySummaryDtosArray.splice(entryIndex, 1);
+                } 
+                this.entrySummaryDtos.set(entrySummaryDtosArray);
             },
             
             error: async err => {
