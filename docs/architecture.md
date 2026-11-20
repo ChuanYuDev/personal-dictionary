@@ -220,6 +220,16 @@ Remove pronunciation
 - `dbId` key in the request header: `db-id`
 - Total count key in the response header: `total-count`
 
+### Existing entries
+- `term` with `id`
+- Create 
+    - Existing entries in the dictionary
+
+- Update
+    - Existing entries with the same `term` but excluding the term with `id`
+    - However, the `id` may not be in the existing entries because we can change term
+    - Check if `entryIndex >= 0`
+
 ### Cancellation token
 - https://andrewlock.net/using-cancellationtokens-in-asp-net-core-mvc-controllers/
 

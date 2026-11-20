@@ -103,7 +103,8 @@ export class EntryFormComponent implements OnInit{
                 
                 if (entryDetailsDtoObject) {
                     const entryIndex = entrySummaryDtosArray.findIndex(e => e.id === entryDetailsDtoObject.id);
-                    entrySummaryDtosArray.splice(entryIndex, 1);
+                    
+                    if (entryIndex >= 0) entrySummaryDtosArray.splice(entryIndex, 1);
                 } 
                 this.entrySummaryDtos.set(entrySummaryDtosArray);
             },
