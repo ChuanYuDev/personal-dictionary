@@ -1,4 +1,4 @@
-<div class="container home-container">
+<div class="container-fluid">
     <header>
         <div class="home-header">
             <h1 class="page-title">My Dictionary</h1>
@@ -19,7 +19,7 @@
         ></app-display-errors>
     </header>
 
-    <div class="home-content">
+    <div>
         @if (dictionaryState()) {
             <app-index-entry></app-index-entry>
         } @else {

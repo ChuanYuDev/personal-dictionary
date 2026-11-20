@@ -1,31 +1,29 @@
-<div class="container">
-    <dialog #dialog>
-        <h2 class="page-title title-container">{{ title() }}</h2>
+<dialog #dialog>
+    <h2 class="page-title title-container">{{ title() }}</h2>
 
-        @if (content(); as contentString) {
-            <div class="content-container">
-                {{ contentString }}
-            </div>
-        }
-            
-        <ng-content></ng-content>
-
-        <div class="row">
-            <div class="col-6">
-                <button type="button" class="button" (click)="dialog.close()">Cancel</button>
-            </div>
-
-            <div class="col-6">
-                <button
-                    type="button"
-                    class="button"
-                    [class]="confirmButtonStyle()"
-                    [disabled]="confirmButtonDisabled()"
-                    (click)="confirm()"
-                >
-                    {{ confirmButtonText() }}
-                </button>
-            </div>
+    @if (content(); as contentString) {
+        <div class="content-container">
+            {{ contentString }}
         </div>
-    </dialog>
-</div>
+    }
+        
+    <ng-content></ng-content>
+
+    <div class="row">
+        <div class="col-6">
+            <button type="button" class="button" (click)="dialog.close()">Cancel</button>
+        </div>
+
+        <div class="col-6">
+            <button
+                type="button"
+                class="button"
+                [class]="confirmButtonStyle()"
+                [disabled]="confirmButtonDisabled()"
+                (click)="confirm()"
+            >
+                {{ confirmButtonText() }}
+            </button>
+        </div>
+    </div>
+</dialog>

@@ -1,13 +1,4 @@
-.index-entry-container {
-    display: flex;
-    flex-direction: column;
-    position: relative;
-    height: 100%;
-}
-
 .entries-container {
-    flex-grow: 1;
-    overflow-y: auto;
     padding-bottom: 40px;
 }
 
@@ -16,9 +7,9 @@
     height: 24px;
 }
 
-.add-item {
-    position: absolute;   
-    right: 0;
+.create-entry-container {
+    position: fixed;   
+    right: 12px;
     bottom: 0;
 }
 
