@@ -19,11 +19,12 @@ public static class DictionaryDbTestHelper
     {
         await using var dictionaryDbContext = CreateDbContext(dbPath);
 
-        var categories = await dictionaryDbContext.Categories.ToListAsync(cancellationToken: TestContext.Current.CancellationToken);
+        var categories = await dictionaryDbContext.Categories.OrderBy(c => c.Id).ToListAsync(cancellationToken: TestContext.Current.CancellationToken);
         
-        Assert.Equal(2, categories.Count);
+        Assert.Equal(3, categories.Count);
         Assert.Equal("Word", categories[0].Name);
         Assert.Equal("Phrase", categories[1].Name);
+        Assert.Equal("Sentence", categories[2].Name);
         
         var metadata = await dictionaryDbContext.Metadata.SingleAsync(cancellationToken: TestContext.Current.CancellationToken);
         Assert.Equal(dbName, metadata.Name);
