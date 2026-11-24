@@ -1,4 +1,8 @@
 # Changelog
+## 0.2.1 - 2026-11-24
+### Fixed
+- Fix backend integration tests
+
 ## 0.2.0 - 2026-11-20
 ### Added
 - Connect to an existing dictionary.
